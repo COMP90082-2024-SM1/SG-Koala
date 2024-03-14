@@ -13,6 +13,7 @@ Brief description of the project, its purpose, and goals.
   - [Sprint Two](#sprint-two)
   - [Sprint Three](#sprint-three)
   - [Sprint Four](#sprint-four)
+- [Workflow Guidelines](#workflow-guidelines) 
 - [Contact](#contact)
 
 ## Folder Structure
@@ -64,6 +65,39 @@ Briefly outline the main features of your project and their functions.
     - N/A   
     
 > The changelog will be updated progressively throughout each sprint.
+
+## Workflow Guidelines
+
+### Branch Naming Conventions
+- **Feature Branches**: `feature/<short-feature-description>`
+  - Example: `feature/oauth-integration`
+- **Bug Fixes**: `bugfix/<short-bug-description>`
+  - Example: `bugfix/login-error`
+- **Documentation**: `docs/<documentation-subject>`
+  - Example: `docs/api-specification`
+
+### Commit Messages
+- Use specific keywords to start your commit messages for clarity:
+  - **ADD** for new features or additions.
+    - Example: `ADD user authentication logic`
+  - **UPDATE** for changes in existing code.
+    - Example: `UPDATE login page styling`
+  - **REMOVE** for deletions of code or files.
+    - Example: `REMOVE deprecated methods`
+  - **FIX** for bug fixes.
+    - Example: `FIX form submission error`
+
+### Pull Requests (PRs)
+- Provide a detailed description of the changes.
+- Reference related issues or tasks.
+
+### Code Reviews
+- Assign PRs to at least one team member for review.
+- Incorporate feedback before merging.
+
+### Merging Strategy
+- Use **Squash and Merge** for feature branches and bug fixes.
+- Use **Rebase and Merge** for minor fixes or updates.
 
 ## Contact
 | Name                | Email                                  | GitHub                               |
