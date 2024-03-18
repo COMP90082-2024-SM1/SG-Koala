@@ -1,6 +1,6 @@
 # SG-Koala
 ## Overview
-Brief description of the project, its purpose, and goals.
+The Science Gallery Melbourne is facing challenges with its current booking system for secondary school group visits, which relies on multiple platforms like Microsoft Office tools and Priava. This setup leads to inefficiencies, as changes in bookings necessitate updates across various systems, demanding significant administrative effort and coordination. To address this, they are planning to develop a Unified Booking Management System. This proposed system aims to streamline and automate the booking process by integrating booking, calendar scheduling, and space and equipment management into a single, easy-to-use platform. This solution will enable the Learning Team staff to swiftly add and update bookings, effectively handle scheduling conflicts, and automatically store all tour details in a centralized database, significantly enhancing operational efficiency.
 
 ## Table of Contents
 - [Overview](#overview)
