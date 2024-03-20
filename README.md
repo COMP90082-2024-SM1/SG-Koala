@@ -20,7 +20,6 @@ The Science Gallery Melbourne is facing challenges with its current booking syst
 - `README.md`: This file. Includes the project overview, folder structure, changelog, and other essential information.
 - `docs/`: Contains all documentation files. Further organized into subfolders for requirements, design documents, etc.
 - `src/`: Source code of the project.
-> Scheduled for documentation in `Sprint-2`.
 
 ## Installation and Setup
 Instructions for setting up the project environment and installing any necessary dependencies.
@@ -37,29 +36,30 @@ Briefly outline the main features of your project and their functions.
 ## Changelog
   ### Sprint One
   - Date
-    - Start: 08/03/2024
+    - Start: 03/03/2024
     - End: 22/03/2024
-    - Duration: 2 weeks
+    - Duration: 3 weeks
   - Log
-    - Initial planning and setup.
+    - Initial setup
+    - Upload docs.
   ### Sprint Two
   - Date
-    - Start: 08/03/2024
-    - End: 22/03/2024
+    - Start: 25/03/2024
+    - End: 26/04/2024
     - Duration: 4 weeks
   - Log
     - N/A   
   ### Sprint Three
   - Date
-    - Start: 08/03/2024
-    - End: 22/03/2024
+    - Start: 29/04/2024
+    - End: 24/05/2024
     - Duration: 4 weeks
   - Log
     - N/A
   ### Sprint Four
   - Date
-    - Start: 08/03/2024
-    - End: 22/03/2024
+    - Start: 27/05/2024
+    - End: 07/06/2024
     - Duration: 3 weeks
   - Log
     - N/A   
@@ -102,9 +102,9 @@ Briefly outline the main features of your project and their functions.
 ## Contact
 | Name                | Email                                  | GitHub                               |
 |---------------------|----------------------------------------|--------------------------------------|
-| Guixian Li (Leona)  | [guixianl@student.unimelb.edu.au](mailto:guixianl@student.unimelb.edu.au) | [GitHub Link](#) |
-| Daniel Su (Daniel)  | [dss1@student.unimelb.edu.au](mailto:dss1@student.unimelb.edu.au)         | [GitHub Link](#) |
-| Pangfeng ZHENG (Jack)| [pangfengz@student.unimelb.edu.au](mailto:pangfengz@student.unimelb.edu.au)| [GitHub Link](#) |
-| Yongli Qin (Matt)   | [yongliq@student.unimelb.edu.au](mailto:yongliq@student.unimelb.edu.au)    | [GitHub Link](#) |
-| Yuanbo Xu (Chris)   | [yuanbo@student.unimelb.edu.au](mailto:yuanbo@student.unimelb.edu.au)     | [GitHub Link](#) |
-| Yun-Chi Hsiao (Jim) | [yunchi@student.unimelb.edu.au](mailto:yunchi@student.unimelb.edu.au)     | [GitHub Link](#) |
+| Guixian Li (Leona)  | [guixianl@student.unimelb.edu.au](mailto:guixianl@student.unimelb.edu.au) | [Leona7658](#https://github.com/Leona7658) |
+| Daniel Su (Daniel)  | [dss1@student.unimelb.edu.au](mailto:dss1@student.unimelb.edu.au)         | [dyts1](#https://github.com/dyts1) |
+| Pangfeng ZHENG (Jack)| [pangfengz@student.unimelb.edu.au](mailto:pangfengz@student.unimelb.edu.au)| [PangFengZheng-unim](#https://github.com/PangFengZheng-unim) |
+| Yongli Qin (Matt)   | [yongliq@student.unimelb.edu.au](mailto:yongliq@student.unimelb.edu.au)    | [YongLi-Qin](#https://github.com/YongLi-Qin) |
+| Yuanbo Xu (Chris)   | [yuanbo@student.unimelb.edu.au](mailto:yuanbo@student.unimelb.edu.au)     | [Mor-Poi](#https://github.com/Mor-Poi) |
+| Yun-Chi Hsiao (Jim) | [yunchi@student.unimelb.edu.au](mailto:yunchi@student.unimelb.edu.au)     | [is0xJim](#https://github.com/is0xjh25) |
