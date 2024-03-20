@@ -40,7 +40,7 @@ Briefly outline the main features of your project and their functions.
     - End: 22/03/2024
     - Duration: 3 weeks
   - Log
-    - Initial setup
+    - Initial setup.
     - Upload docs.
   ### Sprint Two
   - Date
@@ -102,9 +102,9 @@ Briefly outline the main features of your project and their functions.
 ## Contact
 | Name                | Email                                  | GitHub                               |
 |---------------------|----------------------------------------|--------------------------------------|
-| Guixian Li (Leona)  | [guixianl@student.unimelb.edu.au](mailto:guixianl@student.unimelb.edu.au) | [Leona7658](#https://github.com/Leona7658) |
-| Daniel Su (Daniel)  | [dss1@student.unimelb.edu.au](mailto:dss1@student.unimelb.edu.au)         | [dyts1](#https://github.com/dyts1) |
-| Pangfeng ZHENG (Jack)| [pangfengz@student.unimelb.edu.au](mailto:pangfengz@student.unimelb.edu.au)| [PangFengZheng-unim](#https://github.com/PangFengZheng-unim) |
-| Yongli Qin (Matt)   | [yongliq@student.unimelb.edu.au](mailto:yongliq@student.unimelb.edu.au)    | [YongLi-Qin](#https://github.com/YongLi-Qin) |
-| Yuanbo Xu (Chris)   | [yuanbo@student.unimelb.edu.au](mailto:yuanbo@student.unimelb.edu.au)     | [Mor-Poi](#https://github.com/Mor-Poi) |
-| Yun-Chi Hsiao (Jim) | [yunchi@student.unimelb.edu.au](mailto:yunchi@student.unimelb.edu.au)     | [is0xJim](#https://github.com/is0xjh25) |
+| Guixian Li (Leona)  | [guixianl@student.unimelb.edu.au](mailto:guixianl@student.unimelb.edu.au) | [Leona7658](https://github.com/Leona7658) |
+| Daniel Su (Daniel)  | [dss1@student.unimelb.edu.au](mailto:dss1@student.unimelb.edu.au)         | [dyts1](https://github.com/dyts1) |
+| Pangfeng ZHENG (Jack)| [pangfengz@student.unimelb.edu.au](mailto:pangfengz@student.unimelb.edu.au)| [PangFengZheng-unim](https://github.com/PangFengZheng-unim) |
+| Yongli Qin (Matt)   | [yongliq@student.unimelb.edu.au](mailto:yongliq@student.unimelb.edu.au)    | [YongLi-Qin](https://github.com/YongLi-Qin) |
+| Yuanbo Xu (Chris)   | [yuanbo@student.unimelb.edu.au](mailto:yuanbo@student.unimelb.edu.au)     | [Mor-Poi](https://github.com/Mor-Poi) |
+| Yun-Chi Hsiao (Jim) | [yunchi@student.unimelb.edu.au](mailto:yunchi@student.unimelb.edu.au)     | [is0xJim](https://github.com/is0xjh25) |
