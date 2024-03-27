@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig'
 ]
 
 MIDDLEWARE = [
@@ -73,11 +74,14 @@ WSGI_APPLICATION = 'Koala_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+DMONGODB_DATABASES = {
+    "default": {
+        "name": 'your_database_name',
+        "host": 'mongodb+srv://koala:koala@koalacluster.q1lvmvm.mongodb.net/?retryWrites=true&w=majority&appName=KoalaCluster',
+        "username": 'koala',
+        "password": 'koala',
+        "options": 'retryWrites=true&w=majority',
+    },
 }
 
 
