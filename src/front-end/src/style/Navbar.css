@@ -1,0 +1,79 @@
+.navigation-bar {
+    width: 200px; 
+    color: white;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-right: 2px solid #000;
+    padding-left: 0;
+}
+
+.logo {
+    background-color: white;
+    text-align: center;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.footer {
+    padding: 10px;
+    text-align: center;
+}
+
+.footer img {
+    width: 100px; 
+}
+
+#sg_logo{
+    width:100%;
+    margin-bottom: 10%;
+}
+
+
+.nav-items {
+    flex-grow: 1; 
+}
+
+.nav-item {
+    display: flex;
+    padding: 10px;
+    color: black; 
+    background-color: white; 
+    text-decoration: none;
+    font-size: 18px;
+    transition: background-color 0.3s, color 0.3s; 
+    margin-top: 30px; 
+    flex-direction: row; 
+    align-items: center; 
+    justify-content: center; 
+}
+
+.nav-item:hover, .nav-item.active {
+    background-color: #0D3B66; 
+    color: white; 
+}
+
+.nav-icon {
+    height: 35px; 
+    width: 35px;  
+    margin-right: 20px; 
+}
+.search-bar input {
+    background: url( "../image/search-icon.png") no-repeat 10px center / 20px 20px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    padding-left: 40px; /* 调整这个值以确保文本不会覆盖图标 */
+    width: 70%; /* 你之前设置的宽度 */
+    margin: 0 auto; /* 保持居中 */
+    display: block; /* 保证元素占据新行 */
+    height: 35px; /* 根据需要调整高度 */
+    font-size: 16px; /* 根据需要调整字体大小 */
+    color: #555; /* 字体颜色 */
+}
+
+/* 用于去除输入字段获取焦点时的外框 */
+.search-bar input:focus {
+    outline: none;
+    border-color: #6658D3; /* 这里可以设置为你希望的颜色 */
+    box-shadow: 0 0 10px #719ECE; /* 可选，设置一个轻微的阴影来增强焦点效果 */
+}
