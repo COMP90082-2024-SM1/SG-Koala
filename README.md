@@ -69,6 +69,8 @@ Briefly outline the main features of your project and their functions.
 ## Workflow Guidelines
 
 ### Branch Naming Conventions
+- **Scope Branches**: `<scope>/feature/<short-feature-description>`
+  - Example: `backend/feature/oauth-integration`
 - **Feature Branches**: `feature/<short-feature-description>`
   - Example: `feature/oauth-integration`
 - **Bug Fixes**: `bugfix/<short-bug-description>`
