@@ -8,5 +8,5 @@ def connect_mongodb():
                         #  password=config['password'],
                          )
 
-    db = client['test']
+    db = client['sample_mflix']
     return db
