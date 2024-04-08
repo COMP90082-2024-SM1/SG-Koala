@@ -1,9 +1,11 @@
 .typographyH1 {
-  font-size: 20px; /* smaller font size for mobile devices */
+  font-size: 20px;
+  color: var(--primary-color);
 }
 
 .typographyH2 {
   font-size: 18px;
+  color: var(--primary-color);
 }
 
 .typographyParagraph {
