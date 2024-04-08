@@ -1,7 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavigationBar from './components/NavigationBar/Navbar';
+import NavigationBar from './components/NavgationBar/Navbar';
+import NavBarLayout from './components/NavBarLayout/NavBarLayout';
 
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Database from './pages/Database';
 import Templates from './pages/Templates';
@@ -19,8 +21,11 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <NavigationBar />
+        <NavBarLayout>
+          <NavigationBar />
+        </NavBarLayout>
         <Routes>
+          <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/database" element={<Database />} />
           <Route path="/templates" element={<Templates />} />
