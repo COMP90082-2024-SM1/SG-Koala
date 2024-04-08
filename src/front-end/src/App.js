@@ -1,6 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavigationBar from './components/NavigationBar/Navbar';
+import NavigationBar from './components/NavgationBar/Navbar';
+import './App.css';
+
 
 import Dashboard from './pages/Dashboard';
 import Database from './pages/Database';
@@ -19,7 +21,10 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <NavigationBar />
+        <div className="navbar">
+            <NavigationBar />
+          </div>
+        <div className="content">
         <Routes>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/database" element={<Database />} />
@@ -34,8 +39,10 @@ function App() {
             </div>
           } />
         </Routes>
+        </div>
       </div>
     </Router>
+    
   );
 }
 
