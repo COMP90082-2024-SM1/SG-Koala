@@ -8,5 +8,5 @@ def connect_mongodb():
                         #  password=config['password'],
                          )
 
-    db = client['sample_mflix']
+    db = client['Koala_booking_system']
     return db

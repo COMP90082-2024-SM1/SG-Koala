@@ -2,7 +2,7 @@ from django.conf import settings
 from django.http import HttpResponse,HttpResponseBadRequest,JsonResponse
 
 from db_connection import connect_mongodb
-from .serializers import TestSerializer
+from .test_serializers import TestSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
