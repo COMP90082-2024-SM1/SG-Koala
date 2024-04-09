@@ -1,14 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import NavigationBar from "./components/NavgationBar/Navbar";
-import "./App.css";
-
-import Dashboard from "./pages/Dashboard";
-import Database from "./pages/Database";
-import Templates from "./pages/Templates";
-import Analytics from "./pages/Analytics";
-import Calendar from "./pages/Calendar";
-
+import Navbar from "./components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Database from "./pages/Database";
 import Templates from "./pages/Templates";
@@ -28,7 +20,7 @@ function App() {
     <Router>
       <div className="App">
         <div className="navbar">
-          <NavigationBar />
+          <Navbar />
         </div>
         <div className="content">
           <Routes>

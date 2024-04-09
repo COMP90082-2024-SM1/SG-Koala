@@ -1,16 +1,14 @@
 .navigation-bar {
-  width: 200px;
   color: white;
   display: flex;
   flex-direction: column;
   height: 100vh;
   border-right: 2px solid #000;
-  padding-left: 0;
-  position: fixed;
+  background: linear-gradient(to right, #1e65f1, #7a47c3);
 }
 
 .logo {
-  background-color: white;
+  background: linear-gradient(to right, #1e65f1, #7a47c3);
   text-align: center;
   padding: 10px;
   font-size: 20px;
@@ -37,8 +35,8 @@
 .nav-item {
   display: flex;
   padding: 10px;
-  color: black;
-  background-color: white;
+  color: white;
+  background: linear-gradient(to right, #1e65f1, #7a47c3);
   text-decoration: none;
   font-size: 18px;
   transition: background-color 0.3s, color 0.3s;
@@ -50,7 +48,7 @@
 
 .nav-item:hover,
 .nav-item.active {
-  background-color: #0d3b66;
+  background: #0d3b66;
   color: white;
 }
 
@@ -59,11 +57,10 @@
   width: 35px;
   margin-right: 20px;
 }
-
 .search-bar input {
   background: url("../../image/search-icon.png") no-repeat 10px center / 20px
     20px;
-  border: 2px solid #ccc;
+  border: 2px solid #ffffff;
   border-radius: 25px;
   padding-left: 40px;
   width: 70%;
@@ -71,11 +68,17 @@
   display: block;
   height: 35px;
   font-size: 16px;
-  color: #555;
+  color: #ffffff;
 }
 
-.search-bar input:focus {
-  outline: none;
-  border-color: #6658d3;
-  box-shadow: 0 0 10px #719ece;
+#search_input {
+  color: #ffffff;
+}
+
+.search-bar input::placeholder {
+  color: #ffffff;
+}
+
+#database-icon {
+  margin-right: 15%;
 }
