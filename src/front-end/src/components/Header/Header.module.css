@@ -1,0 +1,11 @@
+.header {
+  text-align: center;
+}
+
+.headerHr {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  height: 3px;
+  border: none;
+  background-color: var(--primary-color);
+}
