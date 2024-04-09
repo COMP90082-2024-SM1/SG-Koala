@@ -4,9 +4,15 @@ import { useNavigate } from "react-router-dom";
 import { TypographyH2 } from "../components/Typography/Typography";
 import "../styles/Templates.css";
 
-const buttons = [1, 2, 3, 4, 5];
+const buttons = [
+  { id: 1, name: "Template 1" },
+  { id: 2, name: "Template 2" },
+  { id: 3, name: "Template 3" },
+  { id: 4, name: "Template 4" },
+  { id: 5, name: "Template 5" },
+];
 
-const TemplateButton = ({ id }) => {
+const TemplateButton = ({ id, name }) => {
   const navigate = useNavigate();
 
   return (
@@ -15,19 +21,21 @@ const TemplateButton = ({ id }) => {
       className="templateButton"
       onClick={() => navigate(`/templates/${id}`)}
     >
-      <TypographyH2 style={{ color: "white" }}>{`Template ${id}`}</TypographyH2>
+      <TypographyH2 style={{ color: "white" }}>{name}</TypographyH2>
     </button>
   );
 };
 
 function Templates() {
+  const lastId = buttons[buttons.length - 1].id;
   return (
     <div>
       <Header> Templates </Header>
       <div className="template">
-        {buttons.map((id) => (
-          <TemplateButton key={id} id={id} />
+        {buttons.map((button) => (
+          <TemplateButton key={button.id} id={button.id} name={button.name} />
         ))}
+        <TemplateButton key={lastId + 1} id={lastId + 1} name="NEW TEMPLATE" />
       </div>
     </div>
   );

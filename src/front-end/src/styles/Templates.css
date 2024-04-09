@@ -1,9 +1,6 @@
 .template {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fill,
-    minmax(300px, 1fr)
-  ); /* Adjust min and max widths as needed */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   row-gap: 10px;
   column-gap: 10px;
 }
