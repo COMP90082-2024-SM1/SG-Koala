@@ -2,12 +2,19 @@ import React from 'react';
 import '../../style/Navbar.css'; 
 import koala_logo from "../../image/koala-logo.jpg";
 import sg_logo from "../../image/sg-logo.png";
-import dashboardIcon from "../../image/dashboard-icon.png";
-import databaseIcon from "../../image/database-icon.png";
-import templatesIcon from "../../image/templates-icon.png";
-import analyticsIcon from "../../image/analytics-icon.png";
-import calendarIcon from "../../image/calendar-icon.png";
 import { Link, useLocation } from 'react-router-dom';
+import { PhDatabaseThin } from "../../image/Database-icon.tsx";
+import { IconParkOutlineAppointment } from "../../image/IconParkOutlineAppointment.tsx";
+import { TablerTemplate } from "../../image/TablerTemplate.tsx";
+
+import { IconParkOutlineAnalysis } from "../../image/IconParkOutlineAnalysis.tsx";
+import { IconParkOutlineCalendar } from "../../image/IconParkOutlineCalendar.tsx";
+
+
+
+
+
+
 
 const Navbar = () => {
     const location = useLocation(); 
@@ -28,19 +35,19 @@ const Navbar = () => {
             </div>
             <div className="nav-items">
                 <Link to="/dashboard" className={getNavItemClass("/dashboard")}>
-                    <img src={dashboardIcon} alt="Dashboard" className="nav-icon" />Dashboard
+                <IconParkOutlineAppointment className="nav-icon"/>Dashboard
                 </Link>
                 <Link to="/database" className={getNavItemClass("/database")}>
-                    <img src={databaseIcon} alt="Database" className="nav-icon" />Database
+                <PhDatabaseThin className="nav-icon" id="database-icon"/>Database
                 </Link>
                 <Link to="/templates" className={getNavItemClass("/templates")}>
-                    <img src={templatesIcon} alt="Templates" className="nav-icon" />Templates
+                <TablerTemplate className="nav-icon"/>Templates
                 </Link>
                 <Link to="/analytics" className={getNavItemClass("/analytics")}>
-                    <img src={analyticsIcon} alt="Analytics" className="nav-icon" />Analytics
+                <IconParkOutlineAnalysis className="nav-icon"/>Analytics
                 </Link>
                 <Link to="/calendar" className={getNavItemClass("/calendar")}>
-                    <img src={calendarIcon} alt="Calendar" className="nav-icon" />Calendar
+                <IconParkOutlineCalendar className="nav-icon"/>Calendar
                 </Link>
             </div>
             <div className="footer">
