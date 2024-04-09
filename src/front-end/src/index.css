@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+:root {
+  --primary-color: #0d3b66;
+  --font-color: #1e1e1e;
+  --white-color: #ffffff;
+}

@@ -1,12 +1,8 @@
-
 .dashboard {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
-  padding: 20px;
   width: 100%;
-  max-width: 1000px;
   margin: 0 auto;
-  margin-left: 10%;
 }
 
 .dashboard-header {
@@ -51,82 +47,100 @@
 }
 
 .bookings-list {
-  background: #f4f4f4; 
+  background: #f4f4f4;
   padding: 20px;
 }
 
 .booking-item {
-  background: white; 
-  margin-bottom: 15px; 
-  border-radius: 5px; 
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-  padding: 15px; 
+  background: white;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 15px;
   display: flex;
-  align-items: center; 
-  justify-content: space-between; 
-  width:110%;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.booking-header, .booking-item {
+.booking-header,
+.booking-item {
   display: flex;
   align-items: center;
 }
 
-
 .booking-header {
-  background-color: #f7f7f7; 
+  background-color: #f7f7f7;
   font-weight: bold;
-  background: transparent; 
+  background: transparent;
   padding: 15px;
 }
 
-.booking-header-item, .booking-detail {
-  padding: 5px 10px; 
+.booking-header-item,
+.booking-detail {
+  padding: 5px 10px;
   text-align: left;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-.booking-header-item, .booking-detail { flex: none; }
-
-.booking-header-item:nth-child(1), .booking-detail:nth-child(1) { width: 30%; } /* Name */
-.booking-header-item:nth-child(2), .booking-detail:nth-child(2) { 
-  width: 20%;
-  margin-left:5%;
- } /* Type */
-.booking-header-item:nth-child(3), .booking-detail:nth-child(3) { 
-  width: 20%; 
-} /* Date */
-.booking-header-item:nth-child(4), .booking-detail:nth-child(4) { width: 15%; } /* Location */
-.booking-header-item:nth-child(5), .booking-detail:nth-child(5) { width: 15%; } /* Status */
-
-.booking-header-item:nth-child(3) { 
-  margin-left:-4%;
+.booking-header-item,
+.booking-detail {
+  flex: none;
 }
 
-.booking-header-item:nth-child(4){ margin-left: 2%; } /* Location */
+.booking-header-item:nth-child(1),
+.booking-detail:nth-child(1) {
+  width: 30%;
+} /* Name */
+.booking-header-item:nth-child(2),
+.booking-detail:nth-child(2) {
+  width: 20%;
+  margin-left: 5%;
+} /* Type */
+.booking-header-item:nth-child(3),
+.booking-detail:nth-child(3) {
+  width: 20%;
+} /* Date */
+.booking-header-item:nth-child(4),
+.booking-detail:nth-child(4) {
+  width: 15%;
+} /* Location */
+.booking-header-item:nth-child(5),
+.booking-detail:nth-child(5) {
+  width: 15%;
+} /* Status */
 
-.booking-header-item:nth-child(5){ margin-left: 5%; } /* Location */
+.booking-header-item:nth-child(3) {
+  margin-left: -4%;
+}
+
+.booking-header-item:nth-child(4) {
+  margin-left: 2%;
+} /* Location */
+
+.booking-header-item:nth-child(5) {
+  margin-left: 5%;
+} /* Location */
 
 .booking-status {
   padding: 5px 10px;
-  color: black; 
+  color: black;
   text-align: center;
   border-radius: 5px;
   display: inline-block;
   min-width: 100px;
-  position: relative; 
+  position: relative;
 }
 
 .booking-status::before {
-  content: '';
+  content: "";
   height: 10px;
   width: 10px;
-  background-color: #ffc107; 
+  background-color: #ffc107;
   border-radius: 50%;
   display: block;
   position: absolute;
-  left: -20px; 
+  left: -20px;
   top: 50%;
   transform: translateY(-50%);
 }
@@ -159,71 +173,67 @@
   margin-right: 5px;
 }
 
-
-
-
 .booking-type-restaurant {
-  background-color: #4CAF50; 
-  color:white;
+  background-color: #4caf50;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .booking-type-meeting {
-  background-color: #2196F3;
-  color:white;
+  background-color: #2196f3;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .booking-type-workshop3 {
-  background-color: #FFC107; 
-  color:white;
+  background-color: #ffc107;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .booking-type-workshop1 {
-  background-color: #9C27B0; 
-  color:white;
+  background-color: #9c27b0;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .booking-type-workshop4 {
-  background-color: #007bff; 
-  color:white;
+  background-color: #007bff;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .booking-type-workshop5 {
-  background-color: #ddd; 
-  color:white;
+  background-color: #ddd;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 .booking-type-workshop2 {
-  background-color:#4CAF50 ;
-  color:white;
+  background-color: #4caf50;
+  color: white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
 .sub-time {
-  display: block; 
-  font-size: 0.75em; 
+  display: block;
+  font-size: 0.75em;
   color: #666;
-  margin-top: 4px; 
+  margin-top: 4px;
 }
-
 
 .filter-and-sort {
   display: flex;
@@ -244,13 +254,13 @@
 .date-filter {
   display: flex;
   align-items: center;
-  gap: 8px; 
-  margin-bottom: 10px; 
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .date-filter label {
-  font-size: 0.9em; 
-  color: #333; 
+  font-size: 0.9em;
+  color: #333;
 }
 
 .date-filter input[type="date"] {
@@ -262,8 +272,8 @@
 .location-filter {
   display: flex;
   align-items: center;
-  gap: 8px; 
-  margin-bottom: 10px; 
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .location-filter select {
@@ -275,6 +285,11 @@
 .divider {
   border: 0;
   height: 1px;
-  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
-  margin: 20px 0; 
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    rgba(0, 0, 0, 0.75),
+    rgba(0, 0, 0, 0)
+  );
+  margin: 20px 0;
 }
