@@ -1,5 +1,26 @@
-.main-content {
-  margin-left: 200px;
-  padding: 20px;
-  max-width: calc(100vw - 200px);
-}
+.App {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background-color: #ffff;
+  }
+  
+  .navbar {
+    width: 10%; 
+    flex-shrink: 0;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100; 
+  }
+  
+  .content {
+    flex-grow: 1; 
+    margin-left: 120px; 
+    background-color: #f4f4f4;
+    overflow-x: hidden; 
+    width: calc(100% - 30%); 
+  }
+  
+  

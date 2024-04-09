@@ -1,6 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import NavigationBar from "./components/Navbar/Navbar";
+import NavigationBar from "./components/NavgationBar/Navbar";
+import "./App.css";
+
+import Dashboard from "./pages/Dashboard";
+import Database from "./pages/Database";
+import Templates from "./pages/Templates";
+import Analytics from "./pages/Analytics";
+import Calendar from "./pages/Calendar";
 
 import Dashboard from "./pages/Dashboard";
 import Database from "./pages/Database";
@@ -20,8 +27,10 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <NavigationBar />
-        <div className="main-content">
+        <div className="navbar">
+          <NavigationBar />
+        </div>
+        <div className="content">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/database" element={<Database />} />
@@ -29,6 +38,18 @@ function App() {
             <Route path="/templates/:id" element={<TemplateDetail />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route
+              path="/typography"
+              element={
+                <div>
+                  <TypographyH1 style={{ color: "blue" }}>
+                    This is an H1 Header
+                  </TypographyH1>
+                  <TypographyH2>This is an H2 Header</TypographyH2>
+                  <TypographyParagraph>This is a paragraph</TypographyParagraph>
+                </div>
+              }
+            />
           </Routes>
         </div>
       </div>
