@@ -1,24 +1,19 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-const NavBarLayout = ({children}) => {
+const NavbarLayout = ({ children }) => {
+  const location = useLocation();
+  const [ShowNavbar, setShowNavbar] = useState(false);
 
-    const location = useLocation();
-    const [ShowNavBar, setShowNavBar] = useState(false);
+  useEffect(() => {
+    if (location.pathname === "/login") {
+      setShowNavbar(false);
+    } else {
+      setShowNavbar(true);
+    }
+  }, [location]);
 
-    useEffect(() => {
-        if(location.pathname === '/login') {
-            setShowNavBar(false)
-        } else {
-            setShowNavBar(true)
-        }
-    }, [location])
+  return <div>{ShowNavbar && children}</div>;
+};
 
-    return (
-        <div>
-            {ShowNavBar && children}
-        </div>
-    )
-}
-
-export default NavBarLayout
+export default NavbarLayout;
