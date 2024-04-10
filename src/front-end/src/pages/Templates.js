@@ -32,10 +32,10 @@ function Templates() {
     <div>
       <Header> Templates </Header>
       <div className="template">
+        <TemplateButton key={lastId + 1} id={lastId + 1} name="NEW TEMPLATE" />
         {buttons.map((button) => (
           <TemplateButton key={button.id} id={button.id} name={button.name} />
         ))}
-        <TemplateButton key={lastId + 1} id={lastId + 1} name="NEW TEMPLATE" />
       </div>
     </div>
   );
