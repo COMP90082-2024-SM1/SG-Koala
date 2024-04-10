@@ -1,23 +1,16 @@
-.dashboard {
-  font-family: Arial, sans-serif;
+.dashboard-dashboard {
   background: #f4f4f4;
-  width: 100%;
-  margin: 0 auto;
+
 }
 
-.dashboard-header {
+.dashboard-dashboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
 }
 
-.centered-title h1 {
-  text-align: center;
-  margin: 0;
-}
-
-.new-booking-btn {
+.dashboard-new-booking-btn {
   background-color: #007bff;
   color: white;
   border: none;
@@ -27,12 +20,12 @@
   font-size: 20px;
 }
 
-.filter-section {
+.dashboard-filter-section {
   display: flex;
   margin-bottom: 20px;
 }
 
-.filter-btn {
+.dashboard-filter-btn {
   background-color: #e7e7e7;
   border: 1px solid #ddd;
   padding: 10px 20px;
@@ -41,255 +34,230 @@
   border-radius: 5px;
 }
 
-.filter-btn.active {
+.dashboard-filter-btn.dashboard-active {
   background-color: #007bff;
   color: white;
 }
 
-.bookings-list {
-  background: #f4f4f4;
+.dashboard-bookings-list {
+  background: #f4f4f4; 
   padding: 20px;
 }
 
-.booking-item {
-  background: white;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.dashboard-booking-item {
+  background: white; 
+  margin-bottom: 15px; 
+  border-radius: 5px; 
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+  padding: 15px; 
+  width: 100%; 
 }
 
-.booking-header,
-.booking-item {
+.dashboard-booking-header, .dashboard-booking-item {
   display: flex;
   align-items: center;
 }
 
-.booking-header {
-  background-color: #f7f7f7;
+.dashboard-booking-header {
+  background-color: #f7f7f7; 
   font-weight: bold;
-  background: transparent;
+  background: transparent; 
   padding: 15px;
 }
 
-.booking-header-item,
-.booking-detail {
-  padding: 5px 10px;
+
+.dashboard-booking-header-item, .dashboard-booking-detail {
   text-align: left;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-}
-.booking-header-item,
-.booking-detail {
-  flex: none;
+  padding: 5px 10px; 
 }
 
-.booking-header-item:nth-child(1),
-.booking-detail:nth-child(1) {
-  width: 30%;
-} /* Name */
-.booking-header-item:nth-child(2),
-.booking-detail:nth-child(2) {
-  width: 20%;
-  margin-left: 5%;
-} /* Type */
-.booking-header-item:nth-child(3),
-.booking-detail:nth-child(3) {
-  width: 20%;
-} /* Date */
-.booking-header-item:nth-child(4),
-.booking-detail:nth-child(4) {
-  width: 15%;
-} /* Location */
-.booking-header-item:nth-child(5),
-.booking-detail:nth-child(5) {
-  width: 15%;
-} /* Status */
+/* Assuming there are 5 items in both the header and details */
+.dashboard-booking-header-item:nth-child(1), .dashboard-booking-detail:nth-child(1) { width: 20%; } 
+.dashboard-booking-header-item:nth-child(2), .dashboard-booking-detail:nth-child(2) { width: 10%; } 
+.dashboard-booking-header-item:nth-child(3), .dashboard-booking-detail:nth-child(3) { width: 30%; } 
+.dashboard-booking-header-item:nth-child(4), .dashboard-booking-detail:nth-child(4) { width: 20%; } 
+.dashboard-booking-header-item:nth-child(5), .dashboard-booking-detail:nth-child(5) { width: 20%; } 
 
-.booking-header-item:nth-child(3) {
-  margin-left: -4%;
+.dashboard-booking-header-item:nth-child(3) {
+  margin-left: 80px;
 }
 
-.booking-header-item:nth-child(4) {
-  margin-left: 2%;
-} /* Location */
+.dashboard-booking-header-item:nth-child(1) {
+  margin-right: 40px;
+}
 
-.booking-header-item:nth-child(5) {
-  margin-left: 5%;
-} /* Location */
+.dashboard-booking-header-item:nth-child(4) {
+  margin-right: 10px;
+}
 
-.booking-status {
+
+.dashboard-booking-status {
   padding: 5px 10px;
-  color: black;
+  color: black; 
   text-align: center;
   border-radius: 5px;
   display: inline-block;
   min-width: 100px;
-  position: relative;
+  position: relative; 
 }
 
-.booking-status::before {
-  content: "";
+.dashboard-booking-status::before {
+  content: '';
   height: 10px;
   width: 10px;
-  background-color: #ffc107;
+  background-color: #ffc107; 
   border-radius: 50%;
   display: block;
   position: absolute;
-  left: -20px;
+  left: -20px; 
   top: 50%;
   transform: translateY(-50%);
 }
 
-.booking-status.pending::before {
+.dashboard-booking-status.pending::before {
   background-color: #ffc107;
 }
 
-.booking-status.confirmed::before {
+.dashboard-booking-status.confirmed::before {
   background-color: #28a745;
 }
 
-.booking-status.cancelled::before {
+.dashboard-booking-status.cancelled::before {
   background-color: #dc3545;
 }
 
-.booking-status.pending {
+.dashboard-booking-status.pending {
   color: #ffc107;
 }
 
-.booking-status.confirmed {
+.dashboard-booking-status.confirmed {
   color: #28a745;
 }
 
-.booking-status.cancelled {
+.dashboard-booking-status.cancelled {
   color: #dc3545;
 }
 
-.plus-icon {
+.dashboard-plus-icon {
   margin-right: 5px;
 }
 
-.booking-type-restaurant {
-  background-color: #4caf50;
-  color: white;
+.dashboard-booking-type-restaurant {
+  background-color: #4CAF50; 
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.booking-type-meeting {
-  background-color: #2196f3;
-  color: white;
+.dashboard-booking-type-meeting {
+  background-color: #2196F3;
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.booking-type-workshop3 {
-  background-color: #ffc107;
-  color: white;
+.dashboard-booking-type-workshop3 {
+  background-color: #FFC107; 
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.booking-type-workshop1 {
-  background-color: #9c27b0;
-  color: white;
+.dashboard-booking-type-workshop1 {
+  background-color: #9C27B0; 
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.booking-type-workshop4 {
-  background-color: #007bff;
-  color: white;
+.dashboard-booking-type-workshop4 {
+  background-color: #007bff; 
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.booking-type-workshop5 {
-  background-color: #ddd;
-  color: white;
-  border-radius: 5px;
-  padding: 5px 10px;
-  margin-right: 60px;
-}
-.booking-type-workshop2 {
-  background-color: #4caf50;
-  color: white;
+.dashboard-booking-type-workshop5 {
+  background-color: #ddd; 
+  color:white;
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
 }
 
-.sub-time {
-  display: block;
-  font-size: 0.75em;
+.dashboard-booking-type-workshop2 {
+  background-color: #4CAF50;
+  color:white;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-right: 60px;
+}
+
+.dashboard-sub-time {
+  display: block; 
+  font-size: 0.75em; 
   color: #666;
-  margin-top: 4px;
+  margin-top: 4px; 
 }
 
-.filter-and-sort {
+.dashboard-filter-and-sort {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
 }
 
-.filter-and-sort select {
+.dashboard-filter-and-sort select {
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
 
-.filter-and-sort button {
+.dashboard-filter-and-sort button {
   padding: 5px 10px;
 }
 
-.date-filter {
+.dashboard-date-filter {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 8px; 
+  margin-bottom: 10px; 
 }
 
-.date-filter label {
-  font-size: 0.9em;
-  color: #333;
+.dashboard-date-filter label {
+  font-size: 0.9em; 
+  color: #333; 
 }
 
-.date-filter input[type="date"] {
+.dashboard-date-filter input[type="date"] {
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
 
-.location-filter {
+.dashboard-location-filter {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 10px;
+  gap: 8px; 
+  margin-bottom: 10px; 
 }
 
-.location-filter select {
+.dashboard-location-filter select {
   padding: 5px;
   border-radius: 5px;
   border: 1px solid #ddd;
 }
 
-.divider {
+.dashboard-divider {
   border: 0;
   height: 1px;
-  background-image: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0),
-    rgba(0, 0, 0, 0.75),
-    rgba(0, 0, 0, 0)
-  );
-  margin: 20px 0;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+  margin: 20px 0; 
 }
