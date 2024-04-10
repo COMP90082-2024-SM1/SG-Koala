@@ -1,28 +1,28 @@
-
+from rest_framework.views import APIView
 from django.http import *
 from bson import ObjectId
 from datetime import datetime
 from .serializers import *
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework import status
 from db_connection import connect_mongodb
 import json 
 
 
-class BookingView(APIView):
+class SchoolView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
-        collection = db['booking']
+        collection = db['school']
         documents = list(collection.find())
-        serializer = BookSerializer(documents, many=True)
+        serializer = SchoolSerializer(documents, many=True)
+        print(serializer.data)
         return Response(serializer.data)
 
     
     def post(self, request, *args, **kwargs):
-        collection = connect_mongodb()['booking']
-        serializer = BookSerializer(data=request.data)
+        collection = connect_mongodb()['school']
+        serializer = SchoolSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
@@ -34,14 +34,14 @@ class BookingView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BookingViewID(APIView):
+class SchoolViewID(APIView):
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
         db = connect_mongodb()
-        collection = db['booking']
+        collection = db['school']
         document = collection.find_one({'_id': ObjectId(kwargs['id'])})
-        serializer = BookSerializer(document)
+        serializer = SchoolSerializer(document)
         if document:
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
@@ -50,8 +50,8 @@ class BookingViewID(APIView):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
         db = connect_mongodb()
-        collection = db['booking']
-        serializer = BookSerializer(data=request.data)
+        collection = db['school']
+        serializer = SchoolSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
@@ -67,7 +67,7 @@ class BookingViewID(APIView):
             return Response({'error': 'DELETE method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         db = connect_mongodb()
-        collection = db['booking']
+        collection = db['school']
         delete_result = collection.delete_one({'_id': ObjectId(kwargs['id'])})
 
         if delete_result.deleted_count == 0:
