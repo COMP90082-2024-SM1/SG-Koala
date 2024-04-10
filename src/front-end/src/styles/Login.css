@@ -1,5 +1,5 @@
 .loginBackground {
-  background-color: #0d3b66;
+  background-color: var(--primary-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -11,9 +11,8 @@
   flex-direction: column;
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin: auto;
-  width: 420px;
+  width: 100%;
+  height: 100%;
 }
 
 .textButtonContainer {
@@ -28,26 +27,26 @@
   height: 48px;
   width: 400px;
   border-radius: 8px;
-  border: 3px solid white;
+  border: 3px solid var(--white-color);
   padding-left: 8px;
-  color: #0d3b66;
-  background-color: #0d3b66;
-  color: white;
+  color: var(--primary-color);
+  background-color: var(--primary-color);
+  color: var(--white-color);
   font-size: 18px;
 }
 
 .inputButton {
   display: flex;
   font-size: 18px;
-  background-color: #0d3b66;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--white-color);
   border-radius: 12px;
-  border: 2px solid white;
+  border: 2px solid var(--white-color);
   padding: 8px 20px;
 }
 
 .textContainer {
-  color: white;
+  color: var(--white-color);
   font-size: 18px;
 }
 
@@ -57,8 +56,11 @@
 
 .koalaLogo {
   display: flex;
+  align-self: start;
+  justify-self: start;
   width: 100px;
   height: 100px;
   border-radius: 50%;
   margin-left: 20px;
+  margin-top: 30px;
 }
