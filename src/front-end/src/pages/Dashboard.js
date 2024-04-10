@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "../styles/Dashboard.css";
 import Header from "../components/Header/Header";
 
-
 function formatDate(dateStr) {
   const [time, date] = dateStr.split(" ");
   const dateParts = date.split("/");
@@ -158,27 +157,22 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-dashboard">
-      <div className="dashboard-dashboard-header">
       <Header> Booking </Header>
-        
-      </div>
-      <hr className="dashboard-divider" />
-      
       <div className="dashboard-filter-section">
-        
-        {Object.keys(bookingsData).map(type => (
-          <button 
+        {Object.keys(bookingsData).map((type) => (
+          <button
             key={type}
-            className={`dashboard-filter-btn ${activeType === type ? 'dashboard-active' : ''}`}
+            className={`dashboard-filter-btn ${
+              activeType === type ? "dashboard-active" : ""
+            }`}
             onClick={() => setActiveType(type)}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
           </button>
         ))}
-        
       </div>
       <div className="dashboard-filter-and-sort">
-        <select onChange={e => setFilterType(e.target.value)}>
+        <select onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
           <option value="workshop1">Workshop 1</option>
           <option value="workshop2">Workshop 2</option>
@@ -201,21 +195,26 @@ const Dashboard = () => {
           />
         </div>
         <div className="dashboard-location-filter">
-        <label htmlFor="location">Location: </label>
-        <select id="location" onChange={(e) => setFilterLocation(e.target.value)}>
-          <option value="all">All Locations</option>
-          <option value="Room1">Room1</option>
-          <option value="Room2">Room2</option>
-          <option value="Room3">Room3</option>
-        </select>
-      </div>
-        
-        <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
-          Sort Date {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+          <label htmlFor="location">Location: </label>
+          <select
+            id="location"
+            onChange={(e) => setFilterLocation(e.target.value)}
+          >
+            <option value="all">All Locations</option>
+            <option value="Room1">Room1</option>
+            <option value="Room2">Room2</option>
+            <option value="Room3">Room3</option>
+          </select>
+        </div>
+
+        <button
+          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+        >
+          Sort Date {sortOrder === "asc" ? "Ascending" : "Descending"}
         </button>
       </div>
       <div className="dashboard-bookings-list">
-      <div className="dashboard-booking-header">
+        <div className="dashboard-booking-header">
           <div className="dashboard-booking-header-item">Organisation Name</div>
           <div className="dashboard-booking-header-item">Type</div>
           <div className="dashboard-booking-header-item">Date</div>
@@ -225,13 +224,23 @@ const Dashboard = () => {
         {getFilteredAndSortedBookings().map((booking, index) => (
           <div className="dashboard-booking-item" key={index}>
             <div className="dashboard-booking-detail">{booking.name}</div>
-            <div className={`dashboard-booking-type-${booking.type.toLowerCase().replace(/\s+/g, '-')}`}>{booking.type}</div>
+            <div
+              className={`dashboard-booking-type-${booking.type
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
+            >
+              {booking.type}
+            </div>
             <div className="dashboard-booking-detail">
-                <span>{formatDate(booking.time)}</span>
-                <span className="dashboard-sub-time">{booking.time.split(' ')[0]}</span>
-              </div>
+              <span>{formatDate(booking.time)}</span>
+              <span className="dashboard-sub-time">
+                {booking.time.split(" ")[0]}
+              </span>
+            </div>
             <div className="dashboard-booking-detail">{booking.location}</div>
-            <div className={`dashboard-booking-status ${booking.status.toLowerCase()}`}>
+            <div
+              className={`dashboard-booking-status ${booking.status.toLowerCase()}`}
+            >
               {booking.status}
             </div>
           </div>

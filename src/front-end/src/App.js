@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
-import NavbarLayout from "./components/NavBarLayout/NavBarLayout";
+import NavbarLayout from "./components/NavbarLayout/NavbarLayout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Database from "./pages/Database";
@@ -10,12 +10,6 @@ import TemplateDetail from "./pages/TemplateDetail";
 import Analytics from "./pages/Analytics";
 import Calendar from "./pages/Calendar";
 import "./App.css";
-
-import {
-  TypographyH1,
-  TypographyH2,
-  TypographyParagraph,
-} from "./components/Typography/Typography";
 
 function App() {
   return (

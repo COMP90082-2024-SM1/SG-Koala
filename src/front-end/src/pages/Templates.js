@@ -3,6 +3,7 @@ import Header from "../components/Header/Header";
 import { useNavigate } from "react-router-dom";
 import { TypographyH2 } from "../components/Typography/Typography";
 import "../styles/Templates.css";
+import { Icons8Plus } from "../images/plus-icon.tsx";
 
 const buttons = [
   { id: 1, name: "Template 1" },
@@ -28,14 +29,19 @@ const TemplateButton = ({ id, name }) => {
 
 function Templates() {
   const lastId = buttons[buttons.length - 1].id;
+
   return (
     <div>
       <Header> Templates </Header>
       <div className="template">
+        <TemplateButton
+          key={lastId + 1}
+          id={lastId + 1}
+          name={<Icons8Plus />} // Pass the icon component here
+        />
         {buttons.map((button) => (
           <TemplateButton key={button.id} id={button.id} name={button.name} />
         ))}
-        <TemplateButton key={lastId + 1} id={lastId + 1} name="NEW TEMPLATE" />
       </div>
     </div>
   );

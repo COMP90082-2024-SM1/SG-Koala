@@ -1,12 +1,12 @@
 import React from "react";
-import koala_logo from "../../image/koala-logo.jpg";
-import sg_logo from "../../image/sg-logo.png";
+import koala_logo from "../../images/koala-logo.jpg";
+import sg_logo from "../../images/sg-logo.png";
 import { Link, useLocation } from "react-router-dom";
-import { PhDatabaseThin } from "../../image/Database-icon.tsx";
-import { IconParkOutlineAppointment } from "../../image/IconParkOutlineAppointment.tsx";
-import { TablerTemplate } from "../../image/TablerTemplate.tsx";
-import { IconParkOutlineAnalysis } from "../../image/IconParkOutlineAnalysis.tsx";
-import { IconParkOutlineCalendar } from "../../image/IconParkOutlineCalendar.tsx";
+import { PhDatabaseThin } from "../../images/Database-icon.tsx";
+import { IconParkOutlineAppointment } from "../../images/IconParkOutlineAppointment.tsx";
+import { TablerTemplate } from "../../images/TablerTemplate.tsx";
+import { IconParkOutlineAnalysis } from "../../images/IconParkOutlineAnalysis.tsx";
+import { IconParkOutlineCalendar } from "../../images/IconParkOutlineCalendar.tsx";
 import "./Navbar.css";
 
 const Navbar = () => {

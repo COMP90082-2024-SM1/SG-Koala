@@ -1,24 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "../styles/Login.css";
-import sg_logo from "../image/sg-logo.png";
-import koala_logo from "../image/koala-logo.jpg";
-import {TypographyH2, TypographyParagraph} from "../components/Typography/Typography";
+import sg_logo from "../images/sg-logo.png";
+import koala_logo from "../images/koala-logo.jpg";
+import {
+  TypographyH2,
+  TypographyParagraph,
+} from "../components/Typography/Typography";
 
 const Login = (props) => {
   const [Account, setAccount] = useState("");
   const [Password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
   const onButtonClick = () => {
     if (message === "Welcome to Koala Booking System") {
-      setMessage("Invalide account or password")
+      setMessage("Invalid Account or Password");
+      setIsLogin(false);
     } else {
-      setMessage("Welcome to Koala Booking System")
-    }    
+      setMessage("Welcome to Koala Booking System");
+      setIsLogin(true);
+    }
   };
 
-  useEffect(() => {
-    onButtonClick();  
-  }, [])
+  const textStyle = {
+    color: isLogin ? "white" : "red",
+  };
 
   return (
     <div className="loginBackground">
@@ -26,48 +32,49 @@ const Login = (props) => {
         src={koala_logo}
         alt="koala_logo"
         id="koala_logo"
-        className="koalaLogo"
+        className="loginKoalaLogo"
       />
-      <div className="mainContainer">
+      <div className="loginContainer">
         <div className="loginLogo">
           <img src={sg_logo} alt="sg_logo" id="sg_logo" />
         </div>
-        <div className="textContainer">
+        <div className="loginTextContainer">
           <TypographyH2 style={{ color: "white" }}>
             Database Account
-          </TypographyH2> </div>
+          </TypographyH2>{" "}
+        </div>
         <br />
         <div>
           <input
             value={Account}
             onChange={(ev) => setAccount(ev.target.value)}
-            className="inputBox"
+            className="loginInputBox"
           />
         </div>
         <br />
-        <div className="textContainer">
+        <div className="loginTextContainer">
           <TypographyH2 style={{ color: "white" }}>
-            Database Passsword
-          </TypographyH2> </div>
+            Database Password
+          </TypographyH2>{" "}
+        </div>
         <br />
         <div>
           <input
             value={Password}
             onChange={(ev) => setPassword(ev.target.value)}
-            className="inputBox"
+            className="loginInputBox"
           />
         </div>
         <br />
-        <div className="textButtonContainer">
-          <div className="textContainer">
-            <TypographyParagraph style={{color: "white"}}>
+        <div className="loginTextButtonContainer">
+          <div className="loginTextContainer">
+            <TypographyParagraph style={textStyle}>
               {message}
             </TypographyParagraph>
-            
           </div>
           <div>
             <input
-              className="inputButton"
+              className="loginInputButton"
               type="button"
               onClick={onButtonClick}
               value={"Log in"}
