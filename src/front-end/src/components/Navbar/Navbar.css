@@ -1,42 +1,47 @@
-.navigation-bar {
+.navigationBar {
   color: white;
   display: flex;
   flex-direction: column;
   height: 100vh;
-  border-right: 2px solid #000;
-  background: linear-gradient(to right, #1e65f1, #7a47c3);
-}
-
-.logo {
-  background: linear-gradient(to right, #1e65f1, #7a47c3);
+  background: #0D3B66;
+ }
+ 
+ 
+ .logo {
+  background: #0D3B66;
   text-align: center;
   padding: 10px;
   font-size: 20px;
-}
-
-.footer {
+ }
+ 
+ 
+ .footer {
   padding: 10px;
   text-align: center;
-}
-
-.footer img {
+ }
+ 
+ 
+ .footer img {
   width: 100px;
-}
-
-#sg_logo {
+ }
+ 
+ 
+ #navSgLogo {
   width: 100%;
   margin-bottom: 10%;
-}
-
-.nav-items {
+ }
+ 
+ 
+ .navItems {
   flex-grow: 1;
-}
-
-.nav-item {
+ }
+ 
+ 
+ .navItem {
   display: flex;
   padding: 10px;
   color: white;
-  background: linear-gradient(to right, #1e65f1, #7a47c3);
+  background: #0D3B66;
   text-decoration: none;
   font-size: 18px;
   transition: background-color 0.3s, color 0.3s;
@@ -44,20 +49,22 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-}
-
-.nav-item:hover,
-.nav-item.active {
-  background: #0d3b66;
-  color: white;
-}
-
-.nav-icon {
+ }
+ 
+ 
+ .navItem:hover,
+ .navItem.active {
+  background: white;
+  color: black;
+ }
+ 
+ 
+ .navIcon {
   height: 35px;
   width: 35px;
   margin-right: 20px;
-}
-.search-bar input {
+ }
+ .searchBar input {
   background: url("../../images/search-icon.png") no-repeat 10px center / 20px
     20px;
   border: 2px solid #ffffff;
@@ -69,16 +76,21 @@
   height: 35px;
   font-size: 16px;
   color: #ffffff;
-}
-
-#search_input {
+ }
+ 
+ 
+ #searchInput {
   color: #ffffff;
-}
-
-.search-bar input::placeholder {
+ }
+ 
+ 
+ .searchBar input::placeholder {
   color: #ffffff;
-}
-
-#database-icon {
+ }
+ 
+ 
+ #databaseIcon {
   margin-right: 15%;
-}
+ }
+ 
+ 

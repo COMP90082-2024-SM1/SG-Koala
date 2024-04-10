@@ -1,6 +1,10 @@
 import React from 'react';
 import type { SVGProps } from 'react';
 
-export function IconParkOutlineAnalysis(props: SVGProps<SVGSVGElement>) {
-	return (<svg xmlns="http://www.w3.org/2000/svg" width="0.9em" height="0.9em" viewBox="0 0 48 48" {...props}><g fill="none" stroke="white" strokeWidth={2}><path strokeLinejoin="round" d="M44 5H4v12h40z"></path><path strokeLinecap="round" strokeLinejoin="round" d="m4 41.03l12.176-12.3l6.579 6.3L30.798 27l4.48 4.368"></path><path strokeLinecap="round" d="M44 16.172v26m-40-26v14M13.016 43H44M17 11h21m-28-.003h1"></path></g></svg>);
+export function IconParkOutlineAnalysisWhite(props: SVGProps<SVGSVGElement>) {
+	return (<svg className="navIcon" xmlns="http://www.w3.org/2000/svg" width="0.9em" height="0.9em" viewBox="0 0 48 48" {...props}><g fill="none" stroke="white" strokeWidth={2}><path strokeLinejoin="round" d="M44 5H4v12h40z"></path><path strokeLinecap="round" strokeLinejoin="round" d="m4 41.03l12.176-12.3l6.579 6.3L30.798 27l4.48 4.368"></path><path strokeLinecap="round" d="M44 16.172v26m-40-26v14M13.016 43H44M17 11h21m-28-.003h1"></path></g></svg>);
+}
+
+export function IconParkOutlineAnalysisBlack(props: SVGProps<SVGSVGElement>) {
+	return (<svg className="navIcon" xmlns="http://www.w3.org/2000/svg" width="0.9em" height="0.9em" viewBox="0 0 48 48" {...props}><g fill="none" stroke="black" strokeWidth={2}><path strokeLinejoin="round" d="M44 5H4v12h40z"></path><path strokeLinecap="round" strokeLinejoin="round" d="m4 41.03l12.176-12.3l6.579 6.3L30.798 27l4.48 4.368"></path><path strokeLinecap="round" d="M44 16.172v26m-40-26v14M13.016 43H44M17 11h21m-28-.003h1"></path></g></svg>);
 }

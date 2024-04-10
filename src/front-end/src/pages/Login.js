@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
-import sg_logo from "../images/sg-logo.png";
+import navSgLogo from "../images/sg-logo.png";
 import koala_logo from "../images/koala-logo.jpg";
 import {
   TypographyH2,
@@ -36,7 +36,7 @@ const Login = (props) => {
       />
       <div className="loginContainer">
         <div className="loginLogo">
-          <img src={sg_logo} alt="sg_logo" id="sg_logo" />
+          <img src={navSgLogo} alt="navSgLogo" id="navSgLogo" />
         </div>
         <div className="loginTextContainer">
           <TypographyH2 style={{ color: "white" }}>
