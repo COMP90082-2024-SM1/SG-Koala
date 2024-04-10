@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
-import sg_logo from "../image/sg-logo.png";
-import koala_logo from "../image/koala-logo.jpg";
+import sg_logo from "../images/sg-logo.png";
+import koala_logo from "../images/koala-logo.jpg";
 import {
   TypographyH2,
   TypographyParagraph,
