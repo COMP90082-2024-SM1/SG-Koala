@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.urls import path,include
 
-from api.views import checklist_view, template_view
-from . import test_views
-from . import views,school_view,booking_view,checklist_view,template_view
+
+
+from .views import test_views,school_view,booking_view,checklist_view,template_view
 
 
 urlpatterns = [
-    
+
     path('booking/', booking_view.BookingView.as_view()),
     path('booking/<str:id>/', booking_view.BookingViewID.as_view()),
     path('school/', school_view.SchoolView.as_view()),

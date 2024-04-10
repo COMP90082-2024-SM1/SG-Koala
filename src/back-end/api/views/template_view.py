@@ -1,28 +1,27 @@
-from django.http import HttpResponse,HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseNotFound
-
-from db_connection import connect_mongodb
-from api.serializers.checklist_serializer import TemplateSerializer
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from bson.objectid import ObjectId
-
+from django.http import *
+from bson import ObjectId
+from datetime import datetime
+from ..serializers import *
+from rest_framework.response import Response
+from rest_framework import status
+from db_connection import connect_mongodb
+import json 
 
 
 class TemplateView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
-        collection = db['templates']
-         # Query all documents in the MongoDB collection
+        collection = db['template']
         documents = list(collection.find())
         serializer = TemplateSerializer(documents, many=True)
+        print(serializer.data)
         return Response(serializer.data)
 
+    
     def post(self, request, *args, **kwargs):
-        collection = connect_mongodb()['templates']
-        # Parse the request body to dict
+        collection = connect_mongodb()['template']
         serializer = TemplateSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
@@ -32,73 +31,47 @@ class TemplateView(APIView):
             new_data['_id'] = str(result.inserted_id)
             # response_data = json.dumps(new_data, default=str)
             return Response(new_data, status=status.HTTP_201_CREATED)
-        else:
-            print(serializer.errors)
-
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class TemplateViewID(APIView):
-    def get_object(self, id):
-        # Retrieve the item from MongoDB by its ID
-        try:
-            db = connect_mongodb()
-            collection = db['templates']
-            item = collection.find_one({'_id': ObjectId(id)})
-            return item
-        except:
-            return None
-        
-    def get(self, request, id):
-        if 'id' not in self.kwargs:
-            return HttpResponseNotAllowed('GET method expects an id')
+    def get(self, request, *args, **kwargs):
+        if 'id' not in kwargs:
+            return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
         db = connect_mongodb()
-       
-        #object_id = self.kwargs['id']
-        document = self.get_object(id)
-        
+        collection = db['template']
+        document = collection.find_one({'_id': ObjectId(kwargs['id'])})
+        serializer = TemplateSerializer(document)
         if document:
-            serializer = TemplateSerializer(document)
             return Response(serializer.data)
-        else:
-            return HttpResponseNotFound('Checklist template not found')
+        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
     
-    def put(self, request, id):
-        if 'id' not in self.kwargs:
-            return HttpResponseNotAllowed('PUT method expects an id')
-        
+    def put(self, request, *args, **kwargs):
+        if 'id' not in kwargs:
+            return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
         db = connect_mongodb()
-        collection = db['templates']
-        #object_id = self.kwargs['id']
-        document = self.get_object(id)
-        # no matching document in mongodb
-        if not document:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        
-        serializer = TemplateSerializer(document, data=request.data)
+        collection = db['template']
+        serializer = TemplateSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
-            object_id = self.kwargs['id']
-       
-            collection.update_one({'_id': ObjectId(id)}, {'$set': new_data})
-            
-            new_data['_id'] = object_id
-            # response_data = json.dumps(new_data, default=str)
-            return Response(new_data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+            update_result = collection.update_one({'_id': ObjectId(kwargs['id'])}, {'$set': new_data})
+            if update_result.matched_count == 0:
+                return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
+            return Response({'status': 'success', 'id': kwargs['id'], 'updated': update_result.modified_count}, status=status.HTTP_200_OK)
+        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     
-       
-    
-    def delete(self, request, id):
+    def delete(self, request, *args, **kwargs):
+        if 'id' not in kwargs:
+            return Response({'error': 'DELETE method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
         db = connect_mongodb()
-        collection = db['templates']
-        #object_id = self.kwargs['id']
-        document = self.get_object(id)        
-        if not document:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-        # Delete the item from MongoDB
-        collection.delete_one({'_id': ObjectId(id)})
-        return Response(status=status.HTTP_204_NO_CONTENT)
-        
+        collection = db['template']
+        delete_result = collection.delete_one({'_id': ObjectId(kwargs['id'])})
+
+        if delete_result.deleted_count == 0:
+            return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
+        return Response({'status': 'success', 'id': kwargs['id']}, status=status.HTTP_200_OK)
+
+
