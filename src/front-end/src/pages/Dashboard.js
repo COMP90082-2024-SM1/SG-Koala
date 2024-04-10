@@ -158,11 +158,11 @@ const Dashboard = () => {
   return (
     <div className="dashboard-dashboard">
       <Header> Booking </Header>
-      <div className="dashboard-filter-section">
+      <div className="dashboardFilterSection">
         {Object.keys(bookingsData).map((type) => (
           <button
             key={type}
-            className={`dashboard-filter-btn ${
+            className={`dashboardFilterBtn ${
               activeType === type ? "dashboard-active" : ""
             }`}
             onClick={() => setActiveType(type)}
@@ -171,14 +171,14 @@ const Dashboard = () => {
           </button>
         ))}
       </div>
-      <div className="dashboard-filter-and-sort">
+      <div className="dashboardFilterAndSort">
         <select onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
           <option value="workshop1">Workshop 1</option>
           <option value="workshop2">Workshop 2</option>
           <option value="workshop3">Workshop 3</option>
         </select>
-        <div className="dashboard-date-filter">
+        <div className="dashboardDateFilter">
           <label htmlFor="start-date">From: </label>
           <input
             id="start-date"
@@ -194,7 +194,7 @@ const Dashboard = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
-        <div className="dashboard-location-filter">
+        <div className="dashboardLocationFilter">
           <label htmlFor="location">Location: </label>
           <select
             id="location"
@@ -213,17 +213,17 @@ const Dashboard = () => {
           Sort Date {sortOrder === "asc" ? "Ascending" : "Descending"}
         </button>
       </div>
-      <div className="dashboard-bookings-list">
-        <div className="dashboard-booking-header">
-          <div className="dashboard-booking-header-item">Organisation Name</div>
-          <div className="dashboard-booking-header-item">Type</div>
-          <div className="dashboard-booking-header-item">Date</div>
-          <div className="dashboard-booking-header-item">Location</div>
-          <div className="dashboard-booking-header-item">Status</div>
+      <div className="dashboardBookingsList">
+        <div className="dashboardBookingHeader">
+          <div className="dashboardBookingHeader-item">Organisation Name</div>
+          <div className="dashboardBookingHeader-item">Type</div>
+          <div className="dashboardBookingHeader-item">Date</div>
+          <div className="dashboardBookingHeader-item">Location</div>
+          <div className="dashboardBookingHeader-item">Status</div>
         </div>
         {getFilteredAndSortedBookings().map((booking, index) => (
-          <div className="dashboard-booking-item" key={index}>
-            <div className="dashboard-booking-detail">{booking.name}</div>
+          <div className="dashboardBookingItem" key={index}>
+            <div className="dashboardBookingDetail">{booking.name}</div>
             <div
               className={`dashboard-booking-type-${booking.type
                 .toLowerCase()
@@ -231,15 +231,15 @@ const Dashboard = () => {
             >
               {booking.type}
             </div>
-            <div className="dashboard-booking-detail">
+            <div className="dashboardBookingDetail">
               <span>{formatDate(booking.time)}</span>
-              <span className="dashboard-sub-time">
+              <span className="dashboardSubTime">
                 {booking.time.split(" ")[0]}
               </span>
             </div>
-            <div className="dashboard-booking-detail">{booking.location}</div>
+            <div className="dashboardBookingDetail">{booking.location}</div>
             <div
-              className={`dashboard-booking-status ${booking.status.toLowerCase()}`}
+              className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
             >
               {booking.status}
             </div>
