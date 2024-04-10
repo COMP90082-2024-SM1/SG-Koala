@@ -1,7 +1,7 @@
 from django.http import HttpResponse,HttpResponseBadRequest, HttpResponseNotAllowed, HttpResponseNotFound
 
 from db_connection import connect_mongodb
-from api.serializers.checklist_serializer import ChecklistSerializer
+from api.serializers.checklist_serializer import TemplateSerializer
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -10,20 +10,20 @@ from bson.objectid import ObjectId
 
 
 
-class ChecklistView(APIView):
+class TemplateView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
-        collection = db['checklists']
+        collection = db['templates']
          # Query all documents in the MongoDB collection
         documents = list(collection.find())
-        serializer = ChecklistSerializer(documents, many=True)
+        serializer = TemplateSerializer(documents, many=True)
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
-        collection = connect_mongodb()['checklists']
+        collection = connect_mongodb()['templates']
         # Parse the request body to dict
-        serializer = ChecklistSerializer(data=request.data)
+        serializer = TemplateSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
@@ -32,15 +32,18 @@ class ChecklistView(APIView):
             new_data['_id'] = str(result.inserted_id)
             # response_data = json.dumps(new_data, default=str)
             return Response(new_data, status=status.HTTP_201_CREATED)
+        else:
+            print(serializer.errors)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
-class ChecklistViewID(APIView):
+class TemplateViewID(APIView):
     def get_object(self, id):
         # Retrieve the item from MongoDB by its ID
         try:
             db = connect_mongodb()
-            collection = db['checklists']
+            collection = db['templates']
             item = collection.find_one({'_id': ObjectId(id)})
             return item
         except:
@@ -55,24 +58,24 @@ class ChecklistViewID(APIView):
         document = self.get_object(id)
         
         if document:
-            serializer = ChecklistSerializer(document)
+            serializer = TemplateSerializer(document)
             return Response(serializer.data)
         else:
-            return HttpResponseNotFound('Checklist not found')
+            return HttpResponseNotFound('Checklist template not found')
     
     def put(self, request, id):
         if 'id' not in self.kwargs:
             return HttpResponseNotAllowed('PUT method expects an id')
         
         db = connect_mongodb()
-        collection = db['checklists']
+        collection = db['templates']
         #object_id = self.kwargs['id']
         document = self.get_object(id)
         # no matching document in mongodb
         if not document:
             return Response(status=status.HTTP_404_NOT_FOUND)
         
-        serializer = ChecklistSerializer(document, data=request.data)
+        serializer = TemplateSerializer(document, data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
@@ -90,7 +93,7 @@ class ChecklistViewID(APIView):
     def delete(self, request, id):
 
         db = connect_mongodb()
-        collection = db['checklists']
+        collection = db['templates']
         #object_id = self.kwargs['id']
         document = self.get_object(id)        
         if not document:
