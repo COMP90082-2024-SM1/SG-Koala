@@ -54,7 +54,7 @@ const Login = (props) => {
         <br />
         <div className="loginTextContainer">
           <TypographyH2 style={{ color: "white" }}>
-            Database Passsword
+            Database Password
           </TypographyH2>{" "}
         </div>
         <br />
