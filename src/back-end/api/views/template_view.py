@@ -41,8 +41,8 @@ class TemplateViewID(APIView):
         db = connect_mongodb()
         collection = db['template']
         document = collection.find_one({'_id': ObjectId(kwargs['id'])})
-        serializer = TemplateSerializer(document)
-        if document:
+        serializer = TemplateSerializer(data=document)
+        if serializer.is_valid():
             return Response(serializer.data)
         return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
     
