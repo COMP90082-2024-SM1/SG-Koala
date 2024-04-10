@@ -37,9 +37,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'api.apps.ApiConfig',
+    'rest_framework',
+    'corsheaders'
 ]
+# Configure CORS
+# Authorized to make cross-site HTTP requests.
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    
+)
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -47,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   
 ]
 
 ROOT_URLCONF = 'Koala_backend.urls'
@@ -73,11 +84,14 @@ WSGI_APPLICATION = 'Koala_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+DMONGODB_DATABASES = {
+    "default": {
+        "name": 'sample_mflix',
+        "host": 'mongodb+srv://koala:koala@koalacluster.q1lvmvm.mongodb.net/?retryWrites=true&w=majority&appName=KoalaCluster',
+        "username": 'koala',
+        "password": 'koala',
+        "options": 'retryWrites=true&w=majority',
+    },
 }
 
 
