@@ -44,8 +44,9 @@ class SchoolViewID(APIView):
         serializer = SchoolSerializer(document)
         if document:
             return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
-    
+        else:
+            return Response({'error': 'School not found'}, status=status.HTTP_404_NOT_FOUND)
+        
     def put(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -55,8 +56,9 @@ class SchoolViewID(APIView):
         if serializer.is_valid():
             # Insert data into MongoDB
             new_data = serializer.validated_data
-
+           
             update_result = collection.update_one({'_id': ObjectId(kwargs['id'])}, {'$set': new_data})
+            
             if update_result.matched_count == 0:
                 return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
             return Response({'status': 'success', 'id': kwargs['id'], 'updated': update_result.modified_count}, status=status.HTTP_200_OK)

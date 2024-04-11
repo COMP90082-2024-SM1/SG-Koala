@@ -41,10 +41,12 @@ class TemplateViewID(APIView):
         db = connect_mongodb()
         collection = db['template']
         document = collection.find_one({'_id': ObjectId(kwargs['id'])})
-        serializer = TemplateSerializer(data=document)
-        if serializer.is_valid():
+        serializer = TemplateSerializer(document)
+        serializer = SchoolSerializer(document)
+        if document:
             return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'Template not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def put(self, request, *args, **kwargs):
         if 'id' not in kwargs:

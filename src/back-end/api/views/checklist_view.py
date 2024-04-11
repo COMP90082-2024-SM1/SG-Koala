@@ -16,7 +16,6 @@ class ChecklistView(APIView):
         collection = db['checklist']
         documents = list(collection.find())
         serializer = ChecklistSerializer(documents, many=True)
-        print(serializer.data)
         return Response(serializer.data)
 
     
@@ -31,9 +30,11 @@ class ChecklistViewID(APIView):
         collection = db['checklist']
         document = collection.find_one({'_id': ObjectId(kwargs['id'])})
         serializer = ChecklistSerializer(document)
+        serializer = SchoolSerializer(document)
         if document:
             return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'Checklist not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def post(self, request, *args, **kwargs):
         if 'id' not in kwargs:
@@ -43,7 +44,6 @@ class ChecklistViewID(APIView):
         template_collection = db['template'] 
         checklist_collection = db['checklist'] 
 
-        print(template_id)
         template = template_collection.find_one({"_id": ObjectId(template_id)})
         if not template:
             return Response({'error': 'Template not found'}, status=status.HTTP_404_NOT_FOUND)
