@@ -8,11 +8,15 @@
   color: var(--primary-color);
 }
 
+.typographyH3 {
+  font-size: 16px;
+  color: var(--primary-color);
+}
+
 .typographyParagraph {
   font-size: 14px;
 }
 
-/* Medium screens (tablets, small desktops) */
 @media (min-width: 600px) {
   .typographyH1 {
     font-size: 24px;
@@ -22,12 +26,15 @@
     font-size: 22px;
   }
 
+  .typographyH3 {
+    font-size: 18px;
+  }
+
   .typographyParagraph {
     font-size: 16px;
   }
 }
 
-/* Large screens (large desktops) */
 @media (min-width: 1024px) {
   .typographyH1 {
     font-size: 28px;
@@ -35,6 +42,10 @@
 
   .typographyH2 {
     font-size: 26px;
+  }
+
+  .typographyH3 {
+    font-size: 20px;
   }
 
   .typographyParagraph {

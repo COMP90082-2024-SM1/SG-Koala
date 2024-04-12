@@ -4,6 +4,8 @@
   justify-content: center;
   text-align: center;
   row-gap: 20px;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .templateDetailContainer {
@@ -29,7 +31,10 @@
   font-size: 18px;
   background-color: var(--primary-color);
   border: none;
-  border-bottom: 1px solid #ffffff;
+}
+
+.templateDetailInput::placeholder {
+  color: #cccccc;
 }
 
 .templateDetailHr {
@@ -49,8 +54,18 @@
   border: 3px solid var(--white-color);
 }
 
-.templateDetailButton:hover {
-  background-color: var(--white-color);
-  color: var(--primary-color);
-  border: none;
+.templateDetailDeleteButton:hover {
+  color: var(--negative-color);
+  border: 3px solid var(--negative-color);
+}
+
+.templateDetailAddButton:hover {
+  color: var(--positive-color);
+  border: 3px solid var(--positive-color);
+}
+
+.templateDetailButtons {
+  display: flex;
+  column-gap: 20px;
+  align-self: flex-end;
 }

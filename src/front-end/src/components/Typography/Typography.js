@@ -17,6 +17,14 @@ export const TypographyH2 = ({ className, style, children }) => {
   );
 };
 
+export const TypographyH3 = ({ className, style, children }) => {
+  return (
+    <h3 className={`${styles.typographyH3} ${className || ""}`} style={style}>
+      {children}
+    </h3>
+  );
+};
+
 export const TypographyParagraph = ({ className, style, children }) => {
   return (
     <p

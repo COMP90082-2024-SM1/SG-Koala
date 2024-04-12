@@ -9,10 +9,14 @@ html {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 :root {
   --primary-color: #0d3b66;
   --font-color: #1e1e1e;
   --white-color: #ffffff;
+  --positive-color: #17c3b2;
+  --negative-color: #ee4266;
 }

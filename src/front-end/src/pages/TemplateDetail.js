@@ -7,6 +7,7 @@ import {
 } from "../components/Typography/Typography";
 import { sortableContainer, sortableElement } from "react-sortable-hoc";
 import "../styles/TemplateDetail.css";
+import { Button } from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -43,7 +44,10 @@ const SortableItem = sortableElement(({ task, onTaskUpdate, onTaskRemove }) => {
         className="templateDetailInput"
         placeholder="link (optional)"
       />
-      <button onClick={() => onTaskRemove()} className="templateDetailButton">
+      <button
+        onClick={() => onTaskRemove()}
+        className="templateDetailButton templateDetailDeleteButton"
+      >
         <FontAwesomeIcon icon={faTrash} style={{ fontSize: "15px" }} />
       </button>
     </div>
@@ -210,7 +214,10 @@ const TemplateDetail = () => {
               </div>
             </SortableContainer>
             <form onSubmit={onSubmit} className="templateDetailItem">
-              <button className="templateDetailButton" type="submit">
+              <button
+                className="templateDetailButton templateDetailAddButton"
+                type="submit"
+              >
                 <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
               </button>
               <input
@@ -218,12 +225,14 @@ const TemplateDetail = () => {
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
                 className="templateDetailInput"
+                style={{ borderBottom: "1px solid #ffffff" }}
               />
               <input
                 placeholder="link (optional)"
                 value={newLink}
                 onChange={(e) => setNewLink(e.target.value)}
                 className="templateDetailInput"
+                style={{ borderBottom: "1px solid #ffffff" }}
               />
             </form>
           </>
@@ -232,15 +241,15 @@ const TemplateDetail = () => {
         )}
         <hr className="templateDetailHr" />
         <div className="templateDetailButtons">
-          <button onClick={handleDelete}>
-            <TypographyParagraph>DELETE</TypographyParagraph>
-          </button>
-          <button onClick={handleDiscard}>
-            <TypographyParagraph>DISCARD</TypographyParagraph>
-          </button>
-          <button onClick={handleSave}>
-            <TypographyParagraph>SAVE</TypographyParagraph>
-          </button>
+          <Button onClick={handleDelete} type="delete">
+            DELETE
+          </Button>
+          <Button onClick={handleDiscard} type="discard">
+            DISCARD
+          </Button>
+          <Button onClick={handleSave} type="save">
+            SAVE
+          </Button>
         </div>
       </div>
     </>
