@@ -9,6 +9,7 @@ import Templates from "./pages/Templates";
 import TemplateDetail from "./pages/TemplateDetail";
 import Analytics from "./pages/Analytics";
 import Calendar from "./pages/Calendar";
+import NewBooking from "./pages/NewBooking";
 import "./App.css";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="/templates/:id" element={<TemplateDetail />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/calendar" element={<Calendar />} />
+            <Route path="/NewBooking" element={<NewBooking />} />
           </Routes>
         </div>
       </div>

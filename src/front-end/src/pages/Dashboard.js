@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Dashboard.css";
 import Header from "../components/Header/Header";
+import { useNavigate } from 'react-router-dom';
 
 function formatDate(dateStr) {
   const [time, date] = dateStr.split(" ");
@@ -155,6 +156,11 @@ const Dashboard = () => {
     return filteredBookings;
   };
 
+  const navigate = useNavigate(); 
+  function handleNewBooking() {
+    navigate('/newBooking');
+  }
+
   return (
     <div className="dashboard-dashboard">
       <Header> Booking </Header>
@@ -170,6 +176,9 @@ const Dashboard = () => {
             {type.charAt(0).toUpperCase() + type.slice(1)}
           </button>
         ))}
+        <button className="dashboardNewBookingBtn" onClick={handleNewBooking}>
+          <span className="plus-icon">+</span>
+        </button>
       </div>
       <div className="dashboardFilterAndSort">
         <select onChange={(e) => setFilterType(e.target.value)}>
