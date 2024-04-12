@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TypographyH3, TypographyParagraph } from "../Typography/Typography";
+import { TypographyH3 } from "../Typography/Typography";
 import styles from "./Button.module.css";
 
 export const Button = ({ onClick, className, style, type, children }) => {

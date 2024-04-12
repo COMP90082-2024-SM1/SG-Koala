@@ -8,6 +8,10 @@
   padding-right: 5%;
 }
 
+.templateDetialName {
+  font-size: 18px;
+}
+
 .templateDetailContainer {
   display: flex;
   flex-direction: column;
@@ -23,6 +27,23 @@
   padding: 20px;
   background-color: var(--primary-color);
   border-radius: 10px;
+  border: 3px solid var(--primary-color);
+}
+
+.templateDetailItem:hover {
+  background-color: var(--white-color);
+  border: 3px solid var(--primary-color);
+}
+
+.templateDetailItem:hover .templateDetailInput {
+  color: var(--primary-color);
+  background-color: var(--white-color);
+}
+
+.templateDetailItem:hover .templateDetailButton {
+  color: var(--primary-color);
+  background-color: var(--white-color);
+  border-color: var(--primary-color);
 }
 
 .templateDetailInput {
@@ -35,6 +56,17 @@
 
 .templateDetailInput::placeholder {
   color: #cccccc;
+}
+
+.templateDetailAddItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  column-gap: 15%;
+  padding: 20px;
+  background-color: var(--primary-color);
+  border-radius: 10px;
 }
 
 .templateDetailHr {
@@ -55,8 +87,8 @@
 }
 
 .templateDetailDeleteButton:hover {
-  color: var(--negative-color);
-  border: 3px solid var(--negative-color);
+  color: var(--negative-color) !important;
+  border: 3px solid var(--negative-color) !important;
 }
 
 .templateDetailAddButton:hover {

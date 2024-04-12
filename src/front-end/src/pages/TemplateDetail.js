@@ -1,17 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
-import {
-  TypographyH2,
-  TypographyParagraph,
-} from "../components/Typography/Typography";
-import { sortableContainer, sortableElement } from "react-sortable-hoc";
-import "../styles/TemplateDetail.css";
+import { TypographyH2 } from "../components/Typography/Typography";
 import { Button } from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import "../styles/TemplateDetail.css";
 
-const SortableItem = sortableElement(({ task, onTaskUpdate, onTaskRemove }) => {
+const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
   const [name, setName] = useState(task.name);
   const [link, setLink] = useState(task.link);
 
@@ -25,7 +21,7 @@ const SortableItem = sortableElement(({ task, onTaskUpdate, onTaskRemove }) => {
   };
 
   const updateTask = () => {
-    onTaskUpdate(name, link);
+    onTaskUpdate(index, name, link);
   };
 
   return (
@@ -45,110 +41,66 @@ const SortableItem = sortableElement(({ task, onTaskUpdate, onTaskRemove }) => {
         placeholder="link (optional)"
       />
       <button
-        onClick={() => onTaskRemove()}
+        onClick={() => onTaskRemove(index)}
         className="templateDetailButton templateDetailDeleteButton"
       >
         <FontAwesomeIcon icon={faTrash} style={{ fontSize: "15px" }} />
       </button>
     </div>
   );
-});
-
-const SortableContainer = sortableContainer(({ children }) => {
-  return <div className="container">{children}</div>;
-});
+};
 
 const TemplateDetail = () => {
-  const [details, setDetails] = useState({});
+  const { id } = useParams();
+  const [details, setDetails] = useState({
+    id: 1,
+    name: "Template 1",
+    tasks: [
+      { name: "Task 0", link: "https://google.com" },
+      { name: "Task 1", link: "https://google.com" },
+      { name: "Task 2", link: "https://google.com" },
+      { name: "Task 3", link: "https://google.com" },
+      { name: "Task 4", link: "https://google.com" },
+    ],
+  });
   const [isEditingName, setIsEditingName] = useState(false);
-  const [name, setName] = useState("");
   const [newTask, setNewTask] = useState("");
   const [newLink, setNewLink] = useState("");
-  const { id } = useParams();
-
-  useEffect(() => {
-    setName(details.name);
-  }, [details.name]);
 
   const handleDoubleClick = () => {
     setIsEditingName(true);
   };
 
   const handleNameChange = (e) => {
-    setName(e.target.value);
+    setDetails((prevDetails) => ({ ...prevDetails, name: e.target.value }));
   };
 
   const finalizeEditName = () => {
     setIsEditingName(false);
-    setDetails((prevDetails) => ({
-      ...prevDetails,
-      name: name,
-    }));
-  };
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        const data = {
-          id: 1,
-          name: "Template 1",
-          tasks: [
-            { name: "Task 0", link: "https://google.com" },
-            { name: "Task 1", link: "https://google.com" },
-            { name: "Task 2", link: "https://google.com" },
-            { name: "Task 3", link: "https://google.com" },
-            { name: "Task 4", link: "https://google.com" },
-          ],
-        };
-
-        setDetails(data);
-      } catch (error) {
-        console.error("Failed to fetch template details:", error);
-      }
-    };
-
-    fetchDetails();
-  }, []);
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
-    setDetails((prevDetails) => {
-      const updatedTasks = Array.from(prevDetails.tasks);
-      const [removedTask] = updatedTasks.splice(oldIndex, 1);
-      updatedTasks.splice(newIndex, 0, removedTask);
-      return {
-        ...prevDetails,
-        tasks: updatedTasks,
-      };
-    });
   };
 
   const addTask = () => {
     if (!newTask.trim()) return;
-    const newTaskObject = {
-      name: newTask,
-      link: newLink,
-    };
-
+    const newTaskObject = { name: newTask, link: newLink || undefined };
     setDetails((prevDetails) => ({
       ...prevDetails,
       tasks: [...prevDetails.tasks, newTaskObject],
     }));
+    setNewTask("");
+    setNewLink("");
   };
 
   const handleTaskRemove = (indexToRemove) => {
-    setDetails((prevDetails) => {
-      const updatedTasks = prevDetails.tasks.filter(
-        (_, index) => index !== indexToRemove
-      );
-      return { ...prevDetails, tasks: updatedTasks };
-    });
+    setDetails((prevDetails) => ({
+      ...prevDetails,
+      tasks: prevDetails.tasks.filter((_, index) => index !== indexToRemove),
+    }));
   };
 
   const handleTaskUpdate = (index, name, link) => {
     setDetails((prevDetails) => {
-      const updatedTasks = Array.from(prevDetails.tasks);
-      updatedTasks[index].name = name;
-      updatedTasks[index].link = link;
+      const updatedTasks = [...prevDetails.tasks];
+      updatedTasks[index] = { ...updatedTasks[index], name, link };
       return { ...prevDetails, tasks: updatedTasks };
     });
   };
@@ -156,12 +108,29 @@ const TemplateDetail = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     addTask();
-    setNewTask("");
-    setNewLink("");
+  };
+
+  const dragItem = useRef();
+  const draggedOverItem = useRef();
+
+  const handleDragStart = (index) => {
+    dragItem.current = index;
+  };
+
+  const handleDragEnter = (index) => {
+    draggedOverItem.current = index;
+  };
+
+  const handleDragEnd = () => {
+    const listClone = [...details.tasks];
+    const draggedItemContent = listClone[dragItem.current];
+    listClone.splice(dragItem.current, 1);
+    listClone.splice(draggedOverItem.current, 0, draggedItemContent);
+    setDetails((prevDetails) => ({ ...prevDetails, tasks: listClone }));
   };
 
   const handleDelete = () => {
-    console.log("Delete action triggered");
+    console.log("Save action triggered");
     console.log(details);
   };
 
@@ -174,7 +143,6 @@ const TemplateDetail = () => {
     console.log("Save action triggered");
     console.log(details);
   };
-
   return (
     <>
       <Header>Template - #{details.id}</Header>
@@ -182,63 +150,63 @@ const TemplateDetail = () => {
         {isEditingName ? (
           <input
             type="text"
-            value={name}
+            value={details.name}
             onChange={handleNameChange}
-            onBlur={() => finalizeEditName()}
+            onBlur={finalizeEditName}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 finalizeEditName();
               }
             }}
+            className="templateDetialName"
             autoFocus
           />
         ) : (
           <div onDoubleClick={handleDoubleClick}>
-            <TypographyH2>{name}</TypographyH2>
+            <TypographyH2>{details.name}</TypographyH2>
           </div>
         )}
-        {details.tasks ? (
-          <>
-            <SortableContainer onSortEnd={onSortEnd}>
-              <div className="templateDetailContainer">
-                {details.tasks.map((task, index) => (
-                  <SortableItem
-                    index={index}
-                    task={task}
-                    onTaskUpdate={(name, link) =>
-                      handleTaskUpdate(index, name, link)
-                    }
-                    onTaskRemove={() => handleTaskRemove(index)}
-                  />
-                ))}
-              </div>
-            </SortableContainer>
-            <form onSubmit={onSubmit} className="templateDetailItem">
-              <button
-                className="templateDetailButton templateDetailAddButton"
-                type="submit"
-              >
-                <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
-              </button>
-              <input
-                placeholder="taks name"
-                value={newTask}
-                onChange={(e) => setNewTask(e.target.value)}
-                className="templateDetailInput"
-                style={{ borderBottom: "1px solid #ffffff" }}
+        <div className="templateDetailContainer">
+          {details.tasks.map((task, index) => (
+            <div
+              key={index}
+              draggable
+              onDragStart={() => handleDragStart(index)}
+              onDragEnter={() => handleDragEnter(index)}
+              onDragEnd={handleDragEnd}
+              onDragOver={(e) => e.preventDefault()}
+            >
+              <Item
+                index={index}
+                task={task}
+                onTaskUpdate={handleTaskUpdate}
+                onTaskRemove={handleTaskRemove}
               />
-              <input
-                placeholder="link (optional)"
-                value={newLink}
-                onChange={(e) => setNewLink(e.target.value)}
-                className="templateDetailInput"
-                style={{ borderBottom: "1px solid #ffffff" }}
-              />
-            </form>
-          </>
-        ) : (
-          <div>Loading...</div>
-        )}
+            </div>
+          ))}
+        </div>
+        <form onSubmit={onSubmit} className="templateDetailAddItem">
+          <button
+            className="templateDetailButton templateDetailAddButton"
+            type="submit"
+          >
+            <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
+          </button>
+          <input
+            placeholder="task name"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            className="templateDetailInput"
+            style={{ borderBottom: "1px solid var(--white-color)" }}
+          />
+          <input
+            placeholder="link (optional)"
+            value={newLink}
+            onChange={(e) => setNewLink(e.target.value)}
+            className="templateDetailInput"
+            style={{ borderBottom: "1px solid var(--white-color)" }}
+          />
+        </form>
         <hr className="templateDetailHr" />
         <div className="templateDetailButtons">
           <Button onClick={handleDelete} type="delete">
