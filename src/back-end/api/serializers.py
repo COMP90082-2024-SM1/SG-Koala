@@ -28,7 +28,7 @@ class SchoolSerializer(serializers.Serializer):
 class TaskChecklistSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     link = serializers.URLField(max_length=200,allow_blank=True,default = "")
-    order = serializers.IntegerField()
+
     status = serializers.IntegerField(default = 0)
 
 class ChecklistSerializer(serializers.Serializer):
@@ -39,7 +39,7 @@ class ChecklistSerializer(serializers.Serializer):
 class TaskTemplateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     link = serializers.URLField(max_length=200,allow_blank=True,default = "")
-    order = serializers.IntegerField()
+
 
 class TemplateSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
