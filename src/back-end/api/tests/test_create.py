@@ -1,7 +1,6 @@
 from django.test import TestCase
 from pymongo import MongoClient
-from mongomock import MongoClient as MockMongoClient
-from rest_framework.test import APITestCase, APIClient
+from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 

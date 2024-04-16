@@ -42,7 +42,6 @@ class TemplateViewID(APIView):
         collection = db['template']
         document = collection.find_one({'_id': ObjectId(kwargs['id'])})
         serializer = TemplateSerializer(document)
-        serializer = SchoolSerializer(document)
         if document:
             return Response(serializer.data)
         else:
