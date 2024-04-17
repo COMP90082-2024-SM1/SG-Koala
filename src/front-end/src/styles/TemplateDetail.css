@@ -48,14 +48,14 @@
 
 .templateDetailInput {
   flex: 5;
-  color: #ffffff;
+  color: var(--white-color);
   font-size: 18px;
   background-color: var(--primary-color);
   border: none;
 }
 
 .templateDetailInput::placeholder {
-  color: #cccccc;
+  color: var(--grey-color);
 }
 
 .templateDetailAddItem {
