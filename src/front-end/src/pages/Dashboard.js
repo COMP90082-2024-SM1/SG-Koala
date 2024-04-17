@@ -158,7 +158,7 @@ const Dashboard = () => {
 
   const navigate = useNavigate(); 
   function handleNewBooking() {
-    navigate('/newBooking');
+    navigate('/new-booking');
   }
 
   return (
