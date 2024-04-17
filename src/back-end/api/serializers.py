@@ -21,6 +21,10 @@ class SchoolSerializer(serializers.Serializer):
     contactLastName = serializers.CharField(max_length=200)
     email = serializers.CharField(max_length=200)
     phone = serializers.CharField(max_length=200)
+    note = serializers.CharField(max_length=2000,allow_blank= True)
+    isAccessibility = serializers.BooleanField(default = False)
+    isAllergy = serializers.BooleanField(default = False)
+    isPartner = serializers.BooleanField(default = False)
 
 
 
@@ -28,7 +32,6 @@ class SchoolSerializer(serializers.Serializer):
 class TaskChecklistSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     link = serializers.URLField(max_length=200,allow_blank=True,default = "")
-    order = serializers.IntegerField()
     status = serializers.IntegerField(default = 0)
 
 class ChecklistSerializer(serializers.Serializer):
@@ -39,13 +42,20 @@ class ChecklistSerializer(serializers.Serializer):
 class TaskTemplateSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     link = serializers.URLField(max_length=200,allow_blank=True,default = "")
-    order = serializers.IntegerField()
+
 
 class TemplateSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     name = serializers.CharField(max_length=255)
     task = TaskTemplateSerializer(many=True)  
 
+class BusSerializer(serializers.Serializer):
+    bus_req = serializers.BooleanField(default=False)
+    isBooked = serializers.BooleanField(default=False)
+    status = serializers.IntegerField(default=0)
+    price = serializers.FloatField(default=0)
+    date_paid = serializers.DateTimeField(allow_null=True, required=False)
+    invoice = serializers.CharField(max_length=255, allow_blank=True,default = "")
 
 class BookSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
@@ -63,4 +73,40 @@ class BookSerializer(serializers.Serializer):
     school= SchoolSerializer(required=False)  # Assuming it's a ForeignKey to another model.
     exibition = serializers.CharField()  # Assuming it's a ForeignKey to another model.
     note = serializers.CharField(max_length=200, allow_blank=True,required=False)  # Assuming this is optional and can be a blank string.
- 
+    bus = BusSerializer(default={
+    "bus_req": False,
+    "isBooked": False,
+    "status": 0,
+    "price": 0.0,
+    "date_paid": None,  # Or any default date
+    "invoice": ""
+})
+    per_student = serializers.IntegerField(default=0)
+    expense = serializers.IntegerField(default=0)
+    income = serializers.IntegerField(default=0)
+    profit = serializers.IntegerField(default=0)
+
+class MiscellaneousSerializer(serializers.Serializer):
+    id = serializers.CharField(source='_id', read_only=True)
+    module = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True 
+    )
+    program_stream = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True 
+    )
+    facilitators = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True 
+    )
+    delivery_location = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True 
+    )
+    exhibition = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True 
+    )
+    
+    
