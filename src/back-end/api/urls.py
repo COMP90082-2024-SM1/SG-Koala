@@ -3,7 +3,7 @@ from django.urls import path,include
 
 
 
-from .views import test_views,school_view,booking_view,checklist_view,template_view
+from .views import test_views,school_view,booking_view,checklist_view,template_view,miscellaneous_view
 
 
 urlpatterns = [
@@ -16,5 +16,6 @@ urlpatterns = [
     path('template/<str:id>/',  template_view.TemplateViewID.as_view()),
     path('checklist/', checklist_view.ChecklistView.as_view()),
     path('checklist/<str:id>/',  checklist_view.ChecklistViewID.as_view()),
+    path('miscellaneous/', miscellaneous_view.MiscellaneousView.as_view()),
 
 ]
