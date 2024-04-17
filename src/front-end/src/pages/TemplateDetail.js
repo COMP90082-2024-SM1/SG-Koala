@@ -1,10 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
-import { TypographyH2 } from "../components/Typography/Typography";
+import { TypographyParagraph } from "../components/Typography/Typography";
 import { Button } from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  getTemplateById,
+  updateTemplate,
+  deleteTemplate,
+  createTemplate,
+} from "../api/TemplateAPI";
 import "../styles/TemplateDetail.css";
 
 const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
@@ -52,31 +58,38 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
 
 const TemplateDetail = () => {
   const { id } = useParams();
-  const [details, setDetails] = useState({
-    id: 1,
-    name: "Template 1",
-    tasks: [
-      { name: "Task 0", link: "https://google.com" },
-      { name: "Task 1", link: "https://google.com" },
-      { name: "Task 2", link: "https://google.com" },
-      { name: "Task 3", link: "https://google.com" },
-      { name: "Task 4", link: "https://google.com" },
-    ],
-  });
-  const [isEditingName, setIsEditingName] = useState(false);
   const [newTask, setNewTask] = useState("");
   const [newLink, setNewLink] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [details, setDetails] = useState({ name: "New Template", task: [] });
+  const [oldDetails, setOldDetails] = useState({
+    name: "New Template",
+    task: [],
+  });
+  const navigate = useNavigate();
 
-  const handleDoubleClick = () => {
-    setIsEditingName(true);
-  };
+  useEffect(() => {
+    const fetchDetails = async () => {
+      setLoading(true);
+      if (id === "create-new") {
+        setLoading(false);
+      } else {
+        setLoading(true);
+        try {
+          const data = await getTemplateById(id);
+          setDetails(data);
+          setOldDetails(data);
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+        }
+      }
+    };
+    fetchDetails();
+  }, [id]);
 
   const handleNameChange = (e) => {
     setDetails((prevDetails) => ({ ...prevDetails, name: e.target.value }));
-  };
-
-  const finalizeEditName = () => {
-    setIsEditingName(false);
   };
 
   const addTask = () => {
@@ -84,7 +97,7 @@ const TemplateDetail = () => {
     const newTaskObject = { name: newTask, link: newLink || undefined };
     setDetails((prevDetails) => ({
       ...prevDetails,
-      tasks: [...prevDetails.tasks, newTaskObject],
+      task: [...prevDetails.task, newTaskObject],
     }));
     setNewTask("");
     setNewLink("");
@@ -93,15 +106,15 @@ const TemplateDetail = () => {
   const handleTaskRemove = (indexToRemove) => {
     setDetails((prevDetails) => ({
       ...prevDetails,
-      tasks: prevDetails.tasks.filter((_, index) => index !== indexToRemove),
+      task: prevDetails.task.filter((_, index) => index !== indexToRemove),
     }));
   };
 
   const handleTaskUpdate = (index, name, link) => {
     setDetails((prevDetails) => {
-      const updatedTasks = [...prevDetails.tasks];
-      updatedTasks[index] = { ...updatedTasks[index], name, link };
-      return { ...prevDetails, tasks: updatedTasks };
+      const updatedtask = [...prevDetails.task];
+      updatedtask[index] = { ...updatedtask[index], name, link };
+      return { ...prevDetails, task: updatedtask };
     });
   };
 
@@ -122,104 +135,173 @@ const TemplateDetail = () => {
   };
 
   const handleDragEnd = () => {
-    const listClone = [...details.tasks];
+    const listClone = [...details.task];
     const draggedItemContent = listClone[dragItem.current];
     listClone.splice(dragItem.current, 1);
     listClone.splice(draggedOverItem.current, 0, draggedItemContent);
-    setDetails((prevDetails) => ({ ...prevDetails, tasks: listClone }));
+    setDetails((prevDetails) => ({ ...prevDetails, task: listClone }));
   };
 
-  const handleDelete = () => {
-    console.log("Save action triggered");
-    console.log(details);
+  const isValidHttpUrl = (string) => {
+    let url;
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+    return url.protocol === "https:" || "http";
+  };
+
+  const validateDetails = (details, oldDetails) => {
+    if (JSON.stringify(details) === JSON.stringify(oldDetails)) {
+      alert("[WARNING] No changes were made.");
+      return false;
+    }
+    if (!details.name) {
+      alert("[WARNING] Template name cannot be empty.");
+      return false;
+    }
+    for (let index = 0; index < details.task.length; index++) {
+      const task = details.task[index];
+      if (!task.name) {
+        alert(`[WARNING] Task name cannot be empty for ITEM ${index + 1}.`);
+        return false;
+      }
+      if (task.link && !isValidHttpUrl(task.link)) {
+        alert(`[WARNING] Invalid HTTPS URL for ITEM ${index + 1}.`);
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      await deleteTemplate(id);
+      setLoading(false);
+      alert("[SUCCESS] Template deletion successful!");
+      navigate("/templates");
+    } catch (error) {
+      alert(`[ERROR] ${error}`);
+      setLoading(false);
+    }
   };
 
   const handleDiscard = () => {
-    console.log("Discard action triggered");
-    console.log(details);
+    navigate("/templates");
   };
 
-  const handleSave = () => {
-    console.log("Save action triggered");
-    console.log(details);
+  const handleCreate = async () => {
+    try {
+      if (!validateDetails(details, oldDetails)) return;
+      setLoading(true);
+      const response = await createTemplate(details);
+      const templateId = response._id;
+      console.log(templateId);
+      setLoading(false);
+      alert("[SUCCESS] Template created successfully!");
+      navigate(`/templates/${templateId}`);
+    } catch (error) {
+      alert(`[ERROR] ${error}`);
+      setLoading(false);
+    }
   };
+
+  const handleSave = async () => {
+    try {
+      if (!validateDetails(details, oldDetails)) return;
+      setLoading(true);
+      const response = await updateTemplate(id, details);
+      setLoading(false);
+      alert("[SUCCESS] Template updated successfully!");
+    } catch (error) {
+      alert(`[ERROR] ${error}`);
+      setLoading(false);
+      navigate(0);
+    }
+  };
+
   return (
     <>
-      <Header>Template - #{details.id}</Header>
-      <div className="templateDetailWrapper">
-        {isEditingName ? (
+      <Header>Template - {id}</Header>
+      {loading && <p>Loading...</p>}
+      {!loading && (
+        <div className="templateDetailWrapper">
           <input
             type="text"
             value={details.name}
             onChange={handleNameChange}
-            onBlur={finalizeEditName}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                finalizeEditName();
-              }
-            }}
-            className="templateDetialName"
-            autoFocus
+            className="templateDetailName"
+            placeholder="Template Name"
           />
-        ) : (
-          <div onDoubleClick={handleDoubleClick}>
-            <TypographyH2>{details.name}</TypographyH2>
+          <div className="templateDetailContainer">
+            {details.task?.length === 0 ? (
+              <TypographyParagraph>
+                No tasks yet. Add your first task below!
+              </TypographyParagraph>
+            ) : (
+              details.task.map((task, index) => (
+                <div
+                  key={index}
+                  draggable
+                  onDragStart={() => handleDragStart(index)}
+                  onDragEnter={() => handleDragEnter(index)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={(e) => e.preventDefault()}
+                >
+                  <Item
+                    index={index}
+                    task={task}
+                    onTaskUpdate={handleTaskUpdate}
+                    onTaskRemove={handleTaskRemove}
+                  />
+                </div>
+              ))
+            )}
           </div>
-        )}
-        <div className="templateDetailContainer">
-          {details.tasks.map((task, index) => (
-            <div
-              key={index}
-              draggable
-              onDragStart={() => handleDragStart(index)}
-              onDragEnter={() => handleDragEnter(index)}
-              onDragEnd={handleDragEnd}
-              onDragOver={(e) => e.preventDefault()}
+          <form onSubmit={onSubmit} className="templateDetailAddItem">
+            <button
+              className="templateDetailButton templateDetailAddButton"
+              type="submit"
             >
-              <Item
-                index={index}
-                task={task}
-                onTaskUpdate={handleTaskUpdate}
-                onTaskRemove={handleTaskRemove}
-              />
-            </div>
-          ))}
+              <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
+            </button>
+            <input
+              placeholder="task name"
+              value={newTask}
+              onChange={(e) => setNewTask(e.target.value)}
+              className="templateDetailInput"
+              style={{ borderBottom: "1px solid var(--white-color)" }}
+            />
+            <input
+              placeholder="link (optional)"
+              value={newLink}
+              onChange={(e) => setNewLink(e.target.value)}
+              className="templateDetailInput"
+              style={{ borderBottom: "1px solid var(--white-color)" }}
+            />
+          </form>
+          <hr className="templateDetailHr" />
+          <div className="templateDetailButtons">
+            <Button onClick={handleDelete} type="delete">
+              DELETE
+            </Button>
+            <Button onClick={handleDiscard} type="discard">
+              DISCARD
+            </Button>
+            {id === "create-new" ? (
+              <Button onClick={handleCreate} type="save">
+                Create
+              </Button>
+            ) : (
+              <Button onClick={handleSave} type="save">
+                SAVE
+              </Button>
+            )}
+          </div>
         </div>
-        <form onSubmit={onSubmit} className="templateDetailAddItem">
-          <button
-            className="templateDetailButton templateDetailAddButton"
-            type="submit"
-          >
-            <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
-          </button>
-          <input
-            placeholder="task name"
-            value={newTask}
-            onChange={(e) => setNewTask(e.target.value)}
-            className="templateDetailInput"
-            style={{ borderBottom: "1px solid var(--white-color)" }}
-          />
-          <input
-            placeholder="link (optional)"
-            value={newLink}
-            onChange={(e) => setNewLink(e.target.value)}
-            className="templateDetailInput"
-            style={{ borderBottom: "1px solid var(--white-color)" }}
-          />
-        </form>
-        <hr className="templateDetailHr" />
-        <div className="templateDetailButtons">
-          <Button onClick={handleDelete} type="delete">
-            DELETE
-          </Button>
-          <Button onClick={handleDiscard} type="discard">
-            DISCARD
-          </Button>
-          <Button onClick={handleSave} type="save">
-            SAVE
-          </Button>
-        </div>
-      </div>
+      )}
     </>
   );
 };
