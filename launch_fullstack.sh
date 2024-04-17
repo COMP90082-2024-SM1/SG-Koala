@@ -2,11 +2,10 @@
 #!/bin/bash
 
 # Launch Back-end
-cd back-end
+cd src/back-end
 echo "Activating virtual environment..."
 source myvenv/bin/activate
 echo "Starting Django server..."
-cd Koala_backend
 python manage.py runserver 8000 &
 
 
