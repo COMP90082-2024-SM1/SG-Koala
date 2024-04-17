@@ -28,7 +28,6 @@ class SchoolSerializer(serializers.Serializer):
 class TaskChecklistSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=255)
     link = serializers.URLField(max_length=200,allow_blank=True,default = "")
-
     status = serializers.IntegerField(default = 0)
 
 class ChecklistSerializer(serializers.Serializer):

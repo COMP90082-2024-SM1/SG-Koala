@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Launch Back-end
-cd src/back-end
+cd src/back-end/
 echo "Activating virtual environment..."
 source myvenv/bin/activate
 echo "Starting Django server..."
@@ -14,7 +14,7 @@ DJANGO_PID=$(lsof -ti:8000)
 
 # Launch front-end
 cd ..
-cd ../front-end/koala_frontend
+cd ../front-end/
 echo "Starting React server..."
 npm start &
 REACT_PID=$!
