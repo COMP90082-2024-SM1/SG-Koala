@@ -4,11 +4,11 @@ import navSgLogo from "../../images/sg-logo.png";
 import { Link, useLocation } from "react-router-dom";
 
 // Import the icons with PascalCase naming convention
-import { PhDatabaseThinWhite, PhDatabaseThinBlack } from "../../images/Database-icon.tsx";
-import { IconParkOutlineAppointmentWhite, IconParkOutlineAppointmentBlack } from "../../images/IconParkOutlineAppointment.tsx";
-import { TablerTemplateWhite, TablerTemplateBlack } from "../../images/TablerTemplate.tsx";
-import { IconParkOutlineAnalysisWhite, IconParkOutlineAnalysisBlack } from "../../images/IconParkOutlineAnalysis.tsx";
-import { IconParkOutlineCalendarWhite, IconParkOutlineCalendarBlack } from "../../images/IconParkOutlineCalendar.tsx";
+import { databaseWhite, databaseBlack } from "../../images/database-icon.tsx";
+import { bookingWhite, bookingBlack } from "../../images/booking-icon.tsx";
+import { templateWhite, templateBlack } from "../../images/template-icon.tsx";
+import { analysisWhite, analysisBlack } from "../../images/analysis-icon.tsx";
+import { calendarWhite, calendarBlack } from "../../images/calendar-icon.tsx";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -50,7 +50,7 @@ const Navbar = () => {
         onMouseEnter={() => handleMouseEnter("/dashboard")}
         onMouseLeave={handleMouseLeave}
       >
-        {getIcon("/dashboard", IconParkOutlineAppointmentWhite, IconParkOutlineAppointmentBlack)}
+        {getIcon("/dashboard", bookingWhite, bookingBlack)}
         Dashboard
       </Link>
         <Link
@@ -59,7 +59,7 @@ const Navbar = () => {
         onMouseEnter={() => handleMouseEnter("/database")}
         onMouseLeave={handleMouseLeave}
       >
-        {getIcon("/database", PhDatabaseThinWhite, PhDatabaseThinBlack)}
+        {getIcon("/database", databaseWhite, databaseBlack)}
         Database
       </Link>
         <Link
@@ -68,7 +68,7 @@ const Navbar = () => {
         onMouseEnter={() => handleMouseEnter("/templates")}
         onMouseLeave={handleMouseLeave}
       >
-        {getIcon("/templates", TablerTemplateWhite, TablerTemplateBlack)}
+        {getIcon("/templates", templateWhite, templateBlack)}
         Templates
       </Link>
         <Link
@@ -77,7 +77,7 @@ const Navbar = () => {
         onMouseEnter={() => handleMouseEnter("/analytics")}
         onMouseLeave={handleMouseLeave}
       >
-        {getIcon("/analytics", IconParkOutlineAnalysisWhite, IconParkOutlineAnalysisBlack)}
+        {getIcon("/analytics", analysisWhite, analysisBlack)}
         Analytics
       </Link>
         <Link
@@ -86,7 +86,7 @@ const Navbar = () => {
         onMouseEnter={() => handleMouseEnter("/calendar")}
         onMouseLeave={handleMouseLeave}
       >
-        {getIcon("/calendar", IconParkOutlineCalendarWhite, IconParkOutlineCalendarBlack)}
+        {getIcon("/calendar", calendarWhite, calendarBlack)}
         Calendar
       </Link>
       </div>
