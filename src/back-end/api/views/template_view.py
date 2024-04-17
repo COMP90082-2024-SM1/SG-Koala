@@ -44,7 +44,8 @@ class TemplateViewID(APIView):
         serializer = TemplateSerializer(document)
         if document:
             return Response(serializer.data)
-        return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'Template not found'}, status=status.HTTP_404_NOT_FOUND)
     
     def put(self, request, *args, **kwargs):
         if 'id' not in kwargs:
