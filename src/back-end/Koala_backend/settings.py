@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import sys
+
+# Determine if we're running the test suite
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Unit test definition
 
 # Application definition
 
@@ -93,7 +99,7 @@ DMONGODB_DATABASES = {
         "options": 'retryWrites=true&w=majority',
     },
 }
-
+MONGODB_URI = 'mongodb+srv://koala:koala@koalacluster.q1lvmvm.mongodb.net/?retryWrites=true&w=majority&appName=KoalaCluster'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

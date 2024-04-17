@@ -8,6 +8,7 @@ from .views import test_views,school_view,booking_view,checklist_view,template_v
 
 urlpatterns = [
 
+
     path('booking/', booking_view.BookingView.as_view()),
     path('booking/<str:id>/', booking_view.BookingViewID.as_view()),
     path('school/', school_view.SchoolView.as_view()),
