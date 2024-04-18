@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-a@s60(vh$-%k(i8=!_d#ll#a-@6j005y=#+w6ts4w_bgqq^9eu
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.vercel.app']
 
 # Unit test definition
 
