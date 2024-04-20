@@ -1,22 +1,22 @@
+"""api URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/4.1/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
 from django.contrib import admin
-from django.urls import path,include
-
-
-
-from .views import test_views,school_view,booking_view,checklist_view,template_view,miscellaneous_view
-
+from django.urls import path, include
 
 urlpatterns = [
-
-
-    path('booking/', booking_view.BookingView.as_view()),
-    path('booking/<str:id>/', booking_view.BookingViewID.as_view()),
-    path('school/', school_view.SchoolView.as_view()),
-    path('school/<str:id>/',  school_view.SchoolViewID.as_view()),
-    path('template/', template_view.TemplateView.as_view()),
-    path('template/<str:id>/',  template_view.TemplateViewID.as_view()),
-    path('checklist/', checklist_view.ChecklistView.as_view()),
-    path('checklist/<str:id>/',  checklist_view.ChecklistViewID.as_view()),
-    path('miscellaneous/', miscellaneous_view.MiscellaneousView.as_view()),
-
+    path('admin/', admin.site.urls),
+    path('api/', include('example.urls')),
 ]
