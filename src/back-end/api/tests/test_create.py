@@ -45,7 +45,7 @@ class DBTest(APITestCase):
         }
         # Retrieve the document
         old_school = self.school_collection.count_documents({})
-        # Response
+       
         school_response = self.client.post(reverse('school'), request_school, format='json')
        
         # Assertions
