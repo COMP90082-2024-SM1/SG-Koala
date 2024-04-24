@@ -58,7 +58,7 @@ python3 manage.py runserver # Start the server
 The application offers a comprehensive set of features designed to enhance user experience and operational efficiency. Below are the key features:
 
 1. **Login via MongoDB**: 
-   - Users can securely log in to the application. Authentication is handled through MongoDB, ensuring that user data is securely stored and managed.
+   - Users can securely log in to the application. Authentication is handled through our bakcend server via MongoDB, ensuring that user data is securely stored and managed.
 
 2. **Create and Manage Bookings**: 
    - Users have the ability to create new bookings and manage existing ones. This feature includes options to update or delete bookings as needed, facilitating effective scheduling and resource management.
@@ -96,8 +96,9 @@ The application offers a comprehensive set of features designed to enhance user 
     - ADD `API Server`
     - ADD `Testing`
     - ADD `Deployment`
-    - ADD `tests` on GitHub repo  
-    - UPDATE `docs` on GitHub repo  
+    - ADD `tests` on GitHub repo
+    - ADD `data sample` on GitHub repo    
+    - UPDATE `docs` on GitHub repo
   ### Sprint Three
   - Date
     - Start: 29/04/2024
