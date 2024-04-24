@@ -55,6 +55,22 @@ python3 manage.py runserver # Start the server
 ```
 
 ## Features
+The application offers a comprehensive set of features designed to enhance user experience and operational efficiency. Below are the key features:
+
+1. **Login via MongoDB**: 
+   - Users can securely log in to the application. Authentication is handled through MongoDB, ensuring that user data is securely stored and managed.
+
+2. **Create and Manage Bookings**: 
+   - Users have the ability to create new bookings and manage existing ones. This feature includes options to update or delete bookings as needed, facilitating effective scheduling and resource management.
+
+3. **Create and Edit Templates (for Checklists)**: 
+   - This feature allows users to create and modify templates for checklists. These templates can be used to standardize processes or tasks, enhancing consistency and efficiency across operations.
+
+4. **Database Visualization**: 
+   - The application provides tools for visualizing data directly from the database. This feature helps users understand complex data sets through graphical representations, making it easier to interpret and analyze data.
+
+5. **Data Analytics**: 
+   - Advanced data analytics capabilities are included, enabling users to perform detailed analysis of their data. This feature supports better decision-making by providing insights and trends based on the collected data.
 
 ## Changelog
   ### Sprint One
