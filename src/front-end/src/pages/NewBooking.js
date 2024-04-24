@@ -125,8 +125,9 @@ const NewBooking = () => {
         )}
         {activeCategory === "School" && (
           <form className="newBookingForm">
-            <label>School Name:</label>
-            <input
+            <label htmlFor="school-input">School Name:</label>
+                      <input
+                          id="school-input"
               list="schools"
               value={schoolName}
               onChange={(e) => setSchoolName(e.target.value)}
