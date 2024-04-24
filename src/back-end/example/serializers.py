@@ -60,8 +60,11 @@ class BusSerializer(serializers.Serializer):
 class BookSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     name = serializers.CharField(max_length=200)
+    programStream = serializers.CharField(required=False)
+    facilitators = serializers.CharField(required=False)
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
     status = serializers.ChoiceField(choices=['Pending', 'Processing', 'Delivered', 'Canceled'])
+    term = serializers.IntegerField(required=False)
     location = serializers.CharField()  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
     date = serializers.DateTimeField()
     checklist_id = serializers.CharField()  # Assuming it's a ForeignKey to another model.
