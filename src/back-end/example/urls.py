@@ -8,14 +8,13 @@ from example.views import views,school_view,booking_view,checklist_view,template
 
 urlpatterns = [
     path('', views.index),
-    path('booking/', booking_view.BookingView.as_view()),
-    path('booking/<str:id>/', booking_view.BookingViewID.as_view()),
-    path('school/', school_view.SchoolView.as_view()),
-    path('school/<str:id>/',  school_view.SchoolViewID.as_view()),
-    path('template/', template_view.TemplateView.as_view()),
-    path('template/<str:id>/',  template_view.TemplateViewID.as_view()),
-    path('checklist/', checklist_view.ChecklistView.as_view()),
-    path('checklist/<str:id>/',  checklist_view.ChecklistViewID.as_view()),
+    path('booking/', booking_view.BookingView.as_view(), name="booking"),
+    path('booking/<str:id>/', booking_view.BookingViewID.as_view(), name="booking_id"),
+    path('school/', school_view.SchoolView.as_view(), name="school"),
+    path('school/<str:id>/',  school_view.SchoolViewID.as_view(), name="school_id"),
+    path('template/', template_view.TemplateView.as_view(), name="template"),
+    path('template/<str:id>/',  template_view.TemplateViewID.as_view(), name="template_id"),
+    path('checklist/', checklist_view.ChecklistView.as_view(), name="checklist"),
+    path('checklist/<str:id>/',  checklist_view.ChecklistViewID.as_view(), name="checklist_id"),
     path('miscellaneous/', miscellaneous_view.MiscellaneousView.as_view()),
-
 ]
