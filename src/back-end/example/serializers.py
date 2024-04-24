@@ -68,7 +68,11 @@ class BookSerializer(serializers.Serializer):
     checklist = ChecklistSerializer(required=False)  # Assuming it's a ForeignKey to another model.
     startTime = serializers.DateTimeField()
     endTime = serializers.DateTimeField()
-    # module_id = serializers.PrimaryKeyRelatedField(read_only=True)  # Assuming it's a ForeignKey to another model.
+    module_id = serializers.ListField(
+        child=serializers.CharField(max_length=255),  
+        allow_empty=True,
+        required=False
+    )  
     school_id= serializers.CharField()  # Assuming it's a ForeignKey to another model.
     school= SchoolSerializer(required=False)  # Assuming it's a ForeignKey to another model.
     exibition = serializers.CharField()  # Assuming it's a ForeignKey to another model.
