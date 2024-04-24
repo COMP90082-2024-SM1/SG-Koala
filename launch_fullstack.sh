@@ -10,7 +10,9 @@ VENV_NAME="venv"
 if [ ! -d "$VENV_NAME" ]; then
     python3 -m venv $VENV_NAME
 fi
+sleep 3
 source $VENV_NAME/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 echo "Setup is complete and the virtual environment '$VENV_NAME' is activated."
 echo "Starting Django server..."
