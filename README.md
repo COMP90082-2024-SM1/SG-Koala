@@ -37,6 +37,10 @@ To launch both the frontend and the backend simultaneously, run the following sc
 ```bash
 sh ./launch_fullstack.sh
 ```
+> If you encounter a "permission denied" error, you may need to grant execution permissions to the script using:
+```bash
+chmod +x ./launch_fullstack.sh
+```
 ### Run Frontend
 ```bash
 cd ./src/front-end
@@ -72,6 +76,12 @@ The application offers a comprehensive set of features designed to enhance user 
 5. **Data Analytics**: 
    - Advanced data analytics capabilities are included, enabling users to perform detailed analysis of their data. This feature supports better decision-making by providing insights and trends based on the collected data.
 
+6. **Calendar**:
+    - The calendar visualization aids users in easily viewing and managing their booking schedules, enhancing timetable management.
+
+7. **Search**:
+    - A search feature is available for locating bookings by ID or organization name, displaying all relevant results and facilitating quick access.
+
 ## Changelog
   ### Sprint One
   - Date
@@ -90,9 +100,10 @@ The application offers a comprehensive set of features designed to enhance user 
     - ADD `Dashboard Page`
     - ADD `Database Page`
     - ADD `Login Page`
-    - ADD `Navbar`
     - ADD `New Template Detail Page`
     - ADD `New Template Page`
+    - ADD `Search Bar Function`
+    - ADD `Navbar`
     - ADD `API Server`
     - ADD `Testing`
     - ADD `Deployment`
@@ -123,8 +134,8 @@ The application offers a comprehensive set of features designed to enhance user 
   - Example: `backend/feature/oauth-integration`
 - **Feature Branches**: `feature/<short-feature-description>`
   - Example: `feature/oauth-integration`
-- **Bug Fixes**: `bugfix/<short-bug-description>`
-  - Example: `bugfix/login-error`
+- **Bug Fixes**: `fix/<short-bug-description>`
+  - Example: `fix/login-error`
 - **Documentation**: `docs/<documentation-subject>`
   - Example: `docs/api-specification`
 
