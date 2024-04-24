@@ -1,0 +1,245 @@
+[{
+  "_id": {
+    "$oid": "661e4c8de977d7711c301aee"
+  },
+  "name": "template2",
+  "task": [
+    {
+      "name": "step1",
+      "link": "http://www.baidu.com",
+      "status": 1
+    },
+    {
+      "name": "step2",
+      "link": "http://www.example.com",
+      "status": 1
+    },
+    {
+      "name": "step3",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "step4",
+      "link": "",
+      "status": 0
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "661e4fdae977d7711c301afb"
+  },
+  "name": "Paid Workshop",
+  "task": [
+    {
+      "name": "Planner (from email/MS Forms)",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Make initial Priava Hold and MSC Hold",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Note: Take Flight - check with VM/MC before...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If struggling to match up times/dates, email...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Update holds in MSC & Priava as relevant",
+      "link": "https://apac-app.priava.com/api/login/dist/#/",
+      "status": 0
+    },
+    {
+      "name": "Add to LER & mailing list if yes...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Respond with confirmation of program, date...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If Future Foods, ask for med info for staff...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "KE to roster",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Check in with teacher 2 weeks out (resend ...)",
+      "link": "",
+      "status": 0
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6628ac9b24b776b1cf53954e"
+  },
+  "name": "INNOVATION CHALLENGE",
+  "task": [
+    {
+      "name": "Note: Take Flight - check with VM/MC before...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Make initial Priava Hold and MSC Hold",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If struggling to match up times/dates, email...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Update holds in MSC & Priava as relevant",
+      "link": "https://apac-app.priava.com/api/login/dist/#/",
+      "status": 0
+    },
+    {
+      "name": "Add to LER & mailing list if yes...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Respond with confirmation of program, date...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If Future Foods, ask for med info for staff...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "KE to roster",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Check in with teacher 2 weeks out (resend...)",
+      "link": "",
+      "status": 0
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6628aca124b776b1cf539550"
+  },
+  "name": "CREATIVE ARTS WORKSHOP",
+  "task": [
+    {
+      "name": "Note: Take Flight - check with VM/MC before...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Make initial Priava Hold and MSC Hold",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If struggling to match up times/dates, email...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Update holds in MSC & Priava as relevant",
+      "link": "https://apac-app.priava.com/api/login/dist/#/",
+      "status": 0
+    },
+    {
+      "name": "Add to LER & mailing list if yes...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Respond with confirmation of program, date...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If Future Foods, ask for med info for staff...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "KE to roster",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Check in with teacher 2 weeks out (resend...)",
+      "link": "",
+      "status": 0
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "6628aca624b776b1cf539552"
+  },
+  "name": "SCIENCE LAB WORKSHOP",
+  "task": [
+    {
+      "name": "Note: Take Flight - check with VM/MC before...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Make initial Priava Hold and MSC Hold",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If struggling to match up times/dates, email...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Update holds in MSC & Priava as relevant",
+      "link": "https://apac-app.priava.com/api/login/dist/#/",
+      "status": 0
+    },
+    {
+      "name": "Add to LER & mailing list if yes...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Respond with confirmation of program, date...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "If Future Foods, ask for med info for staff...",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "KE to roster",
+      "link": "",
+      "status": 0
+    },
+    {
+      "name": "Check in with teacher 2 weeks out (resend...)",
+      "link": "",
+      "status": 0
+    }
+  ]
+}]
