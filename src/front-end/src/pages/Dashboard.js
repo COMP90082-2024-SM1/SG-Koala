@@ -1,231 +1,152 @@
-import React, { useState } from "react";
-import "../styles/Dashboard.css";
-import Header from "../components/Header/Header";
+import React, { useState, useEffect } from 'react';
+import '../styles/Dashboard.css';
+import Header from '../components/Header/Header';
 import { useNavigate } from 'react-router-dom';
+import { getAllBooking } from '../api/DashbaordAPI';
 
 function formatDate(dateStr) {
-  const [time, date] = dateStr.split(" ");
-  const dateParts = date.split("/");
-  const newDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
-
-  const formattedDate = new Intl.DateTimeFormat("en-GB", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    weekday: "short",
-  }).format(newDate);
-  return formattedDate;
+  const date = new Date(dateStr);
+  return date.toLocaleDateString('en-GB', {
+    weekday: 'short', 
+    day: '2-digit',   
+    month: '2-digit', 
+    year: 'numeric',  
+  });
 }
 
-const Dashboard = () => {
-  const [activeType, setActiveType] = useState("upcoming");
-  const [filterType, setFilterType] = useState("all");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [filterLocation, setFilterLocation] = useState("all");
+function formatTimeRange(startTimeStr, endTimeStr) {
+  const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+  const startTime = new Date(startTimeStr);
+  const endTime = new Date(endTimeStr);
 
-  const bookingsData = {
-    upcoming: [
-      {
-        name: "MGC",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "UBC",
-        type: "workshop2",
-        time: "8:00-9:00 23/04/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-      {
-        name: "GWSC",
-        type: "workshop4",
-        time: "8:00-9:00 23/05/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "MTC",
-        type: "workshop3",
-        time: "8:00-9:00 23/06/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-      {
-        name: "MIT",
-        type: "workshop1",
-        time: "8:00-9:00 23/07/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "RMIT",
-        type: "workshop5",
-        time: "8:00-9:00 23/08/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-    ],
-    completed: [
-      {
-        name: "Meeting with John",
-        type: "workshop1",
-        time: "8:00-10:00 23/03/2021",
-        location: "Room2",
-        status: "Confirmed",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop2",
-        time: "8:00-9:00 23/05/2021",
-        location: "Room5",
-        status: "Confirmed",
-      },
-    ],
-    cancelled: [
-      {
-        name: "Meeting with John",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room2",
-        status: "Cancelled",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop2",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room5",
-        status: "Cancelled",
-      },
-      {
-        name: "Meeting with John",
-        type: "workshop3",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room2",
-        status: "Cancelled",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room5",
-        status: "Cancelled",
-      },
-    ],
-  };
+  const formattedStartTime = startTime.toLocaleTimeString('en-GB', options);
+  const formattedEndTime = endTime.toLocaleTimeString('en-GB', options);
+
+  return `${formattedStartTime}-${formattedEndTime}`;
+}
+
+
+
+const Dashboard = () => {
+  const [bookingsData, setBookingsData] = useState({
+    all: [],
+    upcoming: [],
+    completed: [],
+    cancelled: []
+  });
+  const [activeType, setActiveType] = useState('all');
+  const [filterType, setFilterType] = useState('all');
+  const [sortOrder, setSortOrder] = useState('asc');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [filterLocation, setFilterLocation] = useState('all');
+  const navigate = useNavigate();
+  const [locationsList, setLocationsList] = useState([]);
+
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await getAllBooking();
+        const data = await response.json();
+        console.log(data)
+        setBookingsData({
+          all: data,
+          upcoming: data.filter(booking => booking.status === 'Processing'),
+          completed: data.filter(booking => booking.status === 'Delivered'),
+          cancelled: data.filter(booking => booking.status === 'Canceled')
+        });
+        const uniqueLocations = Array.from(new Set(data.map(booking => booking.location)));
+        setLocationsList(uniqueLocations);
+        } catch (error) {
+        console.error('Failed to fetch bookings:', error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
 
   const getFilteredAndSortedBookings = () => {
-    let filteredBookings = [...bookingsData[activeType]];
-    if (filterType !== "all") {
-      filteredBookings = filteredBookings.filter(
-        (booking) => booking.type === filterType
-      );
-    }
-    if (filterLocation !== "all") {
-      filteredBookings = filteredBookings.filter(
-        (booking) => booking.location === filterLocation
-      );
-    }
+    let filteredBookings = bookingsData[activeType];
 
-    if (startDate && endDate) {
+    if (filterType !== 'all') {
+      filteredBookings = filteredBookings.filter(booking => booking.type === filterType);
+    }
+    if (filterLocation !== 'all') {
+      filteredBookings = filteredBookings.filter(booking => booking.location === filterLocation);
+    }
+    if (startDate) {
       const start = new Date(startDate);
+      filteredBookings = filteredBookings.filter(booking => {
+        const bookingStart = new Date(booking.startTime);
+        return bookingStart >= start;
+      });
+    }
+    if (endDate) {
       const end = new Date(endDate);
-
-      filteredBookings = filteredBookings.filter((booking) => {
-        const bookingDate = new Date(
-          booking.time.split(" ")[1].split("/").reverse().join("-")
-        );
-        return bookingDate >= start && bookingDate <= end;
+      // Set time to the end of the day (23:59:59) to include bookings on the end date.
+      end.setHours(23, 59, 59, 999);
+      filteredBookings = filteredBookings.filter(booking => {
+        const bookingStart = new Date(booking.startTime);
+        return bookingStart <= end;
       });
     }
 
-    filteredBookings.sort((a, b) => {
-      const dateA = new Date(
-        a.time.split(" ")[1].split("/").reverse().join("-")
-      );
-      const dateB = new Date(
-        b.time.split(" ")[1].split("/").reverse().join("-")
-      );
-      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-    });
 
     return filteredBookings;
   };
 
-  const navigate = useNavigate(); 
   function handleNewBooking() {
     navigate('/new-booking');
   }
 
   return (
     <div className="dashboard-dashboard">
-      <Header> Booking </Header>
+      <Header>Booking Dashboard</Header>
       <div className="dashboardFilterSection">
-        {Object.keys(bookingsData).map((type) => (
+        {['all', 'upcoming', 'completed', 'cancelled'].map((type) => (
           <button
             key={type}
-            className={`dashboardFilterBtn ${
-              activeType === type ? "dashboard-active" : ""
-            }`}
+            className={`dashboardFilterBtn ${activeType === type ? 'dashboard-active' : ''}`}
             onClick={() => setActiveType(type)}
           >
             {type.charAt(0).toUpperCase() + type.slice(1)}
           </button>
+          
         ))}
-        <button className="dashboardNewBookingBtn" onClick={handleNewBooking}>
+          <button className="dashboardNewBookingBtn" onClick={handleNewBooking}>
           <span className="plus-icon">+</span>
         </button>
       </div>
       <div className="dashboardFilterAndSort">
         <select onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
-          <option value="workshop1">Workshop 1</option>
-          <option value="workshop2">Workshop 2</option>
-          <option value="workshop3">Workshop 3</option>
+          {/* Add more type options here as needed */}
         </select>
         <div className="dashboardDateFilter">
           <label htmlFor="start-date">From: </label>
-          <input
-            id="start-date"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+          <input id="start-date" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
           <label htmlFor="end-date">To: </label>
-          <input
-            id="end-date"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
+          <input id="end-date" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
         </div>
         <div className="dashboardLocationFilter">
           <label htmlFor="location">Location: </label>
-          <select
-            id="location"
-            onChange={(e) => setFilterLocation(e.target.value)}
-          >
+          <select id="location" onChange={(e) => setFilterLocation(e.target.value)}>
             <option value="all">All Locations</option>
-            <option value="Room1">Room1</option>
-            <option value="Room2">Room2</option>
-            <option value="Room3">Room3</option>
+            {locationsList.map(location => (
+              <option key={location} value={location}>{location}</option>
+            ))}
           </select>
         </div>
-
-        <button
-          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-        >
-          Sort Date {sortOrder === "asc" ? "Ascending" : "Descending"}
+        <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+          Sort Date {sortOrder === 'asc' ? 'Ascending' : 'Descending'}
         </button>
       </div>
+      
       <div className="dashboardBookingsList">
-        <div className="dashboardBookingHeader">
-          <div className="dashboardBookingHeader-item">Organisation Name</div>
-          <div className="dashboardBookingHeader-item">Type</div>
+      <div className="dashboardBookingHeader">
+          <div className="dashboardBookingHeader-item">Name</div>
+          <div className="dashboardBookingHeader-item">Stream</div>
           <div className="dashboardBookingHeader-item">Date</div>
           <div className="dashboardBookingHeader-item">Location</div>
           <div className="dashboardBookingHeader-item">Status</div>
@@ -234,24 +155,21 @@ const Dashboard = () => {
           <div className="dashboardBookingItem" key={index}>
             <div className="dashboardBookingDetail">{booking.name}</div>
             <div
-              className={`dashboard-booking-type-${booking.type
+              className={`dashboard-booking-programStream-${booking.programStream
                 .toLowerCase()
                 .replace(/\s+/g, "-")}`}
             >
-              {booking.type}
+              {booking.programStream}
             </div>
+            
             <div className="dashboardBookingDetail">
-              <span>{formatDate(booking.time)}</span>
+              {formatDate(booking.startTime)} 
               <span className="dashboardSubTime">
-                {booking.time.split(" ")[0]}
+                {formatTimeRange(booking.startTime, booking.endTime)} 
               </span>
             </div>
             <div className="dashboardBookingDetail">{booking.location}</div>
-            <div
-              className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
-            >
-              {booking.status}
-            </div>
+            <div className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}>{booking.status}</div>
           </div>
         ))}
       </div>
