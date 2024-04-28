@@ -37,14 +37,16 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
         onChange={handleChange(setName)}
         onBlur={updateTask}
         className="templateDetailInput"
-        placeholder="task name"
+              placeholder="task name"
+              data-testid={`task-name-${index}`}
       />
       <input
         value={link}
         onChange={handleChange(setLink)}
         onBlur={updateTask}
         className="templateDetailInput"
-        placeholder="link (optional)"
+              placeholder="link (optional)"
+              data-testid={`task-link-${index}`}
       />
       <button
         onClick={() => onTaskRemove(index)}
@@ -263,7 +265,8 @@ const TemplateDetail = () => {
           <form onSubmit={onSubmit} className="templateDetailAddItem">
             <button
               className="templateDetailButton templateDetailAddButton"
-              type="submit"
+                          type="submit"
+                          aria-label="Add Task"
             >
               <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
             </button>
