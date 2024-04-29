@@ -92,6 +92,12 @@ const Dashboard = () => {
       });
     }
 
+    filteredBookings.sort((a, b) => {
+      const dateA = new Date(a.startTime).getTime();
+      const dateB = new Date(b.startTime).getTime();
+      return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+
 
     return filteredBookings;
   };

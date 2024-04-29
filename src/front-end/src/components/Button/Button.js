@@ -9,6 +9,7 @@ export const Button = ({ onClick, className, style, type, children }) => {
     save: "var(--positive-color)",
     delete: "var(--negative-color)",
     discard: "var(--primary-color)",
+    submit:  "var(--positive-color)",
   };
 
   const combinedStyle = {
