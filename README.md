@@ -44,17 +44,23 @@ chmod +x ./launch_fullstack.sh
 ### Run Frontend
 ```bash
 cd ./src/front-end
-npm i # Install dependencies
-npm start # Start the frontend server
+# Install dependencies
+npm i
+# Start the frontend server
+npm start
 # The application will be hosted at: http://localhost:3000
 ```
 ### Run Backend
 ```bash
 cd ./src/back-end
-python3 -m venv venv # Create a virtual environment (optional but recommended)
-source venv/bin/activate # Use virtual environment
-pip install -r requirements.txt # Install required modules
-python3 manage.py runserver # Start the server
+# Create a virtual environment (optional but recommended)
+python3 -m venv venv
+# Use virtual environment
+source venv/bin/activate
+# Install required modules
+pip install -r requirements.txt
+# Start the server
+python3 manage.py runserver
 # The server will be run at: http://localhost:8000
 ```
 
