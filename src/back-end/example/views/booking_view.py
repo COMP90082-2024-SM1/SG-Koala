@@ -46,30 +46,39 @@ class BookingView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, *args, **kwargs):
+        print("!!!!!")
         db = connect_mongodb()
         booking_collection = db['booking']
         checklist_collection = db['checklist']
         school_collection = db['school']
         serializer = BookSerializer(data=request.data)
+        print("aaaaaaaa")
         if serializer.is_valid():
             # Insert data into MongoDB
+            print("11111111")
             new_data = serializer.validated_data
             if 'checklist_id' in request.data:
+                print("22222222")
                 checklist_id = ObjectId(request.data['checklist_id'])
                 new_data['checklist_id'] = checklist_id
+                print("555555")
                 checklist_document = checklist_collection.find_one({'_id': checklist_id})
+                print("66666")
                 if not checklist_document:
+                    print("77777")
                     return Response({"error":"checklist not found"}, status=status.HTTP_404_NOT_FOUND)
             if 'school_id' in request.data:
+                print("3333333")
                 school_id = ObjectId(request.data['school_id'])
                 new_data['school_id'] = school_id
                 school_document = school_collection.find_one({'_id': school_id})
                 if not school_document:
                     return Response({"error":"school not found"}, status=status.HTTP_404_NOT_FOUND)
 
-
+            print("$$$$$$")
+            print(new_data)
             result = booking_collection.insert_one(new_data)
-            print(result)
+            # print(result)
             # Optionally add the MongoDB ID to the response
             new_data['_id'] = str(result.inserted_id)
             response_data = {**new_data, '_id': str(result.inserted_id)}
@@ -80,10 +89,12 @@ class BookingView(APIView):
                 response_data['school_id'] = str(response_data['school_id'])
             # response_data = json.dumps(new_data, default=str)
             return Response(response_data, status=status.HTTP_201_CREATED)
+        print("Validation Failed:", serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class BookingViewID(APIView):
+    print("????")
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
