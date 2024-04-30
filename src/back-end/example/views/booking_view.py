@@ -8,9 +8,10 @@ from rest_framework.views import APIView
 from rest_framework import status
 from db_connection import connect_mongodb
 import json 
-
+from rest_framework.permissions import IsAuthenticated
 
 class BookingView(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         booking_collection = db['booking']
@@ -84,6 +85,7 @@ class BookingView(APIView):
 
 
 class BookingViewID(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)

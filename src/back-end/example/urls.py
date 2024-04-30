@@ -8,6 +8,8 @@ from example.views import views,school_view,booking_view,checklist_view,template
 
 urlpatterns = [
     path('', views.index),
+    # path('login/', views.LoginView.as_view()),
+    path('login/', views.login_method,name='user_login'),
     path('booking/', booking_view.BookingView.as_view(), name="booking"),
     path('booking/<str:id>/', booking_view.BookingViewID.as_view(), name="booking_id"),
     path('school/', school_view.SchoolView.as_view(), name="school"),
