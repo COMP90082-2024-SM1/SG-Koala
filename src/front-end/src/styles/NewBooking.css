@@ -124,3 +124,60 @@
 #newBookingStudentYear {
   padding-bottom: 10px;
 }
+
+
+.autoFillText {
+  margin-left: 10px;
+  cursor: pointer;
+  color: var(--info-color); 
+  text-decoration: underline;
+  margin-top: 10px;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; 
+}
+
+.popupContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 100%; 
+  height: 150px; 
+  max-width: 600px; 
+  max-height: 400px; 
+  display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
+  flex-grow: 1;
+}
+
+
+.popupButtons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popupButtons button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.newBookingButtons {
+  display: flex;
+  column-gap: 20px;
+  margin-left: 50%;
+}
