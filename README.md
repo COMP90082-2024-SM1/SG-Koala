@@ -113,6 +113,7 @@ The application offers a comprehensive set of features designed to enhance user 
     - ADD `Navbar`
     - ADD `API Server`
     - ADD `Testing`
+    - ADD `Email sending booking reference number`
     - ADD `Deployment`
     - ADD `tests` on GitHub repo
     - ADD `data sample` on GitHub repo    
@@ -170,7 +171,7 @@ The application offers a comprehensive set of features designed to enhance user 
 - Use **Rebase and Merge** for minor fixes or updates.
 
 ## Demo
-**Sprint2 Video** Watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
+**Sprint2 Video**: watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
 
 ## Contact
 | Name                | Email                                  | GitHub                               |
