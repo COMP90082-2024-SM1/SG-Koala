@@ -4,7 +4,7 @@ import Header from "../components/Header/Header";
 import { TypographyParagraph } from "../components/Typography/Typography";
 import { Button } from "../components/Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrash, faLink } from "@fortawesome/free-solid-svg-icons";
 import {
   getTemplateById,
   updateTemplate,
@@ -30,6 +30,10 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
     onTaskUpdate(index, name, link);
   };
 
+  const openLink = () => {
+    window.open(link, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="templateDetailItem">
       <input
@@ -47,7 +51,15 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
         className="templateDetailInput"
               placeholder="link (optional)"
               data-testid={`task-link-${index}`}
-      />
+          />
+          {link && (
+        <button
+          onClick={openLink}
+                  className="templateDetailButton templateDetailLinkButton"
+        >
+           <FontAwesomeIcon icon={faLink} style={{ fontSize: "15px" }} />
+        </button>
+      )}
       <button
         onClick={() => onTaskRemove(index)}
         className="templateDetailButton templateDetailDeleteButton"
