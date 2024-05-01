@@ -3,7 +3,6 @@ export const Grouped_Columns = [
     {
         Header: 'ID',
         accessor: 'id',
-        disableFilters: true,
         canSort: false,
     },
     {
