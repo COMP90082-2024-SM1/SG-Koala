@@ -2,11 +2,6 @@ from django.contrib.auth.models import Group, User
 from rest_framework import serializers
 from datetime import datetime
 
-
-
-
-
-
 class SchoolSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     name = serializers.CharField(max_length=200)
@@ -92,7 +87,7 @@ class BookSerializer(serializers.Serializer):
     expense = serializers.IntegerField(default=0)
     income = serializers.IntegerField(default=0)
     profit = serializers.IntegerField(default=0)
-
+    
 class MiscellaneousSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     module = serializers.ListField(
