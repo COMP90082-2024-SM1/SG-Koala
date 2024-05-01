@@ -3,12 +3,12 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  background: #0D3B66;
+  background: var(--primary-color);
  }
  
  
  .logo {
-  background: #0D3B66;
+  background: var(--primary-color);
   text-align: center;
   padding: 10px;
   font-size: 20px;
@@ -41,7 +41,7 @@
   display: flex;
   padding: 10px;
   color: white;
-  background: #0D3B66;
+  background: var(--primary-color);
   text-decoration: none;
   font-size: 18px;
   transition: background-color 0.3s, color 0.3s;
@@ -67,7 +67,7 @@
  .searchBar input {
   background: url("../../images/search-icon.png") no-repeat 10px center / 20px
     20px;
-  border: 2px solid #ffffff;
+  border: 2px solid var(--white-color);
   border-radius: 25px;
   padding-left: 40px;
   width: 70%;
@@ -75,17 +75,17 @@
   display: block;
   height: 35px;
   font-size: 16px;
-  color: #ffffff;
+  color: var(--white-color);
  }
  
  
  #searchInput {
-  color: #ffffff;
+  color: var(--white-color);
  }
  
  
  .searchBar input::placeholder {
-  color: #ffffff;
+  color: var(--white-color);
  }
  
  

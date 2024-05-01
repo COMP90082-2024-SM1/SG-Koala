@@ -5,7 +5,7 @@ The Science Gallery Melbourne is facing challenges with its current booking syst
 ## Table of Contents
 - [Overview](#overview)
 - [Folder Structure](#folder-structure)
-- [Installation and Setup](#installation-and-setup)
+- [Installation](#installation)
 - [Usage](#usage)
 - [Features](#features)
 - [Changelog](#changelog)
@@ -20,18 +20,73 @@ The Science Gallery Melbourne is facing challenges with its current booking syst
 - `README.md`: This file. Includes the project overview, folder structure, changelog, and other essential information.
 - `docs/`: Contains all documentation files. Further organized into subfolders for requirements, design documents, etc.
 - `src/`: Source code of the project.
+- `tests/`: Documents about test cases and methods.
+- `data samples/`: Documents required for simulating or demonstrating your prototype, including all necessary data inputs.
 
-## Installation and Setup
-Instructions for setting up the project environment and installing any necessary dependencies.
-> Scheduled for documentation in `Sprint-2`.
+## Installation
+- **Node.js**: It's recommended to use the latest LTS (Long Term Support) version of Node.js to ensure compatibility and stability. You can download it from [Node.js official website](https://nodejs.org/).
+
+- **Python**: For backend development, Python 3.8 or newer is required. This is crucial for running Django and other Python-based tools. Download Python from the [official Python website](https://www.python.org/downloads/).
+
+- **Integrated Development Environment (IDE)**: A suitable IDE can enhance your development experience significantly. We recommend using [Visual Studio Code (VSCode)](https://code.visualstudio.com/),
+
 
 ## Usage
-How to use the application or software, including any relevant commands or scripts.
-> Scheduled for documentation in `Sprint-2`.
+### Script
+To launch both the frontend and the backend simultaneously, run the following script from the root directory:
+```bash
+sh ./launch_fullstack.sh
+```
+> If you encounter a "permission denied" error, you may need to grant execution permissions to the script using:
+```bash
+chmod +x ./launch_fullstack.sh
+```
+### Run Frontend
+```bash
+cd ./src/front-end
+# Install dependencies
+npm i
+# Start the frontend server
+npm start
+# The application will be hosted at: http://localhost:3000
+```
+### Run Backend
+```bash
+cd ./src/back-end
+# Create a virtual environment (optional but recommended)
+python3 -m venv venv
+# Use virtual environment
+source venv/bin/activate
+# Install required modules
+pip install -r requirements.txt
+# Start the server
+python3 manage.py runserver
+# The server will be run at: http://localhost:8000
+```
 
 ## Features
-Briefly outline the main features of your project and their functions.
-> Scheduled for documentation in `Sprint-2`.
+The application offers a comprehensive set of features designed to enhance user experience and operational efficiency. Below are the key features:
+
+1. **Login via MongoDB**: 
+   - Users can securely log in to the application. Authentication is handled through our bakcend server via MongoDB, ensuring that user data is securely stored and managed.
+
+2. **Create and Manage Bookings**: 
+   - Users have the ability to create new bookings and manage existing ones. This feature includes options to update or delete bookings as needed, facilitating effective scheduling and resource management.
+
+3. **Create and Edit Templates (for Checklists)**: 
+   - This feature allows users to create and modify templates for checklists. These templates can be used to standardize processes or tasks, enhancing consistency and efficiency across operations.
+
+4. **Database Visualization**: 
+   - The application provides tools for visualizing data directly from the database. This feature helps users understand complex data sets through graphical representations, making it easier to interpret and analyze data.
+
+5. **Data Analytics**: 
+   - Advanced data analytics capabilities are included, enabling users to perform detailed analysis of their data. This feature supports better decision-making by providing insights and trends based on the collected data.
+
+6. **Calendar**:
+    - The calendar visualization aids users in easily viewing and managing their booking schedules, enhancing timetable management.
+
+7. **Search**:
+    - A search feature is available for locating bookings by ID or organization name, displaying all relevant results and facilitating quick access.
 
 ## Changelog
   ### Sprint One
@@ -48,7 +103,19 @@ Briefly outline the main features of your project and their functions.
     - End: 26/04/2024
     - Duration: 4 weeks
   - Log
-    - N/A   
+    - ADD `Dashboard Page`
+    - ADD `Database Page`
+    - ADD `Login Page`
+    - ADD `New Template Detail Page`
+    - ADD `New Template Page`
+    - ADD `Search Bar Function`
+    - ADD `Navbar`
+    - ADD `API Server`
+    - ADD `Testing`
+    - ADD `Deployment`
+    - ADD `tests` on GitHub repo
+    - ADD `data sample` on GitHub repo    
+    - UPDATE `docs` on GitHub repo
   ### Sprint Three
   - Date
     - Start: 29/04/2024
@@ -73,8 +140,8 @@ Briefly outline the main features of your project and their functions.
   - Example: `backend/feature/oauth-integration`
 - **Feature Branches**: `feature/<short-feature-description>`
   - Example: `feature/oauth-integration`
-- **Bug Fixes**: `bugfix/<short-bug-description>`
-  - Example: `bugfix/login-error`
+- **Bug Fixes**: `fix/<short-bug-description>`
+  - Example: `fix/login-error`
 - **Documentation**: `docs/<documentation-subject>`
   - Example: `docs/api-specification`
 

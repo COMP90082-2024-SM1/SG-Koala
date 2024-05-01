@@ -1,0 +1,187 @@
+[{
+  "_id": {
+    "$oid": "6628ae4124b776b1cf539556"
+  },
+  "name": "Cabrera-Stevens",
+  "programStream": "pattern",
+  "facilitators": "Christina Jones",
+  "event": "add",
+  "status": "Processing",
+  "term": 1,
+  "location": "Mcintoshborough",
+  "date": {
+    "$date": "2024-12-17T13:46:11.000Z"
+  },
+  "checklist_id": {
+    "$oid": "661e4c8de977d7711c301aee"
+  },
+  "startTime": {
+    "$date": "2024-11-19T15:12:17.000Z"
+  },
+  "endTime": {
+    "$date": "2024-12-22T06:20:29.000Z"
+  },
+  "module_id": [
+    "module1",
+    "module2"
+  ],
+  "school_id": {
+    "$oid": "6628aa7124b776b1cf539541"
+  },
+  "exibition": "exibition",
+  "note": "Type range use item try leader. Off their benefit sign. Until tell turn structure citizen travel.\nWhich article heavy political project happy. Government carry price only single.",
+  "bus": {
+    "bus_req": false,
+    "isBooked": false,
+    "status": 1,
+    "price": 434.21,
+    "date_paid": {
+      "$date": "2024-04-14T11:42:24.000Z"
+    },
+    "invoice": "INV-yZeut-963"
+  },
+  "per_student": 92,
+  "expense": 1968,
+  "income": 3381,
+  "profit": 1823
+},
+{
+  "_id": {
+    "$oid": "6628aef524b776b1cf539558"
+  },
+  "name": "Oconnell and Sons",
+  "programStream": "instead",
+  "facilitators": "James Thompson",
+  "event": "information",
+  "status": "Canceled",
+  "term": 1,
+  "location": "Freemanton",
+  "date": {
+    "$date": "2024-10-07T16:49:51.000Z"
+  },
+  "checklist_id": {
+    "$oid": "661e4fdae977d7711c301afb"
+  },
+  "startTime": {
+    "$date": "2024-05-24T00:21:24.000Z"
+  },
+  "endTime": {
+    "$date": "2024-12-30T23:03:39.000Z"
+  },
+  "module_id": [
+    "module1"
+  ],
+  "school_id": {
+    "$oid": "6628aa6b24b776b1cf53953f"
+  },
+  "exibition": "exibition",
+  "note": "Other at about recently drop of.\nPicture suggest ability describe official scene within. Truth tend world rest find local question piece. Western place chance.",
+  "bus": {
+    "bus_req": false,
+    "isBooked": true,
+    "status": 1,
+    "price": 209.35,
+    "date_paid": {
+      "$date": "2024-01-02T20:59:26.000Z"
+    },
+    "invoice": "INV-QTwCG-505"
+  },
+  "per_student": 25,
+  "expense": 4485,
+  "income": 2182,
+  "profit": 1363
+},
+{
+  "_id": {
+    "$oid": "6628af3b24b776b1cf53955a"
+  },
+  "name": "Casey-Brown",
+  "programStream": "that",
+  "facilitators": "Megan Jackson",
+  "event": "eat",
+  "status": "Delivered",
+  "term": 4,
+  "location": "Jeffreyland",
+  "date": {
+    "$date": "2024-08-05T23:15:24.000Z"
+  },
+  "checklist_id": {
+    "$oid": "6628ac9b24b776b1cf53954e"
+  },
+  "startTime": {
+    "$date": "2024-05-23T01:48:13.000Z"
+  },
+  "endTime": {
+    "$date": "2024-11-04T00:07:03.000Z"
+  },
+  "module_id": [
+    "module1",
+    "module2",
+    "module3"
+  ],
+  "school_id": {
+    "$oid": "6628aa7124b776b1cf539541"
+  },
+  "exibition": "exibition",
+  "note": "Occur because stop term better chair. Rock hope south art dark.\nOwn put shake always follow evidence.\nMan as home which. Trial catch writer ever certain.",
+  "bus": {
+    "bus_req": true,
+    "isBooked": false,
+    "status": 2,
+    "price": 435.51,
+    "date_paid": {
+      "$date": "2024-01-02T02:22:49.000Z"
+    },
+    "invoice": "INV-SjPfM-225"
+  },
+  "per_student": 14,
+  "expense": 3068,
+  "income": 3434,
+  "profit": 1861
+},
+{
+  "_id": {
+    "$oid": "6628af7124b776b1cf53955c"
+  },
+  "name": "Walker Group",
+  "programStream": "reach",
+  "facilitators": "Carl Fry",
+  "event": "indeed",
+  "status": "Pending",
+  "term": 2,
+  "location": "Port Kennethtown",
+  "date": {
+    "$date": "2024-09-10T04:23:49.000Z"
+  },
+  "checklist_id": {
+    "$oid": "6628aca124b776b1cf539550"
+  },
+  "startTime": {
+    "$date": "2024-12-02T07:42:47.000Z"
+  },
+  "endTime": {
+    "$date": "2024-12-10T01:43:48.000Z"
+  },
+  "module_id": [
+    "module1"
+  ],
+  "school_id": {
+    "$oid": "6628aa7124b776b1cf539541"
+  },
+  "exibition": "exibition",
+  "note": "Stay us raise hard. Seem should report. Shoulder issue challenge home drive than.\nPart order build can too. By history grow yard. Suggest hope him military leader example.",
+  "bus": {
+    "bus_req": false,
+    "isBooked": false,
+    "status": 1,
+    "price": 166.43,
+    "date_paid": {
+      "$date": "2024-02-12T08:00:30.000Z"
+    },
+    "invoice": "INV-FkRKB-298"
+  },
+  "per_student": 29,
+  "expense": 4864,
+  "income": 2002,
+  "profit": 453
+}]
