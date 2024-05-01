@@ -127,7 +127,6 @@ const Dashboard = () => {
       <div className="dashboardFilterAndSort">
         <select onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
-          {/* Add more type options here as needed */}
         </select>
         <div className="dashboardDateFilter">
           <label htmlFor="start-date">From: </label>

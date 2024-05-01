@@ -123,15 +123,24 @@ const NewBooking = () => {
     navigate('/dashboard');
   };
 
+  const formatDateTime = (date, time) => {
+    return `${date}T${time}:00`;  
+  };
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault(); 
     const test = "1111"
+
+    const startDate = formatDateTime(data.Delivery.programDate, data.Delivery.startTime);
+    const endDate = formatDateTime(data.Delivery.programDate, data.Delivery.endTime);
+
     const schoolData = {
       name: data.School.schools.find(school => school.id === data.School.schoolSelect)?.name,
       studentYear: data.School.studentYears[0], 
       numStudentRegistered: parseInt(data.School.registeredStudents),
       lowSES: data.School.lowSES === 'Y',
-      allergy: data.School.allergy === 'Y',
+      // allergy: data.School.allergy === 'Y',
       contactFirstName: data.School.contactInfo.firstName,
       contactLastName: data.School.contactInfo.lastName,
       email: data.School.contactInfo.email,
@@ -221,8 +230,8 @@ const NewBooking = () => {
       term: parseInt(data.Delivery.term, 10),      // +
       // startTime: data.Delivery.startTime,
       // endTime: data.Delivery.endTime,
-      startTime : st,
-      endTime : et,
+      startTime : startDate,
+      endTime : endDate,
       module_id: module_test, //
       exibition: data.Delivery.exhibitionSelect, //
       note: data.Delivery.notes, //
