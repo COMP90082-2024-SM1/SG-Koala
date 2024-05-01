@@ -1,4 +1,4 @@
-import React, { useState }from "react";
+import React, { useState } from "react";
 import koala_logo from "../../images/koala-logo.jpg";
 import navSgLogo from "../../images/sg-logo.png";
 import { Link, useLocation } from "react-router-dom";
@@ -20,7 +20,11 @@ const Navbar = () => {
   };
 
   const getIcon = (path, WhiteIcon, BlackIcon) => {
-    return location.pathname === path || hoverPath === path ? <BlackIcon /> : <WhiteIcon />;
+    return location.pathname === path || hoverPath === path ? (
+      <BlackIcon />
+    ) : (
+      <WhiteIcon />
+    );
   };
 
   const handleMouseEnter = (path) => {
@@ -43,50 +47,50 @@ const Navbar = () => {
       </div>
       <div className="navItems">
         <Link
-        to="/dashboard"
-        className={getNavItemClass("/dashboard")}
-        onMouseEnter={() => handleMouseEnter("/dashboard")}
-        onMouseLeave={handleMouseLeave}
-      >
-        {getIcon("/dashboard", bookingWhite, bookingBlack)}
-        Dashboard
-      </Link>
+          to="/dashboard"
+          className={getNavItemClass("/dashboard")}
+          onMouseEnter={() => handleMouseEnter("/dashboard")}
+          onMouseLeave={handleMouseLeave}
+        >
+          {getIcon("/dashboard", bookingWhite, bookingBlack)}
+          Dashboard
+        </Link>
         <Link
-        to="/database"
-        className={getNavItemClass("/database")}
-        onMouseEnter={() => handleMouseEnter("/database")}
-        onMouseLeave={handleMouseLeave}
-      >
-        {getIcon("/database", databaseWhite, databaseBlack)}
-        Database
-      </Link>
+          to="/database"
+          className={getNavItemClass("/database")}
+          onMouseEnter={() => handleMouseEnter("/database")}
+          onMouseLeave={handleMouseLeave}
+        >
+          {getIcon("/database", databaseWhite, databaseBlack)}
+          Database
+        </Link>
         <Link
-        to="/templates"
-        className={getNavItemClass("/templates")}
-        onMouseEnter={() => handleMouseEnter("/templates")}
-        onMouseLeave={handleMouseLeave}
-      >
-        {getIcon("/templates", templateWhite, templateBlack)}
-        Templates
-      </Link>
+          to="/templates"
+          className={getNavItemClass("/templates")}
+          onMouseEnter={() => handleMouseEnter("/templates")}
+          onMouseLeave={handleMouseLeave}
+        >
+          {getIcon("/templates", templateWhite, templateBlack)}
+          Templates
+        </Link>
         <Link
-        to="/analytics"
-        className={getNavItemClass("/analytics")}
-        onMouseEnter={() => handleMouseEnter("/analytics")}
-        onMouseLeave={handleMouseLeave}
-      >
-        {getIcon("/analytics", analysisWhite, analysisBlack)}
-        Analytics
-      </Link>
+          to="/analytics"
+          className={getNavItemClass("/analytics")}
+          onMouseEnter={() => handleMouseEnter("/analytics")}
+          onMouseLeave={handleMouseLeave}
+        >
+          {getIcon("/analytics", analysisWhite, analysisBlack)}
+          Analytics
+        </Link>
         <Link
-        to="/calendar"
-        className={getNavItemClass("/calendar")}
-        onMouseEnter={() => handleMouseEnter("/calendar")}
-        onMouseLeave={handleMouseLeave}
-      >
-        {getIcon("/calendar", calendarWhite, calendarBlack)}
-        Analytics
-      </Link>
+          to="/calendar"
+          className={getNavItemClass("/calendar")}
+          onMouseEnter={() => handleMouseEnter("/calendar")}
+          onMouseLeave={handleMouseLeave}
+        >
+          {getIcon("/calendar", calendarWhite, calendarBlack)}
+          Calendar
+        </Link>
       </div>
       <div className="footer">
         <img src={koala_logo} alt="Koala logo" id="koala_logo" />
