@@ -1,0 +1,39 @@
+
+.bg{
+    background-color: #ddd;
+}
+.scrollx{
+    overflow-x: auto;
+}
+.table{
+    table-layout: auto;
+    width: 100%;
+}
+
+.th{
+    height: 50px;
+    vertical-align: center;
+    text-align: left;
+    font-size: 18px;
+    padding: 8px;
+    background-color: #dddddd;
+    white-space: nowrap;
+}
+
+.td{
+    height: 50px;
+    border-bottom: 1px solid #ddd;
+    vertical-align: bottom;
+    text-align: left;
+    padding: 8px;
+    white-space: nowrap;
+}
+
+tr:nth-child(odd){background-color: #f9f9f9;}
+tr:nth-child(even){background-color: #eeeeee;}
+tr:hover {background-color: #ddd;}
+
+.Button{
+    border: none;
+    background-color: #dddddd;
+}
