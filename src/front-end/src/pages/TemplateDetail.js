@@ -11,6 +11,7 @@ import {
   deleteTemplate,
   createTemplate,
 } from "../api/TemplateAPI";
+import { getChecklistById, updateChecklistById } from "../api/NewbookingAPI";
 import "../styles/TemplateDetail.css";
 
 const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
@@ -56,7 +57,7 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
   );
 };
 
-const TemplateDetail = () => {
+const TemplateDetail = ({ checklistId }) => {
   const { id } = useParams();
   const [newTask, setNewTask] = useState("");
   const [newLink, setNewLink] = useState("");
@@ -67,12 +68,30 @@ const TemplateDetail = () => {
     task: [],
   });
   const navigate = useNavigate();
+  const [checkedState, setCheckedState] = useState(
+    new Array(details.task.length).fill(false)
+  );
 
   useEffect(() => {
     const fetchDetails = async () => {
       setLoading(true);
       if (id === "create-new") {
         setLoading(false);
+      } else if (checklistId) {
+        setLoading(true);
+        try {
+          const data = await getChecklistById(checklistId);
+          setDetails(data);
+          setOldDetails(data);
+          setCheckedState(
+            data.task.map((task) => {
+              return task.status === 1;
+            })
+          );
+          setLoading(false);
+        } catch (error) {
+          setLoading(false);
+        }
       } else {
         setLoading(true);
         try {
@@ -86,7 +105,7 @@ const TemplateDetail = () => {
       }
     };
     fetchDetails();
-  }, [id]);
+  }, [id, checklistId]);
 
   const handleNameChange = (e) => {
     setDetails((prevDetails) => ({ ...prevDetails, name: e.target.value }));
@@ -212,9 +231,13 @@ const TemplateDetail = () => {
     try {
       if (!validateDetails(details, oldDetails)) return;
       setLoading(true);
-      const response = await updateTemplate(id, details);
+      if (checklistId) {
+        const response = await updateChecklistById(checklistId, details);
+      } else {
+        const response = await updateTemplate(id, details);
+      }
       setLoading(false);
-      alert("[SUCCESS] Template updated successfully!");
+      alert("[SUCCESS] Update successfully!");
     } catch (error) {
       alert(`[ERROR] ${error}`);
       setLoading(false);
@@ -222,9 +245,18 @@ const TemplateDetail = () => {
     }
   };
 
+  const handleOnChange = (position) => {
+    const updatedCheckedState = checkedState.map((item, index) =>
+      index === position ? !item : item
+    );
+    setCheckedState(updatedCheckedState);
+
+    // TODO: reset status in database
+  };
+
   return (
     <>
-      <Header>Template - {id}</Header>
+      {!checklistId && <Header>Template - {id}</Header>}
       {loading && <p>Loading...</p>}
       {!loading && (
         <div className="templateDetailWrapper">
@@ -250,6 +282,15 @@ const TemplateDetail = () => {
                   onDragEnd={handleDragEnd}
                   onDragOver={(e) => e.preventDefault()}
                 >
+                  <input
+                    className="templateDetailButtons"
+                    type="checkbox"
+                    id={`checkbox-${index}`}
+                    name={task}
+                    value={task}
+                    checked={checkedState[index]}
+                    onChange={() => handleOnChange(index)}
+                  />
                   <Item
                     index={index}
                     task={task}
