@@ -14,7 +14,13 @@ import {
 import { getChecklistById, updateChecklistById } from "../api/NewbookingAPI";
 import "../styles/TemplateDetail.css";
 
-const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
+const Item = ({
+  index,
+  task,
+  isChecklist = false,
+  onTaskUpdate,
+  onTaskRemove,
+}) => {
   const [name, setName] = useState(task.name);
   const [link, setLink] = useState(task.link);
 
@@ -28,7 +34,11 @@ const Item = ({ index, task, onTaskUpdate, onTaskRemove }) => {
   };
 
   const updateTask = () => {
-    onTaskUpdate(index, name, link);
+    if (isChecklist) {
+      onTaskUpdate(index, name, link, 0);
+    } else {
+      onTaskUpdate(index, name, link);
+    }
   };
 
   return (
@@ -129,10 +139,17 @@ const TemplateDetail = ({ checklistId }) => {
     }));
   };
 
-  const handleTaskUpdate = (index, name, link) => {
+  const handleTaskUpdate = (index, name, link, status = -1) => {
     setDetails((prevDetails) => {
       const updatedtask = [...prevDetails.task];
-      updatedtask[index] = { ...updatedtask[index], name, link };
+      if (status > -1) {
+        updatedtask[index] = { ...updatedtask[index], name, link, status };
+        if (status === 0) {
+          checkedState[index] = false;
+        }
+      } else {
+        updatedtask[index] = { ...updatedtask[index], name, link };
+      }
       return { ...prevDetails, task: updatedtask };
     });
   };
@@ -282,21 +299,36 @@ const TemplateDetail = ({ checklistId }) => {
                   onDragEnd={handleDragEnd}
                   onDragOver={(e) => e.preventDefault()}
                 >
-                  <input
-                    className="templateDetailButtons"
-                    type="checkbox"
-                    id={`checkbox-${index}`}
-                    name={task}
-                    value={task}
-                    checked={checkedState[index]}
-                    onChange={() => handleOnChange(index)}
-                  />
-                  <Item
-                    index={index}
-                    task={task}
-                    onTaskUpdate={handleTaskUpdate}
-                    onTaskRemove={handleTaskRemove}
-                  />
+                  <div className="checkbox-wrapper">
+                    <label>
+                      {checklistId && (
+                        <input
+                          type="checkbox"
+                          id={`checkbox-${index}`}
+                          name={task}
+                          value={task}
+                          checked={checkedState[index]}
+                          onChange={() => {
+                            handleOnChange(index);
+                            handleTaskUpdate(
+                              index,
+                              task.name,
+                              task.link,
+                              !checkedState[index] === true ? 1 : 0
+                            );
+                          }}
+                        />
+                      )}
+
+                      <Item
+                        index={index}
+                        task={task}
+                        isChecklist={() => !checklistId}
+                        onTaskUpdate={handleTaskUpdate}
+                        onTaskRemove={handleTaskRemove}
+                      ></Item>
+                    </label>
+                  </div>
                 </div>
               ))
             )}
