@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Login.css";
 import navSgLogo from "../images/sg-logo.png";
 import koala_logo from "../images/koala-logo.jpg";
@@ -7,20 +7,60 @@ import {
   TypographyParagraph,
 } from "../components/Typography/Typography";
 
+import {
+  getTemplateById,
+  updateTemplate,
+  deleteTemplate,
+  createTemplate,
+  getAllTemplates,
+} from "../api/TemplateAPI";
+
 const Login = (props) => {
-  const [Account, setAccount] = useState("");
-  const [Password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [message, setMessage] = useState("Welcome to Koala Booking System");
   const [isLogin, setIsLogin] = useState(true);
+
   const onButtonClick = () => {
-    if (message === "Welcome to Koala Booking System") {
-      setMessage("Invalid Account or Password");
-      setIsLogin(false);
-    } else {
-      setMessage("Welcome to Koala Booking System");
-      setIsLogin(true);
-    }
-  };
+    fetch('http://localhost:8000/api/login/', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username,password })
+      })
+      .then(response => {
+        if (!response.ok) {
+          setIsLogin(false); 
+          if(response.status === 401) {
+            setMessage("Invalid Username or Password");
+          } else if(response.status === 400) {
+            setMessage("Missing Username or Password");
+          }
+          else {
+            setMessage("Login failed with status: " + response.status);
+          }
+          throw new Error('Failed to login');
+        }
+        return response.json();
+      })
+      .then(json => {
+        console.log(json);
+        setMessage("Login Successful"); 
+        setIsLogin(true); 
+      })
+      .catch(error => {
+        console.error('Login error:', error);
+      });
+      
+  }
+
+  const onButtonClicsk = () => {
+    const data = getAllTemplates();
+      console.log(data)
+  }
 
   const textStyle = {
     color: isLogin ? "white" : "red",
@@ -46,8 +86,9 @@ const Login = (props) => {
         <br />
         <div>
           <input
-            value={Account}
-            onChange={(ev) => setAccount(ev.target.value)}
+            type="text"
+            value={username}
+            onChange={(ev) => setUsername(ev.target.value)}
             className="loginInputBox"
           />
         </div>
@@ -60,7 +101,8 @@ const Login = (props) => {
         <br />
         <div>
           <input
-            value={Password}
+            type="password"
+            value={password}
             onChange={(ev) => setPassword(ev.target.value)}
             className="loginInputBox"
           />
@@ -77,6 +119,14 @@ const Login = (props) => {
               className="loginInputButton"
               type="button"
               onClick={onButtonClick}
+              value={"Log in"}
+            />
+          </div>
+
+          <div>
+            <input
+              type="button"
+              onClick={onButtonClicsk}
               value={"Log in"}
             />
           </div>
