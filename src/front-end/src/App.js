@@ -30,7 +30,8 @@ function App() {
             <Route path="/templates/:id" element={<TemplateDetail />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/calendar" element={<Calendar />} />
-            <Route path="/new-booking" element={<NewBooking />} />
+            <Route path="/new-booking" element={<NewBooking isNew={true} />} />
+            <Route path="/new-booking/:bookingId" element={<NewBooking />} />
           </Routes>
         </div>
       </div>

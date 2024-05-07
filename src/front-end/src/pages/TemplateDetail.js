@@ -144,9 +144,7 @@ const TemplateDetail = ({ checklistId }) => {
       const updatedtask = [...prevDetails.task];
       if (status > -1) {
         updatedtask[index] = { ...updatedtask[index], name, link, status };
-        if (status === 0) {
-          checkedState[index] = false;
-        }
+        checkedState[index] = status === 0 ? false : true;
       } else {
         updatedtask[index] = { ...updatedtask[index], name, link };
       }
@@ -176,6 +174,11 @@ const TemplateDetail = ({ checklistId }) => {
     listClone.splice(dragItem.current, 1);
     listClone.splice(draggedOverItem.current, 0, draggedItemContent);
     setDetails((prevDetails) => ({ ...prevDetails, task: listClone }));
+    setCheckedState(
+      listClone.map((task) => {
+        return task.status === 1;
+      })
+    );
   };
 
   const isValidHttpUrl = (string) => {
@@ -309,13 +312,13 @@ const TemplateDetail = ({ checklistId }) => {
                           value={task}
                           checked={checkedState[index]}
                           onChange={() => {
-                            handleOnChange(index);
                             handleTaskUpdate(
                               index,
                               task.name,
                               task.link,
                               !checkedState[index] === true ? 1 : 0
                             );
+                            handleOnChange(index);
                           }}
                         />
                       )}

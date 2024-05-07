@@ -107,14 +107,9 @@
 }
 
 .checkbox-wrapper input[type="checkbox"] {
-  /* -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none; */
-  /* create custom checkbox appearance */
   width: 25px;
   height: 25px;
   padding: 6px;
-  /* background-color only for content */
   background-clip: content-box;
   border: 1.5px solid var(--grey-color);
   border-radius: 6px;
@@ -123,12 +118,4 @@
   margin-right: 15px;
   margin-top: 35px;
   float: inline-start;
-
-  /* &:checked {
-    background-color: var(--primary-color);
-  }
-
-  &:focus {
-    outline: none !important;
-  } */
 }

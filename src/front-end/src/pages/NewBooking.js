@@ -8,19 +8,23 @@ import {
   createNewBooking,
   createNewSchool,
   createNewChecklist,
+  getBookingById,
+  getSchoolById,
+  getChecklistById,
 } from "../api/NewbookingAPI";
 import { Button } from "../components/Button/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TemplateDetail from "./TemplateDetail";
 
-const NewBooking = () => {
+const NewBooking = ({ isNew = false }) => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Delivery");
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [autoFillData, setAutoFillData] = useState("");
   // this should be parse as props
-  const [isNew, setIsNew] = useState(false);
-  const bookingChecklist = "661e4c8de977d7711c301aee";
+  //const [isNew, setIsNew] = useState(false);
+  const { bookingId } = useParams();
+  const [oneBooking, setOneBooking] = useState();
 
   const [data, setData] = useState({
     Delivery: {
@@ -105,26 +109,96 @@ const NewBooking = () => {
   const years = Array.from({ length: 6 }, (_, i) => 7 + i);
 
   useEffect(() => {
-    Promise.all([getAllMiscellaneous(), getAllSchool(), getAllTemplates()])
-      .then(([miscellaneousData, schoolData, templateData]) => {
-        setData((prev) => ({
-          ...prev,
-          Delivery: {
-            ...prev.Delivery,
-            programStreams: miscellaneousData.program_stream,
-            facilitators: miscellaneousData.facilitators,
-            location: miscellaneousData.delivery_location,
-            module: miscellaneousData.module,
-            exhibition: miscellaneousData.exhibition,
-            templates: templateData,
-          },
-          School: {
-            ...prev.School,
-            schools: schoolData,
-          },
-        }));
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+    if (isNew) {
+      Promise.all([getAllMiscellaneous(), getAllSchool(), getAllTemplates()])
+        .then(([miscellaneousData, schoolData, templateData]) => {
+          setData((prev) => ({
+            ...prev,
+            Delivery: {
+              ...prev.Delivery,
+              programStreams: miscellaneousData.program_stream,
+              facilitators: miscellaneousData.facilitators,
+              location: miscellaneousData.delivery_location,
+              module: miscellaneousData.module,
+              exhibition: miscellaneousData.exhibition,
+              templates: templateData,
+            },
+            School: {
+              ...prev.School,
+              schools: schoolData,
+            },
+          }));
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    } else {
+      Promise.all([
+        getAllMiscellaneous(),
+        getAllSchool(),
+        getBookingById(bookingId),
+      ])
+        .then(([miscellaneousData, schoolData, bookingData]) => {
+          setOneBooking(bookingData);
+          // booking details does not match the database structure
+          setData((prev) => ({
+            ...prev,
+            Delivery: {
+              streamSelect: bookingData.programStream,
+              facilitatorsSelect: bookingData.facilitators,
+              locationSelect: bookingData.location,
+              moduleSelects: bookingData.module_id,
+              exhibitionSelect: bookingData.exibition,
+              templateSelect: bookingData.checklist.name,
+              term: bookingData.term,
+
+              programStreams: miscellaneousData.program_stream,
+              facilitators: miscellaneousData.facilitators,
+              location: miscellaneousData.delivery_location,
+              module: miscellaneousData.module,
+              exhibition: miscellaneousData.exhibition,
+              //templates: templateData,
+            },
+            School: {
+              ...prev.School,
+              schoolSelect: bookingData.school.name,
+              studentYears: [bookingData.school.studentYear],
+              lowSES: bookingData.school.lowSES,
+              contactInfo: {
+                firstName: bookingData.school.contactFirstName,
+                lastName: bookingData.school.contactLastName,
+                email: bookingData.school.email,
+                phoneNumber: bookingData.school.phone,
+                // no job title in database
+                jobTitle: "",
+              },
+              additionalComments: bookingData.school.note,
+              accessibilityNeeds:
+                bookingData.school.isAccessibility === true ? "Y" : "N",
+              allergenInfo: bookingData.school.isAllergy === true ? "Y" : "N",
+              isPartnerSchool:
+                bookingData.school.isPartner === true ? "Y" : "N",
+              schools: schoolData,
+            },
+            Bus: {
+              ...prev.Bus,
+              busReq: bookingData.bus.bus_req === true ? "Y" : "N",
+              busBooked: bookingData.bus.isBooked === true ? "Y" : "N",
+              // what status 1 and 0
+              status: bookingData.bus.status === 0 ? "processing" : "paid",
+              price: bookingData.bus.price,
+              datePaid: bookingData.bus.date_paid,
+              invoiceNumber: bookingData.bus.invoice,
+            },
+            Others: {
+              ...prev.Others,
+              perStudent: bookingData.per_student,
+              expenses: bookingData.expense,
+              income: bookingData.income,
+              // profit is not need to be here
+            },
+          }));
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    }
   }, []);
 
   const handleDiscard = () => {
@@ -307,14 +381,16 @@ const NewBooking = () => {
       {isNew && <Header>Create New Booking</Header>}
       {!isNew && <Header> Booking Details</Header>}
       <div className="newBookingFilterSection">
-        <button
-          className={`newBookingFilterBtn ${
-            activeCategory === "Checklist" ? "active" : ""
-          }`}
-          onClick={() => handleCategoryClick("Checklist")}
-        >
-          Checklist
-        </button>
+        {!isNew && (
+          <button
+            className={`newBookingFilterBtn ${
+              activeCategory === "Checklist" ? "active" : ""
+            }`}
+            onClick={() => handleCategoryClick("Checklist")}
+          >
+            Checklist
+          </button>
+        )}
         <button
           className={`newBookingFilterBtn ${
             activeCategory === "Delivery" ? "active" : ""
@@ -369,8 +445,8 @@ const NewBooking = () => {
       )}
       <div>
         {/* bookingChecklist should be a prop to be parse in */}
-        {activeCategory === "Checklist" && bookingChecklist && (
-          <TemplateDetail checklistId={bookingChecklist} />
+        {!isNew && activeCategory === "Checklist" && (
+          <TemplateDetail checklistId={oneBooking.checklist_id} />
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
@@ -400,7 +476,8 @@ const NewBooking = () => {
               <option value="" disabled>
                 Please select a template
               </option>
-              {data.Delivery.templates &&
+              {!bookingId &&
+                data.Delivery.templates &&
                 data.Delivery.templates.map((template, index) => (
                   <option key={index} value={template.id}>
                     {template.name}
@@ -872,14 +949,16 @@ const NewBooking = () => {
           </form>
         )}
       </div>
-      <div className="newBookingButtons">
-        <Button type="discard" onClick={handleDiscard}>
-          DISCARD
-        </Button>
-        <Button type="submit" onClick={handleSubmit}>
-          Create
-        </Button>
-      </div>
+      {activeCategory !== "Checklist" && (
+        <div className="newBookingButtons">
+          <Button type="discard" onClick={handleDiscard}>
+            DISCARD
+          </Button>
+          <Button type="submit" onClick={handleSubmit}>
+            SAVE
+          </Button>
+        </div>
+      )}
     </>
   );
 };

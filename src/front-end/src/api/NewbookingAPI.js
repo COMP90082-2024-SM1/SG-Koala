@@ -25,17 +25,6 @@ export const getAllSchool = async () => {
   });
 };
 
-export const getChecklistById = async (id) => {
-  return fetch(`http://127.0.0.1:8000/api/checklist/${id}/`).then(
-    (response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    }
-  );
-};
-
 export const createNewBooking = async (bookingData) => {
   return fetch("http://127.0.0.1:8000/api/booking/", {
     method: "POST",
@@ -91,7 +80,43 @@ export const updateChecklistById = async (id, checklistData) => {
     }
     return await response.json();
   } catch (error) {
-    console.error(`Error updating template with ID ${id}:`, error);
+    console.error(`Error updating checklist with ID ${id}:`, error);
     throw error;
   }
+};
+
+export const getBookingById = async (id) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/booking/${id}/`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching booking with ID ${id}:`, error);
+    throw error;
+  }
+};
+
+export const getSchoolById = async (id) => {
+  try {
+    const response = await fetch(`http://127.0.0.1:8000/api/school/${id}/`);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching school with ID ${id}:`, error);
+    throw error;
+  }
+};
+export const getChecklistById = async (id) => {
+  return fetch(`http://127.0.0.1:8000/api/checklist/${id}/`).then(
+    (response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    }
+  );
 };
