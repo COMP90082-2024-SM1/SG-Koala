@@ -63,6 +63,7 @@ const Login = () => {
         setMessage("Login Successful"); 
         setIsLogin(true); 
         navigate("/dashboard");
+        
       })
       .catch(error => {
         console.error('Login error:', error);
@@ -70,19 +71,6 @@ const Login = () => {
       
   }
 
-  const onButtonClicsk = () => {
-    const token = localStorage.getItem('token');
-    fetch('http://localhost:8000/api/template/', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-  })
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.error(error));
-  }
 
   const textStyle = {
     color: isLogin ? "white" : "red",
