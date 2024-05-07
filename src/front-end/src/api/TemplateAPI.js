@@ -2,7 +2,10 @@ const baseUrl = "http://127.0.0.1:8000/api/template/";
 
 export const getAllTemplates = async () => {
   try {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -15,7 +18,10 @@ export const getAllTemplates = async () => {
 
 export const getTemplateById = async (id) => {
   try {
-    const response = await fetch(`${baseUrl}${id}/`);
+    const response = await fetch(`${baseUrl}${id}/`, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -30,6 +36,7 @@ export const createTemplate = async (templateData) => {
   try {
     const response = await fetch(baseUrl, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -49,6 +56,7 @@ export const updateTemplate = async (id, templateData) => {
   try {
     const response = await fetch(`${baseUrl}${id}/`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,6 +76,7 @@ export const deleteTemplate = async (id) => {
   try {
     const response = await fetch(`${baseUrl}${id}/`, {
       method: "DELETE",
+      credentials: 'include'
     });
     if (!response.ok) {
       throw new Error("Network response was not ok");

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import navSgLogo from "../images/sg-logo.png";
 import koala_logo from "../images/koala-logo.jpg";
@@ -7,15 +8,8 @@ import {
   TypographyParagraph,
 } from "../components/Typography/Typography";
 
-import {
-  getTemplateById,
-  updateTemplate,
-  deleteTemplate,
-  createTemplate,
-  getAllTemplates,
-} from "../api/TemplateAPI";
-
-const Login = (props) => {
+const Login = () => {
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -23,11 +17,29 @@ const Login = (props) => {
   const [message, setMessage] = useState("Welcome to Koala Booking System");
   const [isLogin, setIsLogin] = useState(true);
 
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+  const csrfToken = getCookie('csrftoken');
+
   const onButtonClick = () => {
     fetch('http://localhost:8000/api/login/', {
       method: 'POST',
+      credentials: 'include',
       headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+
       },
       body: JSON.stringify({ username,password })
       })
@@ -46,10 +58,11 @@ const Login = (props) => {
         }
         return response.json();
       })
-      .then(json => {
-        console.log(json);
+      .then(data => {
+        console.log(JSON.stringify(data))
         setMessage("Login Successful"); 
         setIsLogin(true); 
+        navigate("/dashboard");
       })
       .catch(error => {
         console.error('Login error:', error);
@@ -58,8 +71,17 @@ const Login = (props) => {
   }
 
   const onButtonClicsk = () => {
-    const data = getAllTemplates();
-      console.log(data)
+    const token = localStorage.getItem('token');
+    fetch('http://localhost:8000/api/template/', {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+  })
+  .then(response => response.json())
+  .then(data => console.log(data))
+  .catch(error => console.error(error));
   }
 
   const textStyle = {
@@ -119,14 +141,6 @@ const Login = (props) => {
               className="loginInputButton"
               type="button"
               onClick={onButtonClick}
-              value={"Log in"}
-            />
-          </div>
-
-          <div>
-            <input
-              type="button"
-              onClick={onButtonClicsk}
               value={"Log in"}
             />
           </div>

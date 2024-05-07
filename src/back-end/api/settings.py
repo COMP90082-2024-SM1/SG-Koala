@@ -48,8 +48,9 @@ INSTALLED_APPS = [
 # Authorized to make cross-site HTTP requests.
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = (
+    'http://localhost:3000',
 
 
 
