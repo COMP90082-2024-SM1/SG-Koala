@@ -117,7 +117,6 @@ const Dashboard = () => {
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
-
     console.log(filteredBookings);
     return filteredBookings;
   };
@@ -127,8 +126,8 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="dashboard-dashboard">
-      <Header>Booking Dashboard</Header>
+    <>
+      <Header>{isLoading ? "Booking Search" : "Booking - All"}</Header>
       <div className="dashboardFilterSection">
         {["all", "upcoming", "completed", "cancelled"].map((type) => (
           <button
@@ -149,8 +148,13 @@ const Dashboard = () => {
         </button>
       </div>
       <div className="dashboardFilterAndSort">
-        <select onChange={(e) => setFilterType(e.target.value)}>
-          <option value="all">All Types</option>
+        <select onChange={(e) => setFilterLocation(e.target.value)}>
+          <option value="all">All Locations</option>
+          {locationsList.map((location) => (
+            <option key={location} value={location}>
+              {location}
+            </option>
+          ))}
         </select>
         <div className="dashboardDateFilter">
           <label htmlFor="start-date">From: </label>
@@ -168,27 +172,12 @@ const Dashboard = () => {
             onChange={(e) => setEndDate(e.target.value)}
           />
         </div>
-        <div className="dashboardLocationFilter">
-          <label htmlFor="location">Location: </label>
-          <select
-            id="location"
-            onChange={(e) => setFilterLocation(e.target.value)}
-          >
-            <option value="all">All Locations</option>
-            {locationsList.map((location) => (
-              <option key={location} value={location}>
-                {location}
-              </option>
-            ))}
-          </select>
-        </div>
         <button
           onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
         >
           Sort Date {sortOrder === "asc" ? "Ascending" : "Descending"}
         </button>
       </div>
-
       <div className="dashboardBookingsList">
         <div className="dashboardBookingHeader">
           <div className="dashboardBookingHeader-item">Name</div>
@@ -197,150 +186,41 @@ const Dashboard = () => {
           <div className="dashboardBookingHeader-item">Location</div>
           <div className="dashboardBookingHeader-item">Status</div>
         </div>
-        {getFilteredAndSortedBookings().map((booking, index) => (
-          <div
-            onClick={
-              () =>
-                //console.log("here " + booking.id);
-                navigate(`/new-booking/${booking.id}`)
-              //handleNewBooking(booking.id);
-            }
-            className="dashboardBookingItem"
-            key={index}
-          >
-            <div className="dashboardBookingDetail">{booking.name}</div>
+        {getFilteredAndSortedBookings().length > 0 ? (
+          getFilteredAndSortedBookings().map((booking, index) => (
             <div
-              className={`dashboard-booking-programStream-${booking.programStream
-                .toLowerCase()
-                .replace(/\s+/g, "-")}`}
-    <>
-      {searchParams.size > 0 ? (
-        <Header>Booking Search - {searchParams.get("query")}</Header>
-      ) : (
-        <Header>Booking - All</Header>
-      )}
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <>
-          <div className="dashboardFilterSection">
-            {["all", "upcoming", "completed", "cancelled"].map((type) => (
-              <button
-                key={type}
-                className={`dashboardFilterBtn ${
-                  activeType === type ? "dashboard-active" : ""
-                }`}
-                onClick={() => setActiveType(type)}
+              className="dashboardBookingItem"
+              key={index}
+              onClick={() => navigate(`/new-booking/${booking.id}`)}
+            >
+              <div className="dashboardBookingDetail">{booking.name}</div>
+              <div
+                className={`dashboard-booking-programStream-${booking.programStream
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
               >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
-              </button>
-            ))}
-            <button
-              className="dashboardNewBookingBtn"
-              onClick={handleNewBooking}
-            >
-              <span className="plus-icon">+</span>
-            </button>
-          </div>
-          <div className="dashboardFilterAndSort">
-            <select onChange={(e) => setFilterType(e.target.value)}>
-              <option value="all">All Types</option>
-            </select>
-            <div className="dashboardDateFilter">
-              <label htmlFor="start-date">From: </label>
-              <input
-                id="start-date"
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-              />
-              <label htmlFor="end-date">To: </label>
-              <input
-                id="end-date"
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-              />
-            </div>
-            <div className="dashboardLocationFilter">
-              <label htmlFor="location">Location: </label>
-              <select
-                id="location"
-                onChange={(e) => setFilterLocation(e.target.value)}
-              >
-                <option value="all">All Locations</option>
-                {locationsList.map((location) => (
-                  <option key={location} value={location}>
-                    {location}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className="dashboardBookingDetail">
-              {formatDate(booking.startTime)}
-              <span className="dashboardSubTime">
-                {formatTimeRange(booking.startTime, booking.endTime)}
-              </span>
-            </div>
-            <div className="dashboardBookingDetail">{booking.location}</div>
-            <div
-              className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
-            >
-              {booking.status}
-            </div>
-            <button
-              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-            >
-              Sort Date {sortOrder === "asc" ? "Ascending" : "Descending"}
-            </button>
-          </div>
-
-          <div className="dashboardBookingsList">
-            <div className="dashboardBookingHeader">
-              <div className="dashboardBookingHeader-item">Name</div>
-              <div className="dashboardBookingHeader-item">Stream</div>
-              <div className="dashboardBookingHeader-item">Date</div>
-              <div className="dashboardBookingHeader-item">Location</div>
-              <div className="dashboardBookingHeader-item">Status</div>
-            </div>
-            {getFilteredAndSortedBookings().length > 0 ? (
-              <div>
-                {getFilteredAndSortedBookings().map((booking, index) => (
-                  <div className="dashboardBookingItem" key={index}>
-                    <div className="dashboardBookingDetail">{booking.name}</div>
-                    <div
-                      className={`dashboard-booking-programStream-${booking.programStream
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}`}
-                    >
-                      {booking.programStream}
-                    </div>
-                    <div className="dashboardBookingDetail">
-                      {formatDate(booking.startTime)}
-                      <span className="dashboardSubTime">
-                        {formatTimeRange(booking.startTime, booking.endTime)}
-                      </span>
-                    </div>
-                    <div className="dashboardBookingDetail">
-                      {booking.location}
-                    </div>
-                    <div
-                      className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
-                    >
-                      {booking.status}
-                    </div>
-                  </div>
-                ))}
+                {booking.programStream}
               </div>
-            ) : (
-              <TypographyH3 style={{ textAlign: "center" }}>
-                There are no results found.
-              </TypographyH3>
-            )}
-          </div>
-        </>
-      )}
+              <div className="dashboardBookingDetail">
+                {formatDate(booking.startTime)}
+                <span className="dashboardSubTime">
+                  {formatTimeRange(booking.startTime, booking.endTime)}
+                </span>
+              </div>
+              <div className="dashboardBookingDetail">{booking.location}</div>
+              <div
+                className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
+              >
+                {booking.status}
+              </div>
+            </div>
+          ))
+        ) : (
+          <TypographyH3 style={{ textAlign: "center" }}>
+            There are no results found.
+          </TypographyH3>
+        )}
+      </div>
     </>
   );
 };
