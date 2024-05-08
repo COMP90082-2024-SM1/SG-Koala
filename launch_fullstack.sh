@@ -26,7 +26,7 @@ DJANGO_PID=$(lsof -ti:8000)
 cd ..
 cd front-end/
 echo "Starting React server..."
-npm install
+npm install --legacy-peer-deps
 npm start &
 REACT_PID=$!
 

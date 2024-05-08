@@ -13,7 +13,8 @@ The Science Gallery Melbourne is facing challenges with its current booking syst
   - [Sprint Two](#sprint-two)
   - [Sprint Three](#sprint-three)
   - [Sprint Four](#sprint-four)
-- [Workflow Guidelines](#workflow-guidelines) 
+- [Workflow Guidelines](#workflow-guidelines)
+- [Demo](#demo)
 - [Contact](#contact)
 
 ## Folder Structure
@@ -44,17 +45,23 @@ chmod +x ./launch_fullstack.sh
 ### Run Frontend
 ```bash
 cd ./src/front-end
-npm i # Install dependencies
-npm start # Start the frontend server
+# Install dependencies
+npm i
+# Start the frontend server
+npm start
 # The application will be hosted at: http://localhost:3000
 ```
 ### Run Backend
 ```bash
 cd ./src/back-end
-python3 -m venv venv # Create a virtual environment (optional but recommended)
-source venv/bin/activate # Use virtual environment
-pip install -r requirements.txt # Install required modules
-python3 manage.py runserver # Start the server
+# Create a virtual environment (optional but recommended)
+python3 -m venv venv
+# Use virtual environment
+source venv/bin/activate
+# Install required modules
+pip install -r requirements.txt
+# Start the server
+python3 manage.py runserver
 # The server will be run at: http://localhost:8000
 ```
 
@@ -102,10 +109,11 @@ The application offers a comprehensive set of features designed to enhance user 
     - ADD `Login Page`
     - ADD `New Template Detail Page`
     - ADD `New Template Page`
-    - ADD `Search Bar Function`
+    - ADD `Search Bar Function (backend)`
     - ADD `Navbar`
     - ADD `API Server`
     - ADD `Testing`
+    - ADD `Email sending booking reference number`
     - ADD `Deployment`
     - ADD `tests` on GitHub repo
     - ADD `data sample` on GitHub repo    
@@ -161,6 +169,9 @@ The application offers a comprehensive set of features designed to enhance user 
 ### Merging Strategy
 - Use **Squash and Merge** for feature branches and bug fixes.
 - Use **Rebase and Merge** for minor fixes or updates.
+
+## Demo
+**Sprint2 Video**: watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
 
 ## Contact
 | Name                | Email                                  | GitHub                               |

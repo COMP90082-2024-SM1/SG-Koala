@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from db_connection import connect_mongodb
+from api.utils import send_booking_ref_to_client
 import json 
 
 
@@ -16,6 +17,7 @@ class BookingView(APIView):
         booking_collection = db['booking']
         checklist_collection = db['checklist']
         school_collection = db['school']
+        #send_booking_ref_to_client("123", ['leonali0329@gmail.com'])
         
         # Fetch all booking documents
         booking_documents = list(booking_collection.find())
@@ -87,6 +89,13 @@ class BookingView(APIView):
                 response_data['checklist_id'] = str(response_data['checklist_id'])
             if 'school_id' in response_data:
                 response_data['school_id'] = str(response_data['school_id'])
+            if booking_collection.find_one({'_id': result.inserted_id}):
+                school_id = ObjectId(request.data['school_id'])
+                school_email = school_collection.find_one({'_id': school_id})['email']
+                # change to school email
+                send_booking_ref_to_client(str(result.inserted_id), ['leonali0329@gmail.com'], 
+                                           "We have received your booking request. You will recive a new email when the team confirms the booking.")
+
             # response_data = json.dumps(new_data, default=str)
             return Response(response_data, status=status.HTTP_201_CREATED)
         print("Validation Failed:", serializer.errors)
@@ -140,6 +149,18 @@ class BookingViewID(APIView):
             update_result = collection.update_one({'_id': ObjectId(kwargs['id'])}, {'$set': new_data})
             if update_result.matched_count == 0:
                 return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
+            # send confirmation email to client
+            booking_collection = db['booking']
+            school_collection = db['school']
+
+            booking_document = booking_collection.find_one({'_id': ObjectId(kwargs['id'])})
+            if booking_document['location'] != new_data['location'] and new_data['location'] != '' and  booking_document['location'] != '':
+                school_id = ObjectId(request.data['school_id'])
+                school_email = school_collection.find_one({'_id': school_id})['email']
+                # change to school email
+                send_booking_ref_to_client(kwargs['id'], ['leonali0329@gmail.com'], 
+                                           "Thank you for your patience. We have confirmed your booking.")
+        
             return Response({'status': 'success', 'id': kwargs['id'], 'updated': update_result.modified_count}, status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
     

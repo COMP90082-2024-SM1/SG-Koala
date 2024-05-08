@@ -45,7 +45,7 @@
 .dashboardBookingHeader,
 .dashboardBookingItem {
   display: grid;
-  grid-template-columns: 1fr 0.5fr 1fr 1fr 0.5fr; 
+  grid-template-columns: 1fr 0.5fr 1fr 1fr 0.5fr;
   align-items: center;
   gap: 10px;
 }
@@ -82,8 +82,8 @@
 .dashboard-booking-programStream-workshop5,
 .dashboard-booking-programStream-workshop2 {
   padding: 5px;
-  margin-right: 0; 
-  justify-self: start; 
+  margin-right: 0;
+  justify-self: start;
 }
 
 .dashboardBookingStatus::before {
@@ -98,7 +98,6 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
 
 .dashboardBookingStatus.processing::before {
   background-color: var(--neutral-color);
@@ -237,5 +236,3 @@
   border-radius: 5px;
   border: 1px solid var(--white-color);
 }
-
-
