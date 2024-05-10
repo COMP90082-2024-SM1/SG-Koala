@@ -60,7 +60,7 @@ class BookSerializer(serializers.Serializer):
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
     status = serializers.ChoiceField(choices=['Pending', 'Processing', 'Delivered', 'Canceled'])
     term = serializers.IntegerField(required=False)
-    location = serializers.CharField()  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+    location = serializers.CharField(required=False,allow_blank=True, default = "")  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
     date = serializers.DateTimeField()
     checklist_id = serializers.CharField()  # Assuming it's a ForeignKey to another model.
     checklist = ChecklistSerializer(required=False)  # Assuming it's a ForeignKey to another model.
