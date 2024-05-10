@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
+import CreatableSelect from 'react-select/creatable';
+
+
 import "../styles/NewBooking.css";
 import {
   getAllTemplates,
@@ -9,22 +14,22 @@ import {
   createNewSchool,
   createNewChecklist,
   getBookingById,
-  getSchoolById,
-  getChecklistById,
 } from "../api/NewbookingAPI";
 import { Button } from "../components/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import TemplateDetail from "./TemplateDetail";
 
 const NewBooking = ({ isNew = false }) => {
+  
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Delivery");
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [autoFillData, setAutoFillData] = useState("");
+
   // this should be parse as props
   //const [isNew, setIsNew] = useState(false);
   const { bookingId } = useParams();
   const [oneBooking, setOneBooking] = useState();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [autoFillData, setAutoFillData] = useState('');
 
   const [data, setData] = useState({
     Delivery: {
@@ -67,7 +72,7 @@ const NewBooking = ({ isNew = false }) => {
       perStudent: "",
       expenses: "",
       income: "",
-      profit: "",
+      // profit: "",
     },
   });
 
@@ -83,10 +88,9 @@ const NewBooking = ({ isNew = false }) => {
     setIsPopupOpen(false);
   };
 
-  const handleGenerate = () => {
-    console.log(autoFillData);
-    closePopup();
-  };
+
+
+
 
   const handleToggleYear = (year) => {
     setData((prev) => {
@@ -209,9 +213,183 @@ const NewBooking = ({ isNew = false }) => {
     return `${date}T${time}:00`;
   };
 
+
+  const checkForm = () => {
+    const { moduleSelects } = this.state.Delivery;
+    // check moduel
+    const startDate = formatDateTime(
+      data.Delivery.programDate,
+      data.Delivery.startTime
+    );
+    const endDate = formatDateTime(
+      data.Delivery.programDate,
+      data.Delivery.endTime
+    );
+    let errors = [];
+    if (!data.Delivery.streamSelect) {
+      errors.push("Program Stream is required.");
+    }
+    if (!moduleSelects[0]) { 
+      errors.push("Module 1 is required.");
+    }
+    if (!data.Delivery.facilitatorsSelect) {
+      errors.push("Facilitator is required.");
+    }
+    if (!data.Delivery.moduleSelects.length) {
+      errors.push("At least one module must be selected.");
+    }
+    if (!data.School.contactInfo.firstName) {
+      errors.push("Contact first name is required.");
+    }
+    if (!data.School.contactInfo.lastName) {
+      errors.push("Contact last name is required.");
+    }
+    if (!data.School.contactInfo.email) {
+      errors.push("Email address is required.");
+    }
+    if (!data.School.contactInfo.phoneNumber) {
+      errors.push("Phone number is required.");
+    }
+    if (!data.Bus.busReq) {
+      errors.push("Bus requirement is required.");
+    }
+    if (!startDate) {
+      errors.push("Start Time is required.");
+    }
+    if (!endDate) {
+      errors.push("End Time is required.");
+    }
+    if (!data.Delivery.exhibitionSelect) {
+      errors.push("ExhibitionSelect Time is required.");
+    }
+
+    return errors;
+
+  }
+
+  const formatDateString = (dateStr) => {
+    const months = {
+        "January": "01", "February": "02", "March": "03",
+        "April": "04", "May": "05", "June": "06",
+        "July": "07", "August": "08", "September": "09",
+        "October": "10", "November": "11", "December": "12"
+    };
+    const parts = dateStr.split(' '); 
+    const day = parts[0].replace(/\D/g, '');  
+    const month = months[parts[1]];  
+    const year = new Date().getFullYear(); 
+
+    return `${year}-${month}-${day}`;  
+}
+
+
+const convertTimeFormat = (timeStr) => {
+  const times = timeStr.split('-').map(t => t.trim());
+  let startTime = times[0]; 
+  let endTime = times[1];
+
+  startTime = startTime.includes(":") ? startTime : startTime + ":00";
+  endTime = endTime.includes(":") ? endTime : endTime + ":00";
+
+  if (endTime.toLowerCase().includes('pm')) {
+    const [hour, minute] = endTime.replace(/pm/i, '').split(':');
+    endTime = `${parseInt(hour) + 12}:${minute}`;
+  } else {
+    endTime = endTime.replace(/am/i, ''); 
+  }
+
+  if (!startTime.toLowerCase().includes('pm') && !startTime.toLowerCase().includes('am')) {
+    const [hour, minute] = startTime.split(':');
+    startTime = `${hour.padStart(2, '0')}:${minute}`;
+  }
+
+  return [startTime, endTime];
+};
+
+
+
+
+  const extractInformation = (text) => {
+    const info = {};
+    info.program = text.match(/Program: (.+)/)?.[1];
+    info.date = text.match(/Date: (.+)/)?.[1];
+    info.school = text.match(/School: (.+)/)?.[1];
+    info.numberOfStudents = text.match(/Number of students: (.+)/)?.[1];
+    info.time = text.match(/Time: (.+)/)?.[1];
+    info.studentLevel = text.match(/Student level: (.+)/)?.[1];
+    info.cost = text.match(/Cost: (.+)/)?.[1];
+    info.teacher = text.match(/Teacher: (.+)/)?.[1];
+    info.contactNumber = text.match(/Contact number: (.+)/)?.[1];
+    console.log(info)
+    return info;
+};
+const handleGenerate = () => {
+  const info = extractInformation(autoFillData);
+  const formattedDate = formatDateString(info.date);
+  const [formattedStartTime, formattedEndTime] = convertTimeFormat(info.time);
+  const studentYear = parseInt(info.studentLevel);
+  const [firstName, lastName] = info.teacher ? info.teacher.split(' ') : [null, null];
+
+  setData(prev => {
+    const newProgramStreams = prev.Delivery.programStreams.includes(info.program) 
+      ? prev.Delivery.programStreams 
+      : [...prev.Delivery.programStreams, info.program];
+
+    let newSchools = prev.School.schools;
+    let schoolExists = newSchools.find(school => school.name === info.school);
+    if (!schoolExists) {
+      const newSchoolId = `new_${new Date().getTime()}`;
+      newSchools.push({ id: newSchoolId, name: info.school });
+      schoolExists = { id: newSchoolId, name: info.school };
+    }
+
+
+    const newState = {
+      ...prev,
+      Delivery: {
+        ...prev.Delivery,
+        programDate: formattedDate,
+        startTime: formattedStartTime,
+        endTime: formattedEndTime,
+        streamSelect: info.program,
+        programStreams: newProgramStreams
+      },
+      School: {
+        ...prev.School,
+        schools: newSchools,
+        schoolSelect: schoolExists.id,
+        registeredStudents: parseInt(info.numberOfStudents),
+        studentYears: prev.School.studentYears.includes(studentYear) 
+          ? prev.School.studentYears 
+          : [...prev.School.studentYears, studentYear],
+        contactInfo: {
+          ...prev.School.contactInfo,
+          firstName: firstName || prev.School.contactInfo.firstName,
+          lastName: lastName || prev.School.contactInfo.lastName,
+          phoneNumber: info.contactNumber !== "TBC" ? info.contactNumber : prev.School.contactInfo.phoneNumber,
+        }
+      },
+      Others: {
+        expenses: info.cost
+      }
+    };
+    
+    console.log("New state:", newState);
+    return newState;
+  });
+
+  closePopup();
+};
+
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const test = "1111";
+    const error = checkForm()
+    if(error.length !==0){
+      alert("Please correct the following errors:\n" + error.join("\n"));
+      return;
+    }
 
     const startDate = formatDateTime(
       data.Delivery.programDate,
@@ -229,21 +407,23 @@ const NewBooking = ({ isNew = false }) => {
       studentYear: data.School.studentYears[0],
       numStudentRegistered: parseInt(data.School.registeredStudents),
       lowSES: data.School.lowSES === "Y",
-      // allergy: data.School.allergy === 'Y',
+      allergy: data.School.allergy === 'Y',
       contactFirstName: data.School.contactInfo.firstName,
       contactLastName: data.School.contactInfo.lastName,
       email: data.School.contactInfo.email,
       phone: data.School.contactInfo.phoneNumber,
-      note: data.School.additionalComments,
+      note: data.School.additionalComments || "",
       isAccessibility: data.School.accessibilityNeeds === "Y",
       isAllergy: data.School.allergenInfo === "Y",
       isPartner: data.School.isPartnerSchool === "Y",
-      allergy: test,
     };
+    console.log("wocaocaocaoo")
+    console.log(data.Delivery.templateSelect)
 
     const schoolId = await createNewSchool(schoolData);
 
     const checklistId = await createNewChecklist(data.Delivery.templateSelect);
+
     const schoolIdValue = schoolId._id;
 
     const checklistvalue = checklistId._id;
@@ -252,55 +432,17 @@ const NewBooking = ({ isNew = false }) => {
 
     const bus_test_status = 1;
     const busData = {
-      busReq: data.Bus.busReq === "Y", //
-      isBooked: data.Bus.busBooked === "Y", //
-      status: bus_test_status, //
-      price: parseFloat(data.Bus.price), //
-      date_paid: data.Bus.datePaid, //
-      invoice: data.Bus.invoiceNumber, //
-      // savedReceipt: data.Bus.savedReceipt === 'Y',
-      // expenseMaster: data.Bus.expenseMaster === 'Y',
-      // pinEmail: data.Bus.pinEmail === 'Y'
+      busReq: data.Bus.busReq === "Y",
+      isBooked: data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "none",
+      status: data.Bus.busReq === "Y" ? bus_test_status : "none",
+      price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "none",
+      date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : "none",
+      invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "none",
     };
 
-    //   {
-    //     "name": "LLC",
-    //     "programStream": "SCOE",
-    //     "facilitators": "MATT",
-    //     "event": "indeed",
-    //     "status": "Delivered",
-    //     "term": 2,
-    //     "location": "D ROOM1",
-    //     "date": "2024-07-10T04:23:49",
-    //     "checklist_id": "6628aca124b776b1cf539550",
-    //     "startTime": "2024-01-08T07:42:47",
-    //     "endTime": "2024-01-08T08:43:48",
-    //     "module_id": [
-    //         "module1"
-    //     ],
-    //     "school_id": "6628aa7124b776b1cf539541",
-    //     "exibition": "exibition",
-    //     "note": "Stay us raise hard. Seem should report. Shoulder issue challenge home drive than.\nPart order build can too. By history grow yard. Suggest hope him military leader example.",
-    //     "bus": {
-    //         "bus_req": false,
-    //         "isBooked": false,
-    //         "status": 1,
-    //         "price": 166.43,
-    //         "date_paid": "2024-02-12T08:00:30",
-    //         "invoice": "INV-FkRKB-298"
-    //     },
-    //     "per_student": 29,
-    //     "expense": 4864,
-    //     "income": 2002,
-    //     "profit": 453
-    // }
 
     const event_test = "test";
     const status = "Processing";
-    const module_test = ["module1"];
-    const sid = "6628aa7124b776b1cf539541";
-    const st = "2024-01-08T07:42:47";
-    const et = "2024-01-08T08:43:48";
     const bookingData = {
       event: event_test, //
       status: status, //
@@ -312,21 +454,20 @@ const NewBooking = ({ isNew = false }) => {
       programStream: data.Delivery.streamSelect, //
       checklist_id: checklistvalue, //
       facilitators: data.Delivery.facilitatorsSelect, //
-      location: data.Delivery.locationSelect, //
+      location: data.Delivery.locationSelect|| "", //
       date: data.Delivery.programDate, //
       term: parseInt(data.Delivery.term, 10), // +
-      // startTime: data.Delivery.startTime,
-      // endTime: data.Delivery.endTime,
       startTime: startDate,
       endTime: endDate,
-      module_id: module_test, //
+      module_id: data.Delivery.moduleSelects,//
       exibition: data.Delivery.exhibitionSelect, //
-      note: data.Delivery.notes, //
+      note: data.Delivery.notes || "", //
       bus: busData, //
-      per_student: parseInt(data.Others.perStudent), //
-      expense: parseFloat(data.Others.expenses), //
-      income: parseFloat(data.Others.income), //
-      profit: parseFloat(data.Others.profit), //
+      per_student: parseInt(data.Others.perStudent)|| 0.0, //
+      expense: parseFloat(data.Others.expenses)|| 0.0, //
+      income: parseFloat(data.Others.income)|| 0.0, //
+      // profit: parseFloat(data.Others.profit), //
+      profit:0.0
     };
     console.log(bookingData);
 
@@ -338,6 +479,8 @@ const NewBooking = ({ isNew = false }) => {
       console.error("Creating booking failed:", error);
     }
   };
+
+
 
   const handleChange = (category, field, value) => {
     setData((prev) => ({
@@ -363,6 +506,7 @@ const NewBooking = ({ isNew = false }) => {
     }));
   };
 
+
   const handleChangeNested = (category, nestedField, subField, value) => {
     setData((prev) => ({
       ...prev,
@@ -375,6 +519,71 @@ const NewBooking = ({ isNew = false }) => {
       },
     }));
   };
+
+  const YNoptions = [
+    { value: 'Y', label: 'Yes' },
+    { value: 'N', label: 'No' }
+  ];
+
+  const statusOptions = [
+    { value: 'P', label: 'Pending' },
+    { value: 'C', label: 'Complete' }
+  ];
+
+
+  const streamOptions = data.Delivery.programStreams?.map(stream => ({
+    value: stream,
+    label: stream
+})) || [];
+
+
+  const facilitatorOptions = data.Delivery.facilitators?.map(facilitator => ({
+    value: facilitator,
+    label: facilitator
+  }))|| [];
+
+  const locationOptions = data.Delivery.location?.map(location => ({
+    value: location,
+    label: location
+  }))|| [];
+
+  const moduleOptions = data.Delivery.module_id?.map(module_id => ({
+    value: module_id,
+    label: module_id
+  }))|| [];
+
+
+  const handleSelectChange = (category, field) => option => {
+    console.log("Changing:", category, field, option ? option.value : null);
+    setData(prev => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: option ? option.value : ''
+      }
+    }));
+  };
+  
+  
+
+  const formatCreateLabel = (inputValue) => `New Option: "${inputValue}"`;
+
+  const animatedComponents = makeAnimated(); 
+
+  const templateOptions = data.Delivery.templates?.map(template => ({
+    value: template.id,
+    label: template.name
+  }))|| [];
+
+  const exhibitionOptions = data.Delivery.exhibition?.map(exhibition => ({
+    value: exhibition,
+    label: exhibition
+  }))|| [];
+
+
+
+
+  
 
   return (
     <>
@@ -443,6 +652,7 @@ const NewBooking = ({ isNew = false }) => {
           </div>
         </div>
       )}
+      
       <div>
         {/* bookingChecklist should be a prop to be parse in */}
         {!isNew && activeCategory === "Checklist" && (
@@ -450,73 +660,52 @@ const NewBooking = ({ isNew = false }) => {
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
-            <label>Program Stream:</label>
-            <select
-              value={data.Delivery.streamSelect}
-              onChange={(e) =>
-                handleChange("Delivery", "streamSelect", e.target.value)
-              }
-            >
-              <option value="">Please select a stream</option>
-              {data.Delivery.programStreams &&
-                data.Delivery.programStreams.map((stream, index) => (
-                  <option key={index} value={stream}>
-                    {stream}
-                  </option>
-                ))}
-            </select>
+          <label>Program Stream:</label>
+          <CreatableSelect
+              value={streamOptions.find(option => option.value === data.Delivery.streamSelect)}
+              onChange={handleSelectChange('Delivery', 'streamSelect')}
+              options={streamOptions}
+              placeholder="Please select a stream"
+              isClearable
+              isSearchable
+              formatCreateLabel={formatCreateLabel}
+          />
 
-            <label>Template:</label>
-            <select
-              value={data.Delivery.templateSelect}
-              onChange={(e) =>
-                handleChange("Delivery", "templateSelect", e.target.value)
-              }
-            >
-              <option value="" disabled>
-                Please select a template
-              </option>
-              {!bookingId &&
-                data.Delivery.templates &&
-                data.Delivery.templates.map((template, index) => (
-                  <option key={index} value={template.id}>
-                    {template.name}
-                  </option>
-                ))}
-            </select>
 
-            <label>Facilitators:</label>
-            <select
-              value={data.Delivery.facilitatorsSelect}
-              onChange={(e) =>
-                handleChange("Delivery", "facilitatorsSelect", e.target.value)
-              }
-            >
-              <option value="">Please select facilitators</option>
-              {data.Delivery.facilitators &&
-                data.Delivery.facilitators.map((facilitator, index) => (
-                  <option key={index} value={facilitator}>
-                    {facilitator}
-                  </option>
-                ))}
-            </select>
 
-            <label>Delivery Location:</label>
-            <select
-              value={data.Delivery.locationSelect}
-              onChange={(e) =>
-                handleChange("Delivery", "locationSelect", e.target.value)
-              }
-            >
-              <option value="">Please select a location</option>
-              {data.Delivery.location &&
-                data.Delivery.location.map((location, index) => (
-                  <option key={index} value={location}>
-                    {location}
-                  </option>
-                ))}
-            </select>
 
+          <label>Template:</label>
+          <Select
+            components={animatedComponents}
+            value={templateOptions.find(option => option.value === data.Delivery.templateSelect)}
+            onChange={handleSelectChange("Delivery", "templateSelect")}
+            options={templateOptions}
+            placeholder="Please select a template"
+            isClearable
+            isSearchable
+          />
+
+          <label>Facilitators:</label>
+          <CreatableSelect
+            value={facilitatorOptions.find(option => option.value === data.Delivery.facilitatorsSelect)}
+            onChange={handleSelectChange}
+            options={facilitatorOptions}
+            placeholder="Please select a stream"
+            isClearable
+            isSearchable
+            formatCreateLabel={formatCreateLabel}
+          />
+
+          <label>Delivery Location:</label>
+          <CreatableSelect
+            value={locationOptions.find(option => option.value === data.Delivery.locationSelect)}
+            onChange={handleSelectChange}
+            options={locationOptions}
+            placeholder="Please select a location"
+            isClearable
+            isSearchable
+            formatCreateLabel={formatCreateLabel}
+          />
             <label>Program Date:</label>
             <input
               type="date"
@@ -533,68 +722,51 @@ const NewBooking = ({ isNew = false }) => {
             >
               <option value="1">1</option>
               <option value="2">2</option>
+              <option value="1">3</option>
+              <option value="2">4</option>
             </select>
 
             <label>Time (Start):</label>
-            <input
-              type="time"
-              value={data.Delivery.startTime}
-              onChange={(e) =>
-                handleChange("Delivery", "startTime", e.target.value)
-              }
-            />
+              <input
+                type="time"
+                value={data.Delivery.startTime}
+                onChange={(e) => handleChange("Delivery", "startTime", e.target.value)}
+              />
 
-            <label>Time (End):</label>
-            <input
-              type="time"
-              value={data.Delivery.endTime}
-              onChange={(e) =>
-                handleChange("Delivery", "endTime", e.target.value)
-              }
-            />
+              <label>Time (End):</label>
+              <input
+                type="time"
+                value={data.Delivery.endTime}
+                onChange={(e) => handleChange("Delivery", "endTime", e.target.value)}
+              />
 
-            {["Module 1", "Module 2", "Module 3"].map((label, index) => (
-              <React.Fragment key={label}>
-                <label>{label}:</label>
-                <select
-                  value={data.Delivery.moduleSelects[index]}
-                  onChange={(e) =>
-                    handleMultiSelectChange(
-                      "Delivery",
-                      "moduleSelects",
-                      index,
-                      e.target.value
-                    )
-                  }
-                >
-                  <option value="">Please select a module</option>
-                  {data.Delivery.module &&
-                    data.Delivery.module.map((module, modIndex) => (
-                      <option key={modIndex} value={module}>
-                        {module}
-                      </option>
-                    ))}
-                </select>
-              </React.Fragment>
-            ))}
 
-            <label>Exhibition:</label>
-            <select
-              value={data.Delivery.exhibitionSelect}
-              onChange={(e) =>
-                handleChange("Delivery", "exhibitionSelect", e.target.value)
-              }
-            >
-              <option value="">Please select an exhibition</option>
-              {data.Delivery.exhibition &&
-                data.Delivery.exhibition.map((exhibition, index) => (
-                  <option key={index} value={exhibition}>
-                    {exhibition}
-                  </option>
-                ))}
-            </select>
 
-            <label>Amendments/Notes:</label>
+      {["Module 1", "Module 2", "Module 3"].map((label, index) => (
+        <React.Fragment key={label}>
+          <label>{label}{index === 0 ? " *" : ""}:</label>
+          <Select
+            value={moduleOptions.find(option => option.value === data.Delivery.moduleSelects[index])}
+            onChange={(selectedOption) => handleMultiSelectChange("Delivery", "moduleSelects", index, selectedOption.value)}
+            options={data.Delivery.module ? data.Delivery.module.map(module => ({ label: module, value: module })) : []}
+            placeholder={index === 0 ? "Please select a module" : "Optional"}
+          />
+        </React.Fragment>
+      ))}
+
+
+        <label>Exhibition:</label>
+          <Select
+            components={animatedComponents}
+            value={exhibitionOptions.find(option => option.value === data.Delivery.exhibitionSelect)}
+            onChange={handleSelectChange("Delivery", "exhibitionSelect")}
+            options={exhibitionOptions}
+            placeholder="Please select a exhibition"
+            isClearable
+            isSearchable
+          /> 
+
+            <label>Notes:</label>
             <textarea
               value={data.Delivery.notes}
               onChange={(e) =>
@@ -606,33 +778,22 @@ const NewBooking = ({ isNew = false }) => {
 
         {activeCategory === "School" && (
           <form className="newBookingForm">
-            <label htmlFor="school-input">School Name:</label>
-            <select
-              value={data.School.schoolSelect}
-              onChange={(e) => {
-                const selectedSchoolId = e.target.value;
-                const selectedSchool = data.School.schools.find(
-                  (school) => school.id === selectedSchoolId
-                );
-                handleChange("School", "schoolSelect", selectedSchoolId);
-                handleChangeNested("School", "school", "id", selectedSchoolId);
-                handleChangeNested(
-                  "School",
-                  "school",
-                  "name",
-                  selectedSchool?.name
-                );
-              }}
-            >
-              <option value="" disabled>
-                Please select a school
-              </option>
-              {data.School.schools.map((school, index) => (
-                <option key={index} value={school.id}>
-                  {school.name}
-                </option>
-              ))}
-            </select>
+        <label htmlFor="school-input">School Name:</label>
+        <CreatableSelect
+          id="school-input"
+          value={data.School.schools.find(school => school.id === data.School.schoolSelect) ? { value: data.School.schoolSelect, label: data.School.schools.find(school => school.id === data.School.schoolSelect).name } : null}
+          onChange={(selectedOption) => {
+              const selectedSchoolId = selectedOption ? selectedOption.value : '';
+              handleChange("School", "schoolSelect", selectedSchoolId);
+              handleChangeNested("School", "school", "id", selectedSchoolId);
+              handleChangeNested("School", "school", "name", selectedOption ? selectedOption.label : '');
+          }}
+          options={data.School.schools.map(school => ({ value: school.id, label: school.name }))}
+          placeholder="Please select a school"
+          isClearable
+          isSearchable
+          formatCreateLabel={inputValue => `Add "${inputValue}"`}
+      />
 
             <div className="form-group">
               <span id="newBookingStudentYear">Student Years:</span>
@@ -660,17 +821,15 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Low SES:</label>
-            <select
-              value={data.School.lowSES}
-              onChange={(e) => handleChange("School", "lowSES", e.target.value)}
-            >
-              <option value="" disabled>
-                Yes or No
-              </option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+              <label>Low SES:</label>
+              <Select
+                value={YNoptions.find(option => option.value === data.School.lowSES)}
+                onChange={(selectedOption) => handleChange("School", "lowSES", selectedOption.value)}
+                options={YNoptions}
+                placeholder="Yes or No"
+                isClearable={true} 
+                isSearchable={false} 
+              />
 
             <fieldset>
               <legend>School Contact:</legend>
@@ -750,164 +909,105 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Accessibility Needs Communicated:</label>
-            <select
-              value={data.School.accessibilityNeeds}
-              onChange={(e) =>
-                handleChange("School", "accessibilityNeeds", e.target.value)
-              }
-            >
-              <option value="" disabled>
-                Yes or No
-              </option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+      <label>Accessibility Needs Communicated:</label>
+        <Select
+          value={YNoptions.find(option => option.value === data.School.accessibilityNeeds)}
+          onChange={(selectedOption) =>
+            handleChange("School", "accessibilityNeeds", selectedOption.value)
+          }
+          options={YNoptions}
+          placeholder="Yes or No"
+          isClearable={true}
+          isSearchable={false}
+        />
 
-            <label>Allergen and Anaphylaxis Communicated:</label>
-            <select
-              value={data.School.allergenInfo}
-              onChange={(e) =>
-                handleChange("School", "allergenInfo", e.target.value)
-              }
-            >
-              <option value="" disabled>
-                Yes or No
-              </option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+      <label>Allergen and Anaphylaxis Communicated:</label>
+      <Select
+        value={YNoptions.find(option => option.value === data.School.allergenInfo)}
+        onChange={(selectedOption) =>
+          handleChange("School", "allergenInfo", selectedOption.value)
+        }
+        options={YNoptions}
+        placeholder="Yes or No"
+        isClearable={true}
+        isSearchable={false}
+      />
 
-            <label>Is Partner School:</label>
-            <select
-              value={data.School.isPartnerSchool}
-              onChange={(e) =>
-                handleChange("School", "isPartnerSchool", e.target.value)
-              }
-            >
-              <option value="" disabled>
-                Yes or No
-              </option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+      <label>Is Partner School:</label>
+      <Select
+        value={YNoptions.find(option => option.value === data.School.isPartnerSchool)}
+        onChange={(selectedOption) =>
+          handleChange("School", "isPartnerSchool", selectedOption.value)
+        }
+        options={YNoptions}
+        placeholder="Yes or No"
+        isClearable={true}
+        isSearchable={false}
+      />
           </form>
         )}
+      {activeCategory === "Bus" && (
+        <form className="newBookingForm">
+          <label htmlFor="bus-req">BUS REQ:</label>
+      <Select
+        id="bus-req"
+        value={YNoptions.find(option => option.value === data.Bus.busReq)}
+        onChange={(selectedOption) => handleChange("Bus", "busReq", selectedOption.value)}
+        options={YNoptions}
+        placeholder="Yes or No"
+        isClearable={true}
+      />
 
-        {activeCategory === "Bus" && (
-          <form className="newBookingForm">
-            <label htmlFor="bus-req">BUS REQ:</label>
-            <select
-              id="bus-req"
-              value={data.Bus.busReq}
-              onChange={(e) => handleChange("Bus", "busReq", e.target.value)}
-            >
-              <option value="">Yes or No</option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+      {data.Bus.busReq === "Y" && (
+        <>
+          <label>BUS BOOKED:</label>
+          <Select
+            id="bus-booked"
+            value={YNoptions.find(option => option.value === data.Bus.busBooked)}
+            onChange={(selectedOption) => handleChange("Bus", "busBooked", selectedOption.value)}
+            options={YNoptions}
+            placeholder="Yes or No"
+            isClearable={true}
+          />
 
-            <label>BUS BOOKED:</label>
-            <select
-              id="bus-booked"
-              value={data.Bus.busBooked}
-              onChange={(e) => handleChange("Bus", "busBooked", e.target.value)}
-            >
-              <option value="">Yes or No</option>
-              <option value="Y">Yes</option>
-              <option value="N">No</option>
-            </select>
+          <label htmlFor="status">Status:</label>
+          <Select
+            id="status"
+            value={statusOptions.find(option => option.value === data.Bus.status)}
+            onChange={(selectedOption) => handleChange("Bus", "status", selectedOption.value)}
+            options={statusOptions}
+            placeholder="Select Status"
+            isClearable={true}
+          />
 
-            <label htmlFor="status">Status:</label>
-            <select
-              id="status"
-              value={data.Bus.status}
-              onChange={(e) => handleChange("Bus", "status", e.target.value)}
-            >
-              <option value="">Select Status</option>
-              <option value="paid">Paid</option>
-              <option value="processing">Processing</option>
-            </select>
+          <label htmlFor="price">Price:</label>
+          <input
+            id="price"
+            type="text"
+            value={data.Bus.price}
+            onChange={(e) => handleChange("Bus", "price", e.target.value)}
+          />
 
-            <label htmlFor="price">Price:</label>
-            <input
-              id="price"
-              type="text"
-              value={data.Bus.price}
-              onChange={(e) => handleChange("Bus", "price", e.target.value)}
-            />
+          <label htmlFor="date-paid">Date Paid:</label>
+          <input
+            id="date-paid"
+            type="date"
+            value={data.Bus.datePaid}
+            onChange={(e) => handleChange("Bus", "datePaid", e.target.value)}
+          />
 
-            <label htmlFor="date-paid">Date Paid:</label>
-            <input
-              id="date-paid"
-              type="date"
-              value={data.Bus.datePaid}
-              onChange={(e) => handleChange("Bus", "datePaid", e.target.value)}
-            />
+          <label htmlFor="invoice-number">Invoice #:</label>
+          <input
+            id="invoice-number"
+            type="text"
+            value={data.Bus.invoiceNumber}
+            onChange={(e) => handleChange("Bus", "invoiceNumber", e.target.value)}
+          />
+        </>
+      )}
+        </form>
+      )}
 
-            <label htmlFor="invoice-number">Invoice #:</label>
-            <input
-              id="invoice-number"
-              type="text"
-              value={data.Bus.invoiceNumber}
-              onChange={(e) =>
-                handleChange("Bus", "invoiceNumber", e.target.value)
-              }
-            />
-
-            <div className="checkbox-container">
-              <input
-                type="checkbox"
-                id="saved-receipt"
-                checked={data.Bus.savedReceipt === "Y"}
-                onChange={(e) =>
-                  handleChange(
-                    "Bus",
-                    "savedReceipt",
-                    e.target.checked ? "Y" : "N"
-                  )
-                }
-              />
-              <label htmlFor="saved-receipt">Saved Receipt:</label>
-            </div>
-
-            <div className="checkbox-container">
-              <input
-                type="checkbox"
-                id="enter-into-expense-master"
-                checked={data.Bus.enterIntoExpenseMaster === "Y"}
-                onChange={(e) =>
-                  handleChange(
-                    "Bus",
-                    "enterIntoExpenseMaster",
-                    e.target.checked ? "Y" : "N"
-                  )
-                }
-              />
-              <label htmlFor="enter-into-expense-master">
-                Enter into Expense Master:
-              </label>
-            </div>
-
-            <div className="checkbox-container">
-              <input
-                type="checkbox"
-                id="pin-categorise-email"
-                checked={data.Bus.pinCategoriseEmail === "Y"}
-                onChange={(e) =>
-                  handleChange(
-                    "Bus",
-                    "pinCategoriseEmail",
-                    e.target.checked ? "Y" : "N"
-                  )
-                }
-              />
-              <label htmlFor="pin-categorise-email">
-                Pin/Categorise Email:
-              </label>
-            </div>
-          </form>
-        )}
 
         {activeCategory === "Others" && (
           <form className="newBookingForm">
@@ -939,13 +1039,13 @@ const NewBooking = ({ isNew = false }) => {
               onChange={(e) => handleChange("Others", "income", e.target.value)}
             />
 
-            <label htmlFor="profit">Profit:</label>
+            {/* <label htmlFor="profit">Profit:</label>
             <input
               id="profit"
               type="number"
               value={data.Others.profit}
               onChange={(e) => handleChange("Others", "profit", e.target.value)}
-            />
+            /> */}
           </form>
         )}
       </div>
