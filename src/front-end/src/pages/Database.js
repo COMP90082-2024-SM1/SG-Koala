@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Header from "../components/Header/Header";
 import "../styles/Database.css";
 import { useTable, useSortBy, useFilters, useGlobalFilter, usePagination } from 'react-table';
@@ -9,28 +9,30 @@ import GlobalFilter from '../components/Table/GlobalFilter';
 import { TypographyParagraph, } from "../components/Typography/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSort, faSortUp, faSortDown, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { getAllBooking } from "../api/NewbookingAPI";
 
 function Database() {
-  const data = useMemo(() => ([
-    { id: 1, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Aireys Inlet Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Aireys Inlet Primary School', StudentYear: '10', Student: '15', FirstName: 'Bob', LastName: 'Ross', PhoneNumber: '040000000'},
-    { id: 2, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Antonine College' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Antonine College' , StudentYear: '9', Student: '50', FirstName: 'Dwayne', LastName: 'Johnson', PhoneNumber: '0412345678'},
-    { id: 3, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Beaufort Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Beaufort Primary School', StudentYear: '7,8', Student: '48', FirstName: 'Margot', LastName: 'Robbie', PhoneNumber: '0423584892'},
-    { id: 4, ProgramStream: 'STEAM: Excursions', Status: 'Delivered', School: 'Dorset Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Dorset Primary School' , StudentYear: '9', Student: '20', FirstName: 'Elizabeth', LastName: 'Taylor', PhoneNumber: '040000000'},
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-    { id: 10 }, 
-    { id: 11 },
-  ]), []);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllBooking();
+        setData(response);
+        console.log("Data fetch successfully!", response);
+      } catch (error) {
+        console.error("Data fetch failed:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   const columns = useMemo(() => Grouped_Columns, [])
 
   const [selectGroup, setSelectGroup] = useState('All');
 
   const groupOptions = useMemo(() => {
-    const options = columns.filter(column => column.columns).map(column => ({
+    const options = columns.filter(column => column.columns && column.Header !== ' ').map(column => ({
       label: column.Header,
       value: column.Header
     }));
@@ -49,10 +51,12 @@ function Database() {
       canSort: false,
     }];
     if (selectGroup === 'All') {
+      console.log(columns);
       return columns;
     }
     else {
       const cols = columns.find(column => column.Header === selectGroup)?.columns;
+      console.log(cols);
       return baseColumns.concat({Header: selectGroup, columns: cols});
     }
   }, [selectGroup, columns]);
@@ -65,7 +69,7 @@ function Database() {
 
   const defaultColumn = useMemo(() => {
     return {
-      Filter: ColumnFilter
+      Filter: ColumnFilter,
     }
   }, [])
 
@@ -87,6 +91,7 @@ function Database() {
     columns: filteredColumns, 
     data, 
     defaultColumn,
+    initialState: { sortBy: [] },
   }, useFilters, useGlobalFilter, useSortBy, usePagination)
 
   const { globalFilter, pageIndex } = state
@@ -133,16 +138,14 @@ function Database() {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               { headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} className='th'>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} className='th'>
                   <div>
                     {column.render('Header')}
                   {' '}
-                  {column.canSort && (
-                    <button {...column.getSortByToggleProps()} className='Button'>
+                  {!column.disableSortBy && (
                       <span>
                           {column.isSorted ? (column.isSortedDesc ? sortUp : sortDown) : sortIcon}
                       </span>
-                    </button>
                   )}
                   </div>
                   <div>
