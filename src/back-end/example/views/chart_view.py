@@ -59,7 +59,7 @@ class ChartOneView(APIView):
 
         # mock data
         mock_data = {
-            "participants": [120, 110, 100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+            "participants": [230, 210, 190, 180, 150, 140, 110, 80, 70, 50, 40, 20],
             "registrants": [240, 220, 200, 180, 160, 140, 120, 100, 80, 60, 40, 20],
         }
 
@@ -276,19 +276,15 @@ class ChartFourView(APIView):
         data = {"grades_by_stream": grades_by_stream}
 
         # mock data
-        mock_data = {
-            "grades_by_stream": {
-                "ART": {"7": 867, "8": 932, "9": 784, "10": 812},
-                "NN Tour Workshop": {
-                    "7": 0,
-                    "8": 34,
-                    "9": 58,
-                    "10": 45,
-                },
-                "STEAM": {"7": 578, "8": 601, "9": 622, "10": 655},
-                "SCOE": {"7": 578, "8": 590, "9": 610, "10": 640},
-            }
-        }
+        mock_data ={
+  "grades_by_stream": {
+    "ART": {"7": 742, "8": 813, "9": 634, "10": 921},
+    "NN Tour Workshop": {"7": 18, "8": 53, "9": 82, "10": 10},
+    "STEAM": {"7": 853, "8": 710, "9": 688, "10": 752},
+    "SCOE": {"7": 629, "8": 592, "9": 947, "10": 521}
+  }
+}
+
 
         serializer = ChartFourSerializer(data=mock_data)
         if serializer.is_valid():

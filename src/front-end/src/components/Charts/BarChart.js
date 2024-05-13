@@ -1,12 +1,10 @@
 import React from "react";
-import { Bar, Line } from "react-chartjs-2";
-import { barChartData } from "./FAKE_DATA";
+import { Bar } from "react-chartjs-2";
+
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  PointElement,
-  LineElement,
   BarElement,
   Legend,
   Title,
@@ -22,11 +20,8 @@ ChartJS.register(
   Tooltip
 );
 
-function BarChart() {
-  const options = {};
-  const data = {};
-
-  return <Bar options={options} data={barChartData}></Bar>;
+function BarChart({ data, options = {} }) {
+  return <Bar options={options} data={data}></Bar>;
 }
 
 export default BarChart;

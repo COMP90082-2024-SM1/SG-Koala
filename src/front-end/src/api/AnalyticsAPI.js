@@ -1,10 +1,9 @@
-import { lineChartData } from "../components/Charts/FAKE_DATA";
+const baseUrl = "http://127.0.0.1:8000/api/";
 
-const baseUrl = "http://127.0.0.1:8000/api/template/";
-
-export const getStudentAttedingInfoByYear = async () => {
+export const getChartData = async (id) => {
   try {
-    const response = await fetch(baseUrl);
+    const url = baseUrl + "chart/" + id + "/";
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
