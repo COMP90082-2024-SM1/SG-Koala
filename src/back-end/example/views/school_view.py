@@ -16,7 +16,7 @@ class SchoolView(APIView):
         collection = db['school']
         documents = list(collection.find())
         serializer = SchoolSerializer(documents, many=True)
-        print(serializer.data)
+
         return Response(serializer.data)
 
     

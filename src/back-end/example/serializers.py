@@ -5,6 +5,9 @@ from datetime import datetime
 class SchoolSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     name = serializers.CharField(max_length=200)
+    # studentYear = serializers.ListField(
+    # child=serializers.IntegerField()
+    # )
     studentYear = serializers.IntegerField()
     numStudentAttended = serializers.IntegerField(required=False)
     numStudentRegistered = serializers.IntegerField()
@@ -47,7 +50,7 @@ class TemplateSerializer(serializers.Serializer):
 class BusSerializer(serializers.Serializer):
     bus_req = serializers.BooleanField(default=False)
     isBooked = serializers.BooleanField(default=False)
-    status = serializers.IntegerField(default=0)
+    status = serializers.BooleanField(default=False)
     price = serializers.FloatField(default=0)
     date_paid = serializers.DateTimeField(allow_null=True, required=False)
     invoice = serializers.CharField(max_length=255, allow_blank=True,default = "")
@@ -58,7 +61,7 @@ class BookSerializer(serializers.Serializer):
     programStream = serializers.CharField(required=False)
     facilitators = serializers.CharField(required=False)
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
-    status = serializers.ChoiceField(choices=['Pending', 'Processing', 'Delivered', 'Canceled'])
+    status = serializers.ChoiceField(choices=['pending', 'processing', 'delivered', 'canceled'])
     term = serializers.IntegerField(required=False)
     location = serializers.CharField()  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
     date = serializers.DateTimeField()
@@ -78,7 +81,7 @@ class BookSerializer(serializers.Serializer):
     bus = BusSerializer(default={
     "bus_req": False,
     "isBooked": False,
-    "status": 0,
+    "status": False,
     "price": 0.0,
     "date_paid": None,  # Or any default date
     "invoice": ""
