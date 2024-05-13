@@ -63,7 +63,7 @@ class ChartOneView(APIView):
             "registrants": [240, 220, 200, 180, 160, 140, 120, 100, 80, 60, 40, 20],
         }
 
-        serializer = ChartOneSerializer(data=serializer_data)
+        serializer = ChartOneSerializer(data=mock_data)
 
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -133,6 +133,8 @@ class ChartTwoView(APIView):
             ordered_terms = [term_data[str(term)] for term in range(1, 5)]
             streams_data[stream] = ordered_terms
 
+        data = {"streams": streams_data}
+
         # mock data
         mock_data = {
             "streams": {
@@ -148,8 +150,7 @@ class ChartTwoView(APIView):
             }
         }
 
-        data = {"streams": streams_data}
-        serializer = ChartTwoSerializer(data=data)
+        serializer = ChartTwoSerializer(data=mock_data)
 
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -193,7 +194,7 @@ class ChartThreeView(APIView):
         locations_data = {}
         for item in result:
             location = item["location"]
-            term_data = {term: 0 for term in range(1, 5)}  # Assuming terms 1 to 4
+            term_data = {term: 0 for term in range(1, 5)}
 
             for term_info in item["terms"]:
                 if term_info["term"] in term_data:
@@ -214,7 +215,7 @@ class ChartThreeView(APIView):
             }
         }
 
-        serializer = ChartThreeSerializer(data=data)
+        serializer = ChartThreeSerializer(data=mock_data)
 
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -278,7 +279,7 @@ class ChartFourView(APIView):
         mock_data = {
             "grades_by_stream": {
                 "ART": {"7": 867, "8": 932, "9": 784, "10": 812},
-                "NN Tour+ (UN)EXPECTED WORKSHOP + CHICKENOSAURUS WORKSHOP": {
+                "NN Tour Workshop": {
                     "7": 0,
                     "8": 34,
                     "9": 58,
@@ -289,7 +290,7 @@ class ChartFourView(APIView):
             }
         }
 
-        serializer = ChartFourSerializer(data=data)
+        serializer = ChartFourSerializer(data=mock_data)
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
