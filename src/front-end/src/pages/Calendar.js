@@ -6,16 +6,16 @@ import "../styles/Calendar.css";
 import 'rsuite/Calendar/styles/index.css';
 
 
-function formatTimeRange(startTimeStr, endTimeStr) {
+function formatTimeRange(startTimeStr) {
     try {
         const options = { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'UTC' };
         const startTime = new Date(startTimeStr);
-        const endTime = new Date(endTimeStr);
+        //const endTime = new Date(endTimeStr);
 
         const formattedStartTime = startTime.toLocaleTimeString("en-AU", options);
-        const formattedEndTime = endTime.toLocaleTimeString("en-AU", options);
+        //const formattedEndTime = endTime.toLocaleTimeString("en-AU", options);
 
-        return `${formattedStartTime}-${formattedEndTime}`;
+        return `${formattedStartTime}`;
     } catch (error) {
         console.error("Error formatting time range:", error);
         return "Time formatting error"; 
@@ -47,8 +47,9 @@ function Calendar() {
                     //console.log("Start:", item.startTime)
                     //console.log("End:", item.endTime)
                     acc[dateKey].push({
-                        time: formatTimeRange(item.startTime, item.endTime), 
-                        title: item.location || "No location"
+                        time: formatTimeRange(item.startTime), 
+                        title: item.name || "No Name",
+                        id: item.id
                         //title: item.name + ' - ' + item.location 
                     });
                     //console.log(`Date ${dateKey} has ${acc[dateKey].length} events`);
@@ -115,9 +116,11 @@ function Calendar() {
             return (
                 <ul className="calendar-todo-list">
                     {displayList.map((item, index) => (
-                        <li key={index}>
-                            <Badge /> <b>{item.time}</b> - {item.title}
+                        <li key={index} style={{ display: 'flex', flexDirection:'row', justifyContent: 'space-between', width: '100%', padding: '0 5px', backgroundColor: '#cbe3ff', margin: '3px 0', borderRadius: '10px' }}>
+                            <span style={{ textAlign: 'start' }}><Badge /> <a href={`/booking/${item.id}/`} target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}><b>{item.title}</b></a></span>
+                            {item.time}
                         </li>
+
                     ))}
                     {moreCount > 0 && (
                         <li>
@@ -127,7 +130,7 @@ function Calendar() {
                                     ref={el => popoverRefs.current[dateString] = el}>
                                     {list.map((item, index) => (
                                         <p key={index}>
-                                            <b>{item.time}</b> - {item.title}
+                                            <b><a href={`/booking/${item.id}/`} target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>{item.title}</a> </b>{item.time}
                                         </p>
                                     ))}
                                 </Popover>
