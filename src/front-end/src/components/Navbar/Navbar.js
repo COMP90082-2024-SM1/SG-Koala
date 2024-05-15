@@ -127,7 +127,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="footer">
-        <img src={koala_logo} alt="Koala logo" id="koala_logo" />
+        <img src={koala_logo} alt="Koala logo" id="koalaLogo" />
       </div>
     </nav>
   );
