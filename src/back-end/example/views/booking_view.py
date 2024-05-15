@@ -155,7 +155,7 @@ class BookingViewID(APIView):
             
             school_collection = db['school']
 
-            if booking_document['location'] != new_data['location'] and new_data['location'] != '' and  booking_document['location'] != '':
+            if booking_document['status'] != new_data['status'] and new_data['status'] != 'Pending' and  booking_document['status'] != 'Pending':
                 school_id = ObjectId(request.data['school_id'])
                 school_email = school_collection.find_one({'_id': school_id})['email']
                 # change to school email
