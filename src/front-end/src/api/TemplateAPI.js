@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BASEURL + "api/template/";
+const baseUrl = process.env.REACT_APP_BASEURL + "template/";
 
 export const getAllTemplates = async () => {
   try {

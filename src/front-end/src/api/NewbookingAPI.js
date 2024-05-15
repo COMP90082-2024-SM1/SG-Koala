@@ -1,4 +1,5 @@
-const baseUrl = process.env.REACT_APP_BASEURL + "api/";
+const baseUrl = process.env.REACT_APP_BASEURL;
+
 export const getAllTemplates = async () => {
   return fetch(baseUrl + "template/").then((response) => {
     if (!response.ok) {

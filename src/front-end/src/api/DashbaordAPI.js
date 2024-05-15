@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BASEURL + "api/";
+const baseUrl = process.env.REACT_APP_BASEURL;
 export const getAllBooking = async () => {
   return fetch(baseUrl + "booking/").then((response) => {
     if (!response.ok) {

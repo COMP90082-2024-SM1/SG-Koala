@@ -1,4 +1,4 @@
-const baseUrl = process.env.REACT_APP_BASEURL + "api/chart/";
+const baseUrl = process.env.REACT_APP_BASEURL + "chart/";
 
 export const getChartData = async (id) => {
   try {
