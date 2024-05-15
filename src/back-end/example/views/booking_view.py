@@ -155,7 +155,7 @@ class BookingViewID(APIView):
             
             school_collection = db['school']
 
-            if booking_document['status'] != new_data['status'] and new_data['status'] != 'Pending' and  booking_document['status'] != 'Pending':
+            if booking_document['status'] != new_data['status'] and new_data['status'] != 'Pending' and  booking_document['status'] != 'Pending'and booking_document['status'] != 'Canceled':
                 school_id = ObjectId(request.data['school_id'])
                 school_email = school_collection.find_one({'_id': school_id})['email']
                 # change to school email
@@ -172,10 +172,22 @@ class BookingViewID(APIView):
 
         db = connect_mongodb()
         collection = db['booking']
+        booking_document = collection.find_one({'_id': ObjectId(kwargs['id'])})
+
+        if booking_document:
+            school_id = booking_document['school_id']
+            school_collection = db['school']
+            school_email = school_collection.find_one({'_id': ObjectId(school_id)})['email']
+            
+
         delete_result = collection.delete_one({'_id': ObjectId(kwargs['id'])})
 
         if delete_result.deleted_count == 0:
             return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
+        else:
+            send_booking_ref_to_client(kwargs['id'], [school_email], 
+                                           "Your booking has beeen canceled, please contact Science Gallery team if you have any questions.",
+                                           "Science Gallery Booking Cancellation")
         return Response({'status': 'success', 'id': kwargs['id']}, status=status.HTTP_200_OK)
 
 
