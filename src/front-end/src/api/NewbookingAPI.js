@@ -134,3 +134,85 @@ export const getAllBooking = async () => {
     return response.json();
   });
 };
+
+export const updateMiscellaneous = async (newOptions) => {
+  console.log('Sending data:', newOptions); 
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/miscellaneous/', {
+      method: 'PUT', 
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newOptions),
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    console.log('Successfully updated:', data);
+  } catch (error) {
+    console.error('Error updating miscellaneous data:', error);
+  }
+};
+
+export const updateBooking = async (id,bookingData) => {
+  return fetch(`http://127.0.0.1:8000/api/booking/${id}/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookingData),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  });
+};
+
+
+export const updateSchoolById = async (id,school) => {
+  return fetch(`http://127.0.0.1:8000/api/school/${id}/`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(school),
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  });
+};
+
+
+export const DeleteSchoolById = async (id) => {
+  return fetch(`http://127.0.0.1:8000/api/school/${id}/`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  });
+};
+
+
+
+export const DeleteCheckListById = async (id) => {
+  return fetch(`http://127.0.0.1:8000/api/checklist/${id}/`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then((response) => {
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return response.json();
+  });
+};

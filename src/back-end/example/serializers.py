@@ -12,7 +12,8 @@ class SchoolSerializer(serializers.Serializer):
     hourRegistered = serializers.IntegerField(required=False)
     hourAttended = serializers.IntegerField(required=False)
     lowSES = serializers.BooleanField()
-    allergy = serializers.CharField(max_length=200, required=False)
+    allergy = serializers.CharField(max_length=200,required=False, default = '',allow_blank= True)
+#     allergy = serializers.CharField(max_length=200, required=False)
     contactFirstName = serializers.CharField(max_length=200)
     contactLastName = serializers.CharField(max_length=200)
     email = serializers.CharField(max_length=200)
@@ -49,7 +50,7 @@ class TemplateSerializer(serializers.Serializer):
 class BusSerializer(serializers.Serializer):
     bus_req = serializers.BooleanField(default=False)
     isBooked = serializers.BooleanField(default=False)
-    status = serializers.IntegerField(default=0)
+    status = serializers.BooleanField(default=False)
     price = serializers.FloatField(default=0)
     date_paid = serializers.DateTimeField(allow_null=True, required=False)
     invoice = serializers.CharField(max_length=255, allow_blank=True, default="")
@@ -60,16 +61,23 @@ class BookSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=200)
     programStream = serializers.CharField(required=False)
     facilitators = serializers.CharField(required=False)
-    event = (
-        serializers.CharField()
-    )  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
-    status = serializers.ChoiceField(
-        choices=["Pending", "Processing", "Delivered", "Canceled"]
-    )
+
+    event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
+    status = serializers.ChoiceField(choices=['pending', 'processing', 'delivered', 'canceled'])
     term = serializers.IntegerField(required=False)
-    location = serializers.CharField(
-        required=False, allow_blank=True, default=""
-    )  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+    location = serializers.CharField(required = False)  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+
+#     event = (
+#         serializers.CharField()
+#     )  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
+#     status = serializers.ChoiceField(
+#         choices=["Pending", "Processing", "Delivered", "Canceled"]
+#     )
+#     term = serializers.IntegerField(required=False)
+#     location = serializers.CharField(
+#         required=False, allow_blank=True, default=""
+#     )  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+
     date = serializers.DateTimeField()
     checklist_id = (
         serializers.CharField()
@@ -87,19 +95,30 @@ class BookSerializer(serializers.Serializer):
         required=False
     )  # Assuming it's a ForeignKey to another model.
     exibition = serializers.CharField()  # Assuming it's a ForeignKey to another model.
-    note = serializers.CharField(
-        max_length=200, allow_blank=True, required=False
-    )  # Assuming this is optional and can be a blank string.
-    bus = BusSerializer(
-        default={
-            "bus_req": False,
-            "isBooked": False,
-            "status": 0,
-            "price": 0.0,
-            "date_paid": None,  # Or any default date
-            "invoice": "",
-        }
-    )
+
+    note = serializers.CharField(max_length=200, allow_blank=True,required=False)  # Assuming this is optional and can be a blank string.
+    bus = BusSerializer(default={
+    "bus_req": False,
+    "isBooked": False,
+    "status": False,
+    "price": 0.0,
+    "date_paid": None,  # Or any default date
+    "invoice": ""
+})
+#     note = serializers.CharField(
+#         max_length=200, allow_blank=True, required=False
+#     )  # Assuming this is optional and can be a blank string.
+#     bus = BusSerializer(
+#         default={
+#             "bus_req": False,
+#             "isBooked": False,
+#             "status": 0,
+#             "price": 0.0,
+#             "date_paid": None,  # Or any default date
+#             "invoice": "",
+#         }
+#     )
+
     per_student = serializers.IntegerField(default=0)
     expense = serializers.IntegerField(default=0)
     income = serializers.IntegerField(default=0)

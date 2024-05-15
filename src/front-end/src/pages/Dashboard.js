@@ -3,7 +3,7 @@ import "../styles/Dashboard.css";
 import Header from "../components/Header/Header";
 
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { getAllBooking } from "../api/DashbaordAPI";
+import { getAllBooking, getAllMiscellaneous } from "../api/DashbaordAPI";
 import { getSearchResult } from "../api/SearchAPI";
 import { TypographyH3 } from "../components/Typography/Typography";
 
@@ -34,9 +34,11 @@ const Dashboard = () => {
     upcoming: [],
     completed: [],
     cancelled: [],
+    pending:[],
   });
 
   const [activeType, setActiveType] = useState("all");
+  const [typeOptions, setTypeOptions] = useState([]);
   const [filterType, setFilterType] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
   const [startDate, setStartDate] = useState("");
@@ -67,6 +69,7 @@ const Dashboard = () => {
           upcoming: data.filter((booking) => booking.status === "Processing"),
           completed: data.filter((booking) => booking.status === "Delivered"),
           cancelled: data.filter((booking) => booking.status === "Canceled"),
+          pending: data.filter((booking) => booking.status === "pending"),
         });
         const uniqueLocations = Array.from(
           new Set(data.map((booking) => booking.location))
@@ -77,7 +80,23 @@ const Dashboard = () => {
       }
       setIsLoading(false);
     };
+    const fetchMiscellaneousData = async () => {
+      setIsLoading(true);
+      try {
+          const response = await getAllMiscellaneous();
+          const data = await response;
+          const programStreams = data.program_stream.map(stream => ({
+              value: stream,  
+              label: stream.charAt(0).toUpperCase() + stream.slice(1)  
+          }));
+          setTypeOptions(programStreams);
+      } catch (error) {
+          console.error("Failed to fetch type options:", error);
+      }
+      setIsLoading(false);
+  };
 
+    fetchMiscellaneousData();
     fetchBookings();
   }, [searchParams]);
 
@@ -86,9 +105,9 @@ const Dashboard = () => {
 
     if (filterType !== "all") {
       filteredBookings = filteredBookings.filter(
-        (booking) => booking.type === filterType
+          booking => booking.programStream === filterType
       );
-    }
+  }
     if (filterLocation !== "all") {
       filteredBookings = filteredBookings.filter(
         (booking) => booking.location === filterLocation
@@ -129,7 +148,7 @@ const Dashboard = () => {
     <>
       <Header>{isLoading ? "Booking Search" : "Booking - All"}</Header>
       <div className="dashboardFilterSection">
-        {["all", "upcoming", "completed", "cancelled"].map((type) => (
+        {["all","pending" ,"upcoming", "completed", "cancelled"].map((type) => (
           <button
             key={type}
             className={`dashboardFilterBtn ${
@@ -148,30 +167,42 @@ const Dashboard = () => {
         </button>
       </div>
       <div className="dashboardFilterAndSort">
-        <select onChange={(e) => setFilterLocation(e.target.value)}>
-          <option value="all">All Locations</option>
-          {locationsList.map((location) => (
-            <option key={location} value={location}>
-              {location}
-            </option>
-          ))}
+      <select onChange={(e) => setFilterType(e.target.value)}>
+        <option value="all">All Types</option>
+        {typeOptions.map(option => (
+            <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
         </select>
-        <div className="dashboardDateFilter">
-          <label htmlFor="start-date">From: </label>
-          <input
-            id="start-date"
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-          <label htmlFor="end-date">To: </label>
-          <input
-            id="end-date"
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-        </div>
+            <div className="dashboardDateFilter">
+              <label htmlFor="start-date">From: </label>
+              <input
+                id="start-date"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <label htmlFor="end-date">To: </label>
+              <input
+                id="end-date"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
+            </div>
+            <div className="dashboardLocationFilter">
+              <label htmlFor="location">Location: </label>
+              <select
+                id="location"
+                onChange={(e) => setFilterLocation(e.target.value)}
+              >
+                <option value="all">All Locations</option>
+                {locationsList.map((location) => (
+                  <option key={location} value={location}>
+                    {location}
+                  </option>
+                ))}
+              </select>
+            </div>
         <button
           onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
         >
@@ -195,12 +226,12 @@ const Dashboard = () => {
             >
               <div className="dashboardBookingDetail">{booking.name}</div>
               <div
-                className={`dashboard-booking-programStream-${booking.programStream
-                  .toLowerCase()
-                  .replace(/\s+/g, "-")}`}
-              >
-                {booking.programStream}
-              </div>
+              className={`dashboard-booking-programStream-${booking.programStream
+                .toLowerCase()
+                .replace(/\s+/g, "-")}`}
+            >
+            {booking.programStream}
+            </div>
               <div className="dashboardBookingDetail">
                 {formatDate(booking.startTime)}
                 <span className="dashboardSubTime">
