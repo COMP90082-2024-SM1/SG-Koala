@@ -42,8 +42,8 @@ function Templates() {
   return (
     <>
       <Header>Template Collection</Header>
+      {loading && <p>Loading...</p>}
       <div className="template">
-        {loading && <p>Loading...</p>}
         {!loading && (
           <>
             {templates.length > 0 && (
