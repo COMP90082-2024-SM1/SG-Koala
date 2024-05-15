@@ -1,9 +1,10 @@
 import React from 'react';
+import { TypographyParagraph, } from "../Typography/Typography";
 
 const GlobalFilter = ({ filter, setFilter }) => {
     return (
         <span>
-            Search: {' '}
+                Search: {' '}            
             <input 
               value={filter || ''}  
               onChange={(e) => setFilter(e.target.value)} 

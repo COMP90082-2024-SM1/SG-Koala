@@ -8,17 +8,19 @@ import ColumnFilter from '../components/Table/ColumnFilter';
 import GlobalFilter from '../components/Table/GlobalFilter';
 import { TypographyParagraph, } from "../components/Typography/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSort, faSortUp, faSortDown, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { faSort, faSortUp, faSortDown, faTableColumns, faBars, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { getAllBooking } from "../api/NewbookingAPI";
 
 function Database() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await getAllBooking();
         setData(response);
+        setLoading(false);
         console.log("Data fetch successfully!", response);
       } catch (error) {
         console.error("Data fetch failed:", error);
@@ -62,9 +64,17 @@ function Database() {
   }, [selectGroup, columns]);
 
   const [anchor, setAnchor] = useState(null);
+  const [ishide, setIsHide] = useState(false);
+  const [columnIsHovered, setColumnIsHovered] = useState(false);
+  const [filterIsHovered, setFilterIsHovered] = useState(false);
   
   const openPopover = (event) => {
     setAnchor(event.currentTarget);
+  }
+
+  const handleHide = () => {
+    if (ishide) {setIsHide(false)}
+    else {setIsHide(true)}
   }
 
   const defaultColumn = useMemo(() => {
@@ -99,7 +109,19 @@ function Database() {
   const sortIcon = <FontAwesomeIcon icon={faSort} style={{ fontSize: "15px" }} />
   const sortUp = <FontAwesomeIcon icon={faSortUp} style={{ fontSize: "15px" }} />
   const sortDown = <FontAwesomeIcon icon={faSortDown} style={{ fontSize: "15px" }} />
+  const next = <FontAwesomeIcon icon={faArrowRight} style={{ fontSize: '15px' }} />
+  const previous = <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: '15px' }} /> 
 
+  if (loading) {
+    return <div>
+      <Header> Database </Header>
+      <div>
+        <TypographyParagraph style={ {colorP: 'black'} }>
+          Loading Data...
+        </TypographyParagraph>
+      </div>
+      </div>;
+  }
   return (
   <div>
     <Header> Database </Header>
@@ -109,9 +131,28 @@ function Database() {
         {groupOptions.map(option => (
           <option key={option.value} value={option.value}>{option.label}</option>
         ))}
-      </select> {' '}
-      <button onClick={openPopover} className='Button' > 
+      </select>
+      <button onClick={openPopover} 
+              onMouseEnter={()=>setColumnIsHovered(true)} 
+              onMouseLeave={()=>setColumnIsHovered(false)} 
+              className='Button1' > 
         <FontAwesomeIcon icon={faTableColumns} style={{ fontSize: "15px" }} />
+        {columnIsHovered && <div className='showMessage'>
+          <TypographyParagraph style={{color:'black'}}>
+            Show/Hide columns
+          </TypographyParagraph>
+          </div>}
+      </button>
+      <button onClick={handleHide} 
+              onMouseEnter={()=>setFilterIsHovered(true)} 
+              onMouseLeave={()=>setFilterIsHovered(false)} 
+              className='Button1'>
+        <FontAwesomeIcon icon={faBars} style={{ fontSize: "15px" }} />
+        {filterIsHovered && <div className='showMessage'>
+          <TypographyParagraph style={{color:'black'}}>
+            Show/Hide filters
+          </TypographyParagraph>
+        </div>}
       </button>
       <Popover 
         open={Boolean(anchor)} 
@@ -121,6 +162,7 @@ function Database() {
           vertical: 'bottom',
           horizontal: 'left'
       }}> 
+      
         <div>
           {allColumns.map(column => (
             <div key = {column.id}>
@@ -138,18 +180,20 @@ function Database() {
           {headerGroups.map(headerGroup => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               { headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} className='th'>
+                <th {...column.getHeaderProps()} className='th'>
                   <div>
                     {column.render('Header')}
                   {' '}
                   {!column.disableSortBy && (
+                     <button {...column.getSortByToggleProps()} className='Button1'>
                       <span>
                           {column.isSorted ? (column.isSortedDesc ? sortUp : sortDown) : sortIcon}
                       </span>
+                      </button>
                   )}
                   </div>
                   <div>
-                    {column.canFilter ? column.render('Filter') : null}
+                    {column.canFilter && ishide ? column.render('Filter') : null}
                   </div>
                 </th>
               ))}
@@ -172,14 +216,14 @@ function Database() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className='Button2'>{previous}</button>{' '}
         <span>
           Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
+          </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage} >Next</button>
+        <button onClick={() => nextPage()} disabled={!canNextPage} className='Button2'>{next}</button>
       </div>
     </div>
     </div>

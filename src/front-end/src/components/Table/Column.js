@@ -8,7 +8,7 @@ export const Grouped_Columns = [
         columns: [
             {
                Header: 'ID',
-               accessor: 'id',
+               accessor: data => data.id,
                disableSortBy: true, 
             }
         ]   
@@ -19,48 +19,51 @@ export const Grouped_Columns = [
         columns: [
             {
                 Header: 'Name',
-                accessor: 'name',
+                accessor: data => data?.name,
                 disableSortBy: false,
             },
             {
                 Header: 'Program Stream',
-                accessor: 'programStream',
+                accessor: data => data?.programStream,
                 disableSortBy: true,
             },
             {
                 Header: 'Facilitators',
-                accessor: 'facilitators',
+                accessor: data => data?.facilitators,
                 disableSortBy: true,
             },
             {
                 Header: 'Event',
-                accessor: 'event',
+                accessor: data => data?.event,
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Status',
                 accessor: 'status',
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Location',
-                accessor: 'location',
+                accessor: data => data?.location,
                 disableSortBy: true,
             },
             {
                 Header: 'Program Date',
-                accessor: 'date',
+                accessor: data => data?.date,
                 disableSortBy: false,
                 Cell: ({ value }) => { return format(new Date(value), 'dd/MM/yyyy')}
             },
             {
                 Header: 'Term',
-                accessor: 'term',
+                accessor: data => data?.term,
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Start Time',
-                accessor: 'startTime',
+                accessor: data => data?.startTime,
                 disableSortBy: false,
                 Cell: ({ value }) => { 
                     const date = parseISO(value);
@@ -69,7 +72,7 @@ export const Grouped_Columns = [
             },
             {
                 Header: 'End Time',
-                accessor: 'endTime',
+                accessor: data => data?.endTime,
                 disableSortBy: false,
                 Cell: ({ value }) => { 
                     const date = parseISO(value);
@@ -78,27 +81,28 @@ export const Grouped_Columns = [
             },
             {
                 Header: 'Module 1',
-                accessor: data => data.module_id.module1,
+                accessor: data => data.module_id?.module1,
                 disableSortBy: true,
             },
             {
                 Header: 'Module 2',
-                accessor: data => data.module_id.module2,
+                accessor: data => data.module_id?.module2,
                 disableSortBy: true,
             },
             {
                 Header: 'Module 3',
-                accessor: data => data.module_id.module3,
+                accessor: data => data.module_id?.module3,
                 disableSortBy: true,
             },
             {
                 Header: 'Exibition',
-                accessor: 'exibition',
+                accessor: data => data?.exibition,
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Note',
-                accessor: 'note',
+                accessor: data => data?.note,
                 disableSortBy: true,
                 disableFilters: true,
             },
@@ -110,61 +114,69 @@ export const Grouped_Columns = [
         columns: [
             {
                 Header: 'School Name',
-                accessor: data => data.school.name,
+                accessor: data => data.school?.name,
                 disableSortBy: false,
             },
             {
                 Header: 'Student Year',
-                accessor: data => data.school.studentYear,
+                accessor: data => data.school?.studentYear,
                 disableSortBy: false,
             },
             {
                 Header: 'Student (Registered)',
-                accessor: data => data.school.numStudentRegistered,
+                accessor: data => data.school?.numStudentRegistered,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Student Hrs (Registered)',
-                accessor: data => data.school.hourRegistered,
+                accessor: data => data.school?.hourRegistered,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Student (Attended)',
-                accessor: data => data.school.numStudentAttended,
+                accessor: data => data.school?.numStudentAttended,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Student Hrs (Attended)',
-                accessor: data => data.school.hourAttended,
+                accessor: data => data.school?.hourAttended,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Low SES',
-                accessor: data => data.school.lowSES,
+                accessor: data => data.school?.lowSES,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Is Partner School',
-                accessor: data => data.school.isPartner,
+                accessor: data => data.school?.isPartner,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Accessibility Needs',
-                accessor: data => data.school.isAccessibility,
+                accessor: data => data.school?.isAccessibility,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Allergy',
-                accessor: data => data.school.isAllergy,
+                accessor: data => data.school?.isAllergy,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Additional Comments',
-                accessor: data => data.school.note,
+                accessor: data => data.school?.note,
                 disableSortBy: true,
                 disableFilters: true,
             },
@@ -176,23 +188,25 @@ export const Grouped_Columns = [
         columns: [
             {
                 Header: 'First Name',
-                accessor: data => data.school.contactFirstName,
+                accessor: data => data.school?.contactFirstName,
                 disableSortBy: false,
             },
             {
                 Header: 'Last Name',
-                accessor: data => data.school.contactLastName,
+                accessor: data => data.school?.contactLastName,
                 disableSortBy: false,
             },
             {
                 Header: 'Email',
-                accessor: data => data.school.email,
+                accessor: data => data.school?.email,
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Phone Number',
-                accessor: data => data.school.phone,
+                accessor: data => data.school?.phone,
                 disableSortBy: true,
+                disableFilters: true,
             }
         ]
     },
@@ -202,36 +216,42 @@ export const Grouped_Columns = [
         columns: [
             {
                 Header: 'Is required',
-                accessor: data => data.bus.bus_req,
+                accessor: data => data.bus?.bus_req,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Is Booked',
-                accessor: data => data.bus.isBooked,
+                accessor: data => data.bus?.isBooked,
                 disableSortBy: true,
                 Cell: ({ value }) => value ? "Yes" : "No",
+                disableFilters: true,
             },
             {
                 Header: 'Status',
-                accessor: data => data.bus.status,
+                accessor: data => data.bus?.status,
                 disableSortBy: true,
+                disableFilters: true,
             },
             {
                 Header: 'Price',
-                accessor: data => data.bus.price,
+                accessor: data => data.bus?.price,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Date Paid',
-                accessor: data => data.bus.date_paid,
+                accessor: data => data.bus?.date_paid,
                 disableSortBy: false,
                 Cell: ({ value }) => { return format(new Date(value), 'dd/MM/yyyy')},
+                disableFilters: true,
             },
             {
                 Header: 'Invoice',
-                accessor: data => data.bus.invoice,
+                accessor: data => data.bus?.invoice,
                 disableSortBy: true,
+                disableFilters: true,
             },
         ]
     },
@@ -241,23 +261,27 @@ export const Grouped_Columns = [
         columns: [
             {
                 Header: '$ Per Student',
-                accessor: 'per_student',
+                accessor: data => data?.per_student,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Expense',
-                accessor: 'expense',
+                accessor: data => data?.expense,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Income',
-                accessor: 'income',
+                accessor: data => data?.income,
                 disableSortBy: false,
+                disableFilters: true,
             },
             {
                 Header: 'Profit',
-                accessor: 'profit',
+                accessor: data => data?.profit,
                 disableSortBy: false,
+                disableFilters: true,
             },
         ]
     }
