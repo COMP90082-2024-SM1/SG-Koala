@@ -10,6 +10,7 @@ from example.views import (
     template_view,
     miscellaneous_view,
     search_view,
+    chart_view,
 )
 
 urlpatterns = [
@@ -30,4 +31,24 @@ urlpatterns = [
         name="checklist_id",
     ),
     path("miscellaneous/", miscellaneous_view.MiscellaneousView.as_view()),
+    path(
+        "chart/1/",
+        chart_view.ChartOneView.as_view(),
+        name="chart_1",
+    ),
+    path(
+        "chart/2/",
+        chart_view.ChartTwoView.as_view(),
+        name="chart_2",
+    ),
+    path(
+        "chart/3/",
+        chart_view.ChartThreeView.as_view(),
+        name="chart_3",
+    ),
+    path(
+        "chart/4/",
+        chart_view.ChartFourView.as_view(),
+        name="chart_4",
+    ),
 ]

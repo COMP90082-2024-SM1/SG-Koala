@@ -1,4 +1,4 @@
-const baseUrl = "http://127.0.0.1:8000/api/booking/search";
+const baseUrl = process.env.REACT_APP_BASEURL + "booking/search";
 
 export const getSearchResult = async (query) => {
   const encodedQuery = encodeURIComponent(query);

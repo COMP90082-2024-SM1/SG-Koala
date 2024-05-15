@@ -6,15 +6,15 @@ from django.utils.html import strip_tags
 
 
 
-def send_booking_ref_to_client(id, email, text):
+def send_booking_ref_to_client(id, email, text, subject):
     html_message = render_to_string('email_template.html', {
         'ref_number': id,
-        'book_message': text
+        'booking_message': text
     })
     plain_message = strip_tags(html_message)
     
     send_mail(
-    'Science Gallery Workshop Booking Reference Number',
+    subject,
     plain_message,
     settings.EMAIL_HOST_USER,
     email,
