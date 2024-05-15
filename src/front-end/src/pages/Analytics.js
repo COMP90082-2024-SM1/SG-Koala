@@ -3,6 +3,9 @@ import LineChart from "../components/Charts/LineChart";
 import BarChart from "../components/Charts/BarChart";
 import PieChart from "../components/Charts/PieChart";
 import { getChartData } from "../api/AnalyticsAPI";
+import "../styles/Analytics.css";
+import Header from "../components/Header/Header";
+import { TypographyH2 } from "../components/Typography/Typography";
 
 const generateLineChartData = (apiData) => {
   const transformedData = {
@@ -28,7 +31,7 @@ const generateLineChartData = (apiData) => {
         order: 1,
       },
       {
-        label: "number of attended",
+        label: "number of Attended",
         data: apiData.participants, // Use participants data for "number of attended"
         backgroundColor: "rgb(75, 192, 192)",
         order: 0,
@@ -128,7 +131,6 @@ function Analytics() {
 
         const data4 = await getChartData(4);
         setPieChartData(generatePieChartData(data4, selectedStream));
-        // const transformedData4 = generateChartDataByTerm(data4);
         setData4(data4);
         if (Object.keys(data4).length > 0) {
           const firstStream = Object.keys(data4["grades_by_stream"])[0];
@@ -148,12 +150,29 @@ function Analytics() {
 
     fetchData();
   }, []);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   const options = {
-    scales: { x: { stacked: true }, y: { beginAtZero: true } },
+    scales: {
+      x: { stacked: true },
+      y: {
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: "number of student",
+        },
+      },
+    },
+  };
+
+  const opt = {
+    scales: {
+      y: {
+        title: {
+          display: true,
+          text: "number of student",
+        },
+      },
+    },
   };
 
   const handleStreamChange = (event) => {
@@ -164,39 +183,68 @@ function Analytics() {
   };
 
   return (
-    <div>
-      {Object.keys(data1).length > 0 ? (
-        <BarChart data={data1} options={options} />
-      ) : (
-        <div>No data available.</div>
+    <>
+      <Header>Analytics</Header>
+      {isLoading && <p>Loading...</p>}
+      {!isLoading && (
+        <div className="analyticsChartWrapper">
+          <div className="analyticsChart">
+            <TypographyH2 className="analyticsChartTitle">
+              Number of Participants and Registrants Each Month
+            </TypographyH2>
+            {Object.keys(data1).length > 0 ? (
+              <BarChart data={data1} options={options} onResize />
+            ) : (
+              <div>No data available.</div>
+            )}
+          </div>
+          <div className="analyticsChart">
+            <TypographyH2 className="analyticsChartTitle">
+              Number of Participants in Each Term by Stream
+            </TypographyH2>
+            {Object.keys(data2).length > 0 ? (
+              <LineChart data={data2} options={opt} />
+            ) : (
+              <div>No data available.</div>
+            )}
+          </div>
+          <div className="analyticsChart">
+            <TypographyH2 className="analyticsChartTitle">
+              Number of Participants in Each Term by Locations
+            </TypographyH2>
+            {Object.keys(data3).length > 0 ? (
+              <LineChart data={data3} options={opt} />
+            ) : (
+              <div>No data available.</div>
+            )}
+          </div>
+          <div className="analyticsChart">
+            <TypographyH2 className="analyticsChartTitle">
+              Grade Distribution for Each Stream
+            </TypographyH2>
+            <select
+              className="analyticsChartSelector"
+              value={selectedStream}
+              onChange={handleStreamChange}
+            >
+              {Object.keys(data4["grades_by_stream"]).map((stream, index) => (
+                <option key={index} value={stream}>
+                  {stream}
+                </option>
+              ))}
+            </select>
+            {Object.keys(pieChartData).length > 0 ? (
+              <PieChart
+                data={pieChartData}
+                style={{ width: "200px", height: "200px" }}
+              />
+            ) : (
+              <div>No data available.</div>
+            )}
+          </div>
+        </div>
       )}
-      {Object.keys(data2).length > 0 ? (
-        <LineChart data={data2} />
-      ) : (
-        <div>No data available.</div>
-      )}
-      {Object.keys(data3).length > 0 ? (
-        <LineChart data={data3} />
-      ) : (
-        <div>No data available.</div>
-      )}
-      {Object.keys(pieChartData).length > 0 ? (
-        <>
-          <select value={selectedStream} onChange={handleStreamChange}>
-            {Object.keys(data4["grades_by_stream"]).map((stream, index) => (
-              <option key={index} value={stream}>
-                {stream}
-              </option>
-            ))}
-          </select>
-
-          <PieChart data={pieChartData} />
-        </>
-      ) : (
-        // <select value={Object.keys(data4["grades_by_stream"])}></select>
-        <div>No data available.</div>
-      )}
-    </div>
+    </>
   );
 }
 

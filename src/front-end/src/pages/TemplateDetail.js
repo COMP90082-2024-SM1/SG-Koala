@@ -284,8 +284,6 @@ const TemplateDetail = ({ checklistId }) => {
       index === position ? !item : item
     );
     setCheckedState(updatedCheckedState);
-
-    // TODO: reset status in database
   };
 
   return (
