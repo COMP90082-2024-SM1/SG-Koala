@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Header from "../components/Header/Header";
 import "../styles/Database.css";
 import { useTable, useSortBy, useFilters, useGlobalFilter, usePagination } from 'react-table';
@@ -8,29 +8,33 @@ import ColumnFilter from '../components/Table/ColumnFilter';
 import GlobalFilter from '../components/Table/GlobalFilter';
 import { TypographyParagraph, } from "../components/Typography/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSort, faSortUp, faSortDown, faTableColumns } from "@fortawesome/free-solid-svg-icons";
+import { faSort, faSortUp, faSortDown, faTableColumns, faBars, faArrowRight, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { getAllBooking } from "../api/NewbookingAPI";
 
 function Database() {
-  const data = useMemo(() => ([
-    { id: 1, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Aireys Inlet Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Aireys Inlet Primary School', StudentYear: '10', Student: '15', FirstName: 'Bob', LastName: 'Ross', PhoneNumber: '040000000'},
-    { id: 2, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Antonine College' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Antonine College' , StudentYear: '9', Student: '50', FirstName: 'Dwayne', LastName: 'Johnson', PhoneNumber: '0412345678'},
-    { id: 3, ProgramStream: 'SCoE: Excursions', Status: 'Delivered', School: 'Beaufort Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Beaufort Primary School', StudentYear: '7,8', Student: '48', FirstName: 'Margot', LastName: 'Robbie', PhoneNumber: '0423584892'},
-    { id: 4, ProgramStream: 'STEAM: Excursions', Status: 'Delivered', School: 'Dorset Primary School' , ProgramDate: 'Wed, March 06, 2024', School_repeated: 'Dorset Primary School' , StudentYear: '9', Student: '20', FirstName: 'Elizabeth', LastName: 'Taylor', PhoneNumber: '040000000'},
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-    { id: 10 }, 
-    { id: 11 },
-  ]), []);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getAllBooking();
+        setData(response);
+        setLoading(false);
+        console.log("Data fetch successfully!", response);
+      } catch (error) {
+        console.error("Data fetch failed:", error);
+      }
+    }
+    fetchData();
+  }, []);
 
   const columns = useMemo(() => Grouped_Columns, [])
 
   const [selectGroup, setSelectGroup] = useState('All');
 
   const groupOptions = useMemo(() => {
-    const options = columns.filter(column => column.columns).map(column => ({
+    const options = columns.filter(column => column.columns && column.Header !== ' ').map(column => ({
       label: column.Header,
       value: column.Header
     }));
@@ -49,23 +53,33 @@ function Database() {
       canSort: false,
     }];
     if (selectGroup === 'All') {
+      console.log(columns);
       return columns;
     }
     else {
       const cols = columns.find(column => column.Header === selectGroup)?.columns;
+      console.log(cols);
       return baseColumns.concat({Header: selectGroup, columns: cols});
     }
   }, [selectGroup, columns]);
 
   const [anchor, setAnchor] = useState(null);
+  const [ishide, setIsHide] = useState(false);
+  const [columnIsHovered, setColumnIsHovered] = useState(false);
+  const [filterIsHovered, setFilterIsHovered] = useState(false);
   
   const openPopover = (event) => {
     setAnchor(event.currentTarget);
   }
 
+  const handleHide = () => {
+    if (ishide) {setIsHide(false)}
+    else {setIsHide(true)}
+  }
+
   const defaultColumn = useMemo(() => {
     return {
-      Filter: ColumnFilter
+      Filter: ColumnFilter,
     }
   }, [])
 
@@ -87,6 +101,7 @@ function Database() {
     columns: filteredColumns, 
     data, 
     defaultColumn,
+    initialState: { sortBy: [] },
   }, useFilters, useGlobalFilter, useSortBy, usePagination)
 
   const { globalFilter, pageIndex } = state
@@ -94,7 +109,19 @@ function Database() {
   const sortIcon = <FontAwesomeIcon icon={faSort} style={{ fontSize: "15px" }} />
   const sortUp = <FontAwesomeIcon icon={faSortUp} style={{ fontSize: "15px" }} />
   const sortDown = <FontAwesomeIcon icon={faSortDown} style={{ fontSize: "15px" }} />
+  const next = <FontAwesomeIcon icon={faArrowRight} style={{ fontSize: '15px' }} />
+  const previous = <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: '15px' }} /> 
 
+  if (loading) {
+    return <div>
+      <Header> Database </Header>
+      <div>
+        <TypographyParagraph style={ {colorP: 'black'} }>
+          Loading Data...
+        </TypographyParagraph>
+      </div>
+      </div>;
+  }
   return (
   <div>
     <Header> Database </Header>
@@ -104,9 +131,28 @@ function Database() {
         {groupOptions.map(option => (
           <option key={option.value} value={option.value}>{option.label}</option>
         ))}
-      </select> {' '}
-      <button onClick={openPopover} className='Button' > 
+      </select>
+      <button onClick={openPopover} 
+              onMouseEnter={()=>setColumnIsHovered(true)} 
+              onMouseLeave={()=>setColumnIsHovered(false)} 
+              className='Button1' > 
         <FontAwesomeIcon icon={faTableColumns} style={{ fontSize: "15px" }} />
+        {columnIsHovered && <div className='showMessage'>
+          <TypographyParagraph style={{color:'black'}}>
+            Show/Hide columns
+          </TypographyParagraph>
+          </div>}
+      </button>
+      <button onClick={handleHide} 
+              onMouseEnter={()=>setFilterIsHovered(true)} 
+              onMouseLeave={()=>setFilterIsHovered(false)} 
+              className='Button1'>
+        <FontAwesomeIcon icon={faBars} style={{ fontSize: "15px" }} />
+        {filterIsHovered && <div className='showMessage'>
+          <TypographyParagraph style={{color:'black'}}>
+            Show/Hide filters
+          </TypographyParagraph>
+        </div>}
       </button>
       <Popover 
         open={Boolean(anchor)} 
@@ -116,6 +162,7 @@ function Database() {
           vertical: 'bottom',
           horizontal: 'left'
       }}> 
+      
         <div>
           {allColumns.map(column => (
             <div key = {column.id}>
@@ -137,16 +184,16 @@ function Database() {
                   <div>
                     {column.render('Header')}
                   {' '}
-                  {column.canSort && (
-                    <button {...column.getSortByToggleProps()} className='Button'>
+                  {!column.disableSortBy && (
+                     <button {...column.getSortByToggleProps()} className='Button1'>
                       <span>
                           {column.isSorted ? (column.isSortedDesc ? sortUp : sortDown) : sortIcon}
                       </span>
-                    </button>
+                      </button>
                   )}
                   </div>
                   <div>
-                    {column.canFilter ? column.render('Filter') : null}
+                    {column.canFilter && ishide ? column.render('Filter') : null}
                   </div>
                 </th>
               ))}
@@ -169,14 +216,14 @@ function Database() {
         </tbody>
       </table>
       <div>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>Previous</button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage} className='Button2'>{previous}</button>{' '}
         <span>
           Page{' '}
           <strong>
             {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
+          </strong>
         </span>
-        <button onClick={() => nextPage()} disabled={!canNextPage} >Next</button>
+        <button onClick={() => nextPage()} disabled={!canNextPage} className='Button2'>{next}</button>
       </div>
     </div>
     </div>
