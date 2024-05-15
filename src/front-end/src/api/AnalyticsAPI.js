@@ -1,8 +1,8 @@
-const baseUrl = "http://127.0.0.1:8000/api/";
+const baseUrl = process.env.REACT_APP_BASEURL + "api/chart/";
 
 export const getChartData = async (id) => {
   try {
-    const url = baseUrl + "chart/" + id + "/";
+    const url = baseUrl + id + "/";
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error("Network response was not ok");
