@@ -5,16 +5,13 @@ from datetime import datetime
 class SchoolSerializer(serializers.Serializer):
     id = serializers.CharField(source='_id', read_only=True)
     name = serializers.CharField(max_length=200)
-    # studentYear = serializers.ListField(
-    # child=serializers.IntegerField()
-    # )
     studentYear = serializers.IntegerField()
     numStudentAttended = serializers.IntegerField(required=False)
     numStudentRegistered = serializers.IntegerField()
     hourRegistered = serializers.IntegerField(required=False)
     hourAttended = serializers.IntegerField(required=False)
     lowSES = serializers.BooleanField()
-    allergy = serializers.CharField(max_length=200,required=False)
+    allergy = serializers.CharField(max_length=200,required=False, default = '',allow_blank= True)
     contactFirstName = serializers.CharField(max_length=200)
     contactLastName = serializers.CharField(max_length=200)
     email = serializers.CharField(max_length=200)
@@ -63,7 +60,7 @@ class BookSerializer(serializers.Serializer):
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
     status = serializers.ChoiceField(choices=['pending', 'processing', 'delivered', 'canceled'])
     term = serializers.IntegerField(required=False)
-    location = serializers.CharField()  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+    location = serializers.CharField(required = False)  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
     date = serializers.DateTimeField()
     checklist_id = serializers.CharField()  # Assuming it's a ForeignKey to another model.
     checklist = ChecklistSerializer(required=False)  # Assuming it's a ForeignKey to another model.
