@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Login.css";
 import navSgLogo from "../images/sg-logo.png";
-import koala_logo from "../images/koala-logo.jpg";
+import koala_logo from "../images/koala-logo.png";
 import {
   TypographyH2,
   TypographyParagraph,

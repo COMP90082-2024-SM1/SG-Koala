@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import koala_logo from "../../images/koala-logo.jpg";
+import koala_logo from "../../images/koala-logo.png";
 import navSgLogo from "../../images/sg-logo.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { databaseWhite, databaseBlack } from "../../images/Database-icon.tsx";
