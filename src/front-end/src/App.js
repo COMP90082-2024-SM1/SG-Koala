@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 import NavbarLayout from "./components/NavbarLayout/NavbarLayout";
 import Login from "./pages/Login";
@@ -23,6 +28,7 @@ function App() {
         </NavbarLayout>
         <div className="content">
           <Routes>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/database" element={<Database />} />
