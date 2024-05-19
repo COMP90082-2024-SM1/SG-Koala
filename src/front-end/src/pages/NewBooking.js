@@ -3,6 +3,7 @@ import Header from "../components/Header/Header";
 import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 import CreatableSelect from 'react-select/creatable';
+import Modal from "../components/PopUp/PopUp";
 
 
 import "../styles/NewBooking.css";
@@ -19,6 +20,7 @@ import {
   updateSchoolById,
   DeleteSchoolById,
   DeleteCheckListById,
+  deleteBooking,
 } from "../api/NewbookingAPI";
 import { Button } from "../components/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,6 +36,7 @@ const NewBooking = ({ isNew = false }) => {
   // const [oneBooking, setOneBooking] = useState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [autoFillData, setAutoFillData] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
     Delivery: {
@@ -160,8 +163,11 @@ const NewBooking = ({ isNew = false }) => {
     label: (7 + i).toString()
   }));
 
+  
+
   useEffect(() => {
     if (isNew) {
+      setLoading(true);
       Promise.all([getAllMiscellaneous(), getAllSchool(), getAllTemplates()])
         .then(([miscellaneousData, schoolData, templateData]) => {
           setData((prev) => ({
@@ -188,9 +194,13 @@ const NewBooking = ({ isNew = false }) => {
             module: miscellaneousData.module,
             exhibition: miscellaneousData.exhibition,
           });
+          setLoading(false); 
         })
+        
         .catch((error) => console.error("Error fetching data:", error));
+        setLoading(false); 
     } else {
+      setLoading(true);
       Promise.all([
         getAllMiscellaneous(),
         getAllSchool(),
@@ -278,6 +288,7 @@ const NewBooking = ({ isNew = false }) => {
                 // profit is not need to be here
               },
           }));
+          setLoading(false); 
         })
         })
         
@@ -316,9 +327,6 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.Delivery.facilitatorsSelect) {
       errors.push("Facilitator is required.");
     }
-    if (!data.Delivery.moduleSelects.length) {
-      errors.push("At least one module must be selected.");
-    }
     if (!data.School.contactInfo.firstName) {
       errors.push("Contact first name is required.");
     }
@@ -343,7 +351,6 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.Delivery.exhibitionSelect) {
       errors.push("ExhibitionSelect Time is required.");
     }
-
     return errors;
 
   }
@@ -393,6 +400,8 @@ const NewBooking = ({ isNew = false }) => {
       return [startTime, endTime];}
       return
   };
+
+  
 
 
 
@@ -484,6 +493,17 @@ const handleDateChange = (category, field, value) => {
     exhibition: []
   });
 
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await deleteBooking(oneBooking.id);
+      console.log("Booking Delete successfully!", response);
+      alert("Delete Successfully!")
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Creating booking failed:", error);
+    }
+  }
   
   const handleUpdate = async (event) => {
     event.preventDefault();
@@ -863,7 +883,7 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
   
   
 
-  const formatCreateLabel = (inputValue) => `New Option: "${inputValue}"`;
+
 
   const animatedComponents = makeAnimated(); 
 
@@ -880,6 +900,9 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
 
   return (
     <>
+    <Modal show={loading}>
+        <div>Loading data...</div>
+      </Modal>
       {isNew && <Header>Create New Booking</Header>}
       {!isNew && <Header> Booking Details</Header>}
       <div className="newBookingFilterSection">
@@ -1366,6 +1389,9 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
           </Button>}
           {!isNew &&<Button type="submit" onClick={handleUpdate}>
             UPDATE
+          </Button>}
+          {!isNew &&<Button type="delete" onClick={handleDelete}>
+            Delete
           </Button>}
         </div>
       )}
