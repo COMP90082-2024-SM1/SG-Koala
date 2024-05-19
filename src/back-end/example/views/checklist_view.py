@@ -8,7 +8,7 @@ from rest_framework import status
 from db_connection import connect_mongodb
 import json 
 
-
+#Checklist apis
 class ChecklistView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
