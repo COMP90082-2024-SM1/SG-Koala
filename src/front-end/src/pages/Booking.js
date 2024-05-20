@@ -34,6 +34,9 @@ const NewBooking = ({ isNew = false }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [autoFillData, setAutoFillData] = useState("");
   const [loading, setLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [creating, setCreating] = useState(false);
 
   const [data, setData] = useState({
     Delivery: {
@@ -502,17 +505,19 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleDelete = async (event) => {
     event.preventDefault();
+    setDeleting(true)
     try {
       const response = await deleteBooking(oneBooking.id);
       console.log("Booking Delete successfully!", response);
-      alert("Delete Successfully!");
       navigate("/dashboard");
     } catch (error) {
       console.error("Creating booking failed:", error);
     }
+    setDeleting(false)
   };
 
   const handleUpdate = async (event) => {
+    setUpdating(true);
     event.preventDefault();
 
     const startDate = formatDateTime(
@@ -638,9 +643,11 @@ const NewBooking = ({ isNew = false }) => {
     } catch (error) {
       console.error("Creating booking failed:", error);
     }
+    setUpdating(false);
   };
 
   const handleSubmit = async (event) => {
+    setCreating(true);
     event.preventDefault();
 
     const startDate = formatDateTime(
@@ -764,14 +771,14 @@ const NewBooking = ({ isNew = false }) => {
 
     try {
       const response = await createNewBooking(bookingData);
-      console.log("Booking created successfully!", response);
-      alert("Create Successfull!");
+
       navigate("/dashboard");
     } catch (error) {
       DeleteSchoolById(schoolIdValue);
       DeleteCheckListById(checklistvalue);
       console.error("Creating booking failed:", error);
     }
+    setCreating(false)
   };
 
   const handleChange = (category, field, value) => {
@@ -933,6 +940,15 @@ const NewBooking = ({ isNew = false }) => {
     <>
       <Modal show={loading}>
         <div>Loading data...</div>
+      </Modal>
+      <Modal show={updating}>
+        <div>Updating data...</div>
+      </Modal>
+      <Modal show={deleting}>
+        <div>Deleting data...</div>
+      </Modal>
+      <Modal show={creating}>
+        <div>Creating new booking...</div>
       </Modal>
       {isNew && <Header>Create New Booking</Header>}
       {!isNew && <Header> Booking Details</Header>}

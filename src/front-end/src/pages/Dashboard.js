@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Dashboard.css";
 import Header from "../components/Header/Header";
+import Modal from "../components/PopUp/PopUp";
 
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { getAllBooking, getAllMiscellaneous } from "../api/DashbaordAPI";
@@ -46,6 +47,7 @@ const Dashboard = () => {
   const [filterLocation, setFilterLocation] = useState("all");
   const navigate = useNavigate();
   const [locationsList, setLocationsList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -54,6 +56,7 @@ const Dashboard = () => {
     const query = searchParams.get("query");
 
     const fetchBookings = async () => {
+      setLoading(true);
       setIsLoading(true);
       try {
         let response;
@@ -75,9 +78,12 @@ const Dashboard = () => {
           new Set(data.map((booking) => booking.location))
         );
         setLocationsList(uniqueLocations);
+        
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
+        
       }
+      setLoading(false);
       setIsLoading(false);
     };
     const fetchMiscellaneousData = async () => {
@@ -146,6 +152,9 @@ const Dashboard = () => {
 
   return (
     <>
+      <Modal show={loading}>
+        <div>Loading data...</div>
+      </Modal>
       <Header>{isLoading ? "Booking Search" : "Booking - All"}</Header>
       <div className="dashboardFilterSection">
         {["all", "pending", "upcoming", "completed", "cancelled"].map(
