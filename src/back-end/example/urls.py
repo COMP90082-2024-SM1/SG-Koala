@@ -30,7 +30,7 @@ urlpatterns = [
         checklist_view.ChecklistViewID.as_view(),
         name="checklist_id",
     ),
-    path("miscellaneous/", miscellaneous_view.MiscellaneousView.as_view()),
+    path("miscellaneous/", miscellaneous_view.MiscellaneousView.as_view(), name="miscellaneous"),
     path(
         "chart/1/",
         chart_view.ChartOneView.as_view(),

@@ -10,7 +10,7 @@ from db_connection import connect_mongodb
 from api.utils import send_booking_ref_to_client
 import json 
 
-
+# booking rest api
 class BookingView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
