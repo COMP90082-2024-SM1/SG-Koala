@@ -6,6 +6,7 @@ import { getChartData } from "../api/AnalyticsAPI";
 import "../styles/Analytics.css";
 import Header from "../components/Header/Header";
 import { TypographyH2 } from "../components/Typography/Typography";
+import Modal from "../components/PopUp/PopUp";
 
 const generateLineChartData = (apiData) => {
   const transformedData = {
@@ -108,14 +109,14 @@ function Analytics() {
   const [data2, setData2] = useState({});
   const [data3, setData3] = useState({});
   const [data4, setData4] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [selectedStream, setSelectedStream] = useState("");
   const [pieChartData, setPieChartData] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
+        setLoading(true);
 
         const data1 = await getChartData(1);
         const transformedData1 = generateLineChartData(data1);
@@ -138,9 +139,9 @@ function Analytics() {
           setPieChartData(generatePieChartData(data4, firstStream));
         }
 
-        setIsLoading(false);
+        setLoading(false);
       } catch (error) {
-        setIsLoading(false);
+        setLoading(false);
         alert(
           "[ERROR] Failed to fetch Student Attending Info By Year. Please check the console for more details."
         );
@@ -185,8 +186,10 @@ function Analytics() {
   return (
     <>
       <Header>Analytics</Header>
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && (
+      <Modal show={loading}>
+        <div>Loading...</div>
+      </Modal>
+      {!loading && (
         <div className="analyticsChartWrapper">
           <div className="analyticsChart">
             <TypographyH2 className="analyticsChartTitle">

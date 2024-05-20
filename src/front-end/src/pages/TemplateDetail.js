@@ -14,6 +14,8 @@ import {
 import { getChecklistById, updateChecklistById } from "../api/BookingAPI";
 import "../styles/TemplateDetail.css";
 
+import Modal from "../components/PopUp/PopUp";
+
 const Item = ({
   index,
   task,
@@ -289,7 +291,9 @@ const TemplateDetail = ({ checklistId }) => {
   return (
     <>
       {!checklistId && <Header>Template - {id}</Header>}
-      {loading && <p>Loading...</p>}
+      <Modal show={loading}>
+        <div>Loading...</div>
+      </Modal>
       {!loading && (
         <div className="templateDetailWrapper">
           <input

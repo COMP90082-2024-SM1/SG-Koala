@@ -5,6 +5,7 @@ import { TypographyH2 } from "../components/Typography/Typography";
 import { Icons8Plus } from "../images/plus-icon.tsx";
 import { getAllTemplates } from "../api/TemplateAPI";
 import "../styles/Templates.css";
+import Modal from "../components/PopUp/PopUp";
 
 const TemplateButton = ({ id, name }) => {
   const navigate = useNavigate();
@@ -42,7 +43,9 @@ function Templates() {
   return (
     <>
       <Header>Template Collection</Header>
-      {loading && <p>Loading...</p>}
+      <Modal show={loading}>
+        <div>Loading...</div>
+      </Modal>
       <div className="template">
         {!loading && (
           <>

@@ -48,20 +48,16 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [locationsList, setLocationsList] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const [searchParams] = useSearchParams();
-  const [isLoading, setIsLoading] = useState(false);
+  const queryParam = searchParams.get("query");
 
   useEffect(() => {
-    const query = searchParams.get("query");
-
     const fetchBookings = async () => {
       setLoading(true);
-      setIsLoading(true);
       try {
         let response;
-        if (query) {
-          response = await getSearchResult(query);
+        if (queryParam) {
+          response = await getSearchResult(queryParam);
         } else {
           response = await getAllBooking();
         }
@@ -78,16 +74,12 @@ const Dashboard = () => {
           new Set(data.map((booking) => booking.location))
         );
         setLocationsList(uniqueLocations);
-        
       } catch (error) {
         console.error("Failed to fetch bookings:", error);
-        
       }
       setLoading(false);
-      setIsLoading(false);
     };
     const fetchMiscellaneousData = async () => {
-      setIsLoading(true);
       try {
         const response = await getAllMiscellaneous();
         const data = await response;
@@ -99,7 +91,6 @@ const Dashboard = () => {
       } catch (error) {
         console.error("Failed to fetch type options:", error);
       }
-      setIsLoading(false);
     };
 
     fetchMiscellaneousData();
@@ -153,9 +144,15 @@ const Dashboard = () => {
   return (
     <>
       <Modal show={loading}>
-        <div>Loading data...</div>
+        <div>Loading...</div>
       </Modal>
-      <Header>{isLoading ? "Booking Search" : "Booking - All"}</Header>
+      <Header>
+        {loading
+          ? "Booking Search"
+          : queryParam
+          ? `Booking - ${queryParam}`
+          : "Booking - All"}
+      </Header>
       <div className="dashboardFilterSection">
         {["all", "pending", "upcoming", "completed", "cancelled"].map(
           (type) => (

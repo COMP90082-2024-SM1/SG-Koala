@@ -24,6 +24,7 @@ import {
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
 import { getAllBooking } from "../api/BookingAPI";
+import Modal from "../components/PopUp/PopUp";
 
 function Database() {
   const [data, setData] = useState([]);
@@ -154,11 +155,9 @@ function Database() {
     return (
       <div>
         <Header> Database </Header>
-        <div>
-          <TypographyParagraph style={{ colorP: "black" }}>
-            Loading...
-          </TypographyParagraph>
-        </div>
+        <Modal show={loading}>
+          <div>Loading...</div>
+        </Modal>
       </div>
     );
   }
