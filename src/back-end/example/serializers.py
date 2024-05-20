@@ -13,7 +13,7 @@ class SchoolSerializer(serializers.Serializer):
     hourAttended = serializers.IntegerField(required=False)
     lowSES = serializers.BooleanField()
     allergy = serializers.CharField(max_length=200,required=False, default = '',allow_blank= True)
-#     allergy = serializers.CharField(max_length=200, required=False)
+    teachingArea = serializers.CharField(max_length=200, required=False, allow_blank=True, default='')
     contactFirstName = serializers.CharField(max_length=200)
     contactLastName = serializers.CharField(max_length=200)
     email = serializers.CharField(max_length=200)
@@ -63,7 +63,7 @@ class BookSerializer(serializers.Serializer):
     facilitators = serializers.CharField(required=False)
 
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
-    status = serializers.ChoiceField(choices=['pending', 'processing', 'delivered', 'canceled'])
+    status = serializers.ChoiceField(choices=['Pending', 'Processing', 'Delivered', 'Canceled'])
     term = serializers.IntegerField(required=False)
     location = serializers.CharField(required = False)  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
 

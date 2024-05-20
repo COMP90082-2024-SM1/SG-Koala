@@ -69,7 +69,7 @@ const Dashboard = () => {
           upcoming: data.filter((booking) => booking.status === "Processing"),
           completed: data.filter((booking) => booking.status === "Delivered"),
           cancelled: data.filter((booking) => booking.status === "Canceled"),
-          pending: data.filter((booking) => booking.status === "pending"),
+          pending: data.filter((booking) => booking.status === "Pending"),
         });
         const uniqueLocations = Array.from(
           new Set(data.map((booking) => booking.location))

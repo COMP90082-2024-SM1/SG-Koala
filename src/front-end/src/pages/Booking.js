@@ -529,6 +529,7 @@ const NewBooking = ({ isNew = false }) => {
       numStudentRegistered: parseInt(data.School.registeredStudents),
       lowSES: data.School.lowSES === "Y",
       allergy: data.School.allergenInfo || " ",
+      teachingArea: data.School.contactInfo.jobTitle,
       contactFirstName: data.School.contactInfo.firstName,
       contactLastName: data.School.contactInfo.lastName,
       email: data.School.contactInfo.email,
@@ -658,6 +659,7 @@ const NewBooking = ({ isNew = false }) => {
       numStudentRegistered: parseInt(data.School.registeredStudents),
       lowSES: data.School.lowSES === "Y",
       allergy: data.School.allergenInfo || " ",
+      teachingArea: data.School.contactInfo.jobTitle,
       contactFirstName: data.School.contactInfo.firstName,
       contactLastName: data.School.contactInfo.lastName,
       email: data.School.contactInfo.email,
@@ -828,10 +830,10 @@ const NewBooking = ({ isNew = false }) => {
   ];
 
   const statusOptions = [
-    { value: "delivered", label: "delivered" },
-    { value: "processing", label: "processing" },
-    { value: "pending", label: "pending" },
-    { value: "canceled", label: "canceled" },
+    { value: "Delivered", label: "Delivered" },
+    { value: "Processing", label: "Processing" },
+    { value: "Pending", label: "Pending" },
+    { value: "Canceled", label: "Canceled" },
   ];
 
   const uniqueArray = (array) => [...new Set(array)];
