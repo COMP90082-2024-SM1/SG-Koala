@@ -136,27 +136,27 @@ export const getAllBooking = async () => {
 };
 
 export const updateMiscellaneous = async (newOptions) => {
-  console.log('Sending data:', newOptions); 
+  console.log("Sending data:", newOptions);
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/miscellaneous/', {
-      method: 'PUT', 
+    const response = await fetch(baseUrl + "miscellaneous/", {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newOptions),
     });
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    console.log('Successfully updated:', data);
+    console.log("Successfully updated:", data);
   } catch (error) {
-    console.error('Error updating miscellaneous data:', error);
+    console.error("Error updating miscellaneous data:", error);
   }
 };
 
-export const updateBooking = async (id,bookingData) => {
-  return fetch(`http://127.0.0.1:8000/api/booking/${id}/`, {
+export const updateBooking = async (id, bookingData) => {
+  return fetch(baseUrl + `booking/${id}/`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -170,9 +170,8 @@ export const updateBooking = async (id,bookingData) => {
   });
 };
 
-
-export const updateSchoolById = async (id,school) => {
-  return fetch(`http://127.0.0.1:8000/api/school/${id}/`, {
+export const updateSchoolById = async (id, school) => {
+  return fetch(baseUrl + `school/${id}/`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -186,9 +185,8 @@ export const updateSchoolById = async (id,school) => {
   });
 };
 
-
 export const DeleteSchoolById = async (id) => {
-  return fetch(`http://127.0.0.1:8000/api/school/${id}/`, {
+  return fetch(baseUrl + `school/${id}/`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -200,10 +198,9 @@ export const DeleteSchoolById = async (id) => {
     return response.json();
   });
 };
-
 
 export const DeleteCheckListById = async (id) => {
-  return fetch(`http://127.0.0.1:8000/api/checklist/${id}/`, {
+  return fetch(baseUrl + `checklist/${id}/`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -216,8 +213,8 @@ export const DeleteCheckListById = async (id) => {
   });
 };
 
-export const deleteBooking = async (id,bookingData) => {
-  return fetch(`http://127.0.0.1:8000/api/booking/${id}/`, {
+export const deleteBooking = async (id, bookingData) => {
+  return fetch(baseUrl + `booking/${id}/`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
@@ -230,4 +227,3 @@ export const deleteBooking = async (id,bookingData) => {
     return response.json();
   });
 };
-

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Header from "../components/Header/Header";
-import Select from 'react-select';
-import makeAnimated from 'react-select/animated';
-import CreatableSelect from 'react-select/creatable';
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import CreatableSelect from "react-select/creatable";
 import Modal from "../components/PopUp/PopUp";
 
-
-import "../styles/NewBooking.css";
+import "../styles/Booking.css";
 import {
   getAllTemplates,
   getAllMiscellaneous,
@@ -21,21 +20,19 @@ import {
   DeleteSchoolById,
   DeleteCheckListById,
   deleteBooking,
-} from "../api/NewbookingAPI";
+} from "../api/BookingAPI";
 import { Button } from "../components/Button/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import TemplateDetail from "./TemplateDetail";
 
-
 const NewBooking = ({ isNew = false }) => {
-  
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Delivery");
 
   const { bookingId } = useParams();
   // const [oneBooking, setOneBooking] = useState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [autoFillData, setAutoFillData] = useState('');
+  const [autoFillData, setAutoFillData] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
@@ -134,14 +131,14 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleCategoryClick = (category) => {
     // console.log(data.Delivery.streamSelect)
-    console.log(data.School.schoolSelect)
-    console.log(data.School)
+    console.log(data.School.schoolSelect);
+    console.log(data.School);
     // console.log(streamOptions)
     // console.log(locationOptions)
     // console.log(moduleOptions)
     setActiveCategory(category);
     // console.log("得到的数据")
-    console.log(oneBooking)
+    console.log(oneBooking);
   };
 
   const openPopup = () => {
@@ -152,18 +149,14 @@ const NewBooking = ({ isNew = false }) => {
     setIsPopupOpen(false);
   };
 
-
   const cleanYears = (years) => {
     return years.filter((year) => year !== "nah" && year !== "");
   };
 
-
   const yearOptions = Array.from({ length: 6 }, (_, i) => ({
     value: 7 + i,
-    label: (7 + i).toString()
+    label: (7 + i).toString(),
   }));
-
-  
 
   useEffect(() => {
     if (isNew) {
@@ -185,7 +178,6 @@ const NewBooking = ({ isNew = false }) => {
               ...prev.School,
               schools: schoolData,
             },
-            
           }));
           setOriginalOptions({
             programStreams: miscellaneousData.program_stream,
@@ -194,11 +186,11 @@ const NewBooking = ({ isNew = false }) => {
             module: miscellaneousData.module,
             exhibition: miscellaneousData.exhibition,
           });
-          setLoading(false); 
+          setLoading(false);
         })
-        
+
         .catch((error) => console.error("Error fetching data:", error));
-        setLoading(false); 
+      setLoading(false);
     } else {
       setLoading(true);
       Promise.all([
@@ -208,8 +200,8 @@ const NewBooking = ({ isNew = false }) => {
       ])
         .then(([miscellaneousData, schoolData, bookingData]) => {
           setOneBooking(bookingData);
-          console.log("raw")
-          console.log(data)
+          console.log("raw");
+          console.log(data);
           setOriginalOptions({
             programStreams: miscellaneousData.program_stream,
             facilitators: miscellaneousData.facilitators,
@@ -218,14 +210,18 @@ const NewBooking = ({ isNew = false }) => {
             exhibition: miscellaneousData.exhibition,
           });
           // booking details does not match the database structure
-          const studentYears = Array.isArray(bookingData.school.studentYears) 
-          ? bookingData.school.studentYears 
-          : [bookingData.school.studentYears];
-          getBookingById(bookingId).then(bookingData => {
-          const formattedDate = bookingData.date.split('T')[0];
-          const formattedStartTime = bookingData.startTime ? bookingData.startTime.split('T')[1].substring(0, 5) : "";
-          const formattedEndTime = bookingData.endTime ? bookingData.endTime.split('T')[1].substring(0, 5) : "";
-            console.log("newnewnewnewn")
+          const studentYears = Array.isArray(bookingData.school.studentYears)
+            ? bookingData.school.studentYears
+            : [bookingData.school.studentYears];
+          getBookingById(bookingId).then((bookingData) => {
+            const formattedDate = bookingData.date.split("T")[0];
+            const formattedStartTime = bookingData.startTime
+              ? bookingData.startTime.split("T")[1].substring(0, 5)
+              : "";
+            const formattedEndTime = bookingData.endTime
+              ? bookingData.endTime.split("T")[1].substring(0, 5)
+              : "";
+            console.log("newnewnewnewn");
             setData((prev) => ({
               ...prev,
               Delivery: {
@@ -242,10 +238,10 @@ const NewBooking = ({ isNew = false }) => {
                 module: miscellaneousData.module,
                 exhibition: miscellaneousData.exhibition,
                 status: bookingData.status,
-                programDate:formattedDate,
-                startTime:formattedStartTime,
-                endTime:formattedEndTime,
-                checklistId: bookingData.checklist_id
+                programDate: formattedDate,
+                startTime: formattedStartTime,
+                endTime: formattedEndTime,
+                checklistId: bookingData.checklist_id,
                 //templates: templateData,
               },
               School: {
@@ -253,7 +249,7 @@ const NewBooking = ({ isNew = false }) => {
                 schoolSelect: bookingData.school,
                 studentYears: bookingData.school.studentYear,
                 lowSES: bookingData.school.lowSES === true ? "Y" : "N",
-                registeredStudents :bookingData.school.numStudentRegistered,
+                registeredStudents: bookingData.school.numStudentRegistered,
                 contactInfo: {
                   firstName: bookingData.school.contactFirstName,
                   lastName: bookingData.school.contactLastName,
@@ -287,11 +283,11 @@ const NewBooking = ({ isNew = false }) => {
                 income: bookingData.income,
                 // profit is not need to be here
               },
-          }));
-          setLoading(false); 
+            }));
+            setLoading(false);
+          });
         })
-        })
-        
+
         .catch((error) => console.error("Error fetching data:", error));
     }
   }, []);
@@ -304,9 +300,8 @@ const NewBooking = ({ isNew = false }) => {
     return `${date}T${time}:00`;
   };
 
-
   const checkForm = (data) => {
-    console.log(data)
+    console.log(data);
     const { moduleSelects } = data.Delivery;
     // check moduel
     const startDate = formatDateTime(
@@ -321,7 +316,7 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.Delivery.streamSelect) {
       errors.push("Program Stream is required.");
     }
-    if (!moduleSelects[0]) { 
+    if (!moduleSelects[0]) {
       errors.push("Module 1 is required.");
     }
     if (!data.Delivery.facilitatorsSelect) {
@@ -352,59 +347,62 @@ const NewBooking = ({ isNew = false }) => {
       errors.push("ExhibitionSelect Time is required.");
     }
     return errors;
-
-  }
+  };
 
   const formatDateString = (dateStr) => {
     const months = {
-        "January": "01", "February": "02", "March": "03",
-        "April": "04", "May": "05", "June": "06",
-        "July": "07", "August": "08", "September": "09",
-        "October": "10", "November": "11", "December": "12"
+      January: "01",
+      February: "02",
+      March: "03",
+      April: "04",
+      May: "05",
+      June: "06",
+      July: "07",
+      August: "08",
+      September: "09",
+      October: "10",
+      November: "11",
+      December: "12",
     };
-    if (typeof (dateStr) !== 'undefined'){
-      console.log("noway")
-      const parts = dateStr.split(' '); 
-      const day = parts[0].replace(/\D/g, '');  
-      const month = months[parts[1]];  
-      const year = new Date().getFullYear(); 
-      return `${year}-${month}-${day}`; 
-  }
-  return;
- 
-}
-
-
-  const convertTimeFormat = (timeStr) => {
-    const times = timeStr.split('-').map(t => t.trim());
-    if (times){
-    let startTime = times[0]; 
-    let endTime = times[1];
-
-
-    startTime = startTime.includes(":") ? startTime : startTime + ":00";
-    endTime = endTime.includes(":") ? endTime : endTime + ":00";
-
-    if (endTime.toLowerCase().includes('pm')) {
-      const [hour, minute] = endTime.replace(/pm/i, '').split(':');
-      endTime = `${parseInt(hour) + 12}:${minute}`;
-    } else {
-      endTime = endTime.replace(/am/i, ''); 
+    if (typeof dateStr !== "undefined") {
+      console.log("noway");
+      const parts = dateStr.split(" ");
+      const day = parts[0].replace(/\D/g, "");
+      const month = months[parts[1]];
+      const year = new Date().getFullYear();
+      return `${year}-${month}-${day}`;
     }
-
-    if (!startTime.toLowerCase().includes('pm') && !startTime.toLowerCase().includes('am')) {
-      const [hour, minute] = startTime.split(':');
-      startTime = `${hour.padStart(2, '0')}:${minute}`;
-    }
-
-      return [startTime, endTime];}
-      return
+    return;
   };
 
-  
+  const convertTimeFormat = (timeStr) => {
+    const times = timeStr.split("-").map((t) => t.trim());
+    if (times) {
+      let startTime = times[0];
+      let endTime = times[1];
 
+      startTime = startTime.includes(":") ? startTime : startTime + ":00";
+      endTime = endTime.includes(":") ? endTime : endTime + ":00";
 
+      if (endTime.toLowerCase().includes("pm")) {
+        const [hour, minute] = endTime.replace(/pm/i, "").split(":");
+        endTime = `${parseInt(hour) + 12}:${minute}`;
+      } else {
+        endTime = endTime.replace(/am/i, "");
+      }
 
+      if (
+        !startTime.toLowerCase().includes("pm") &&
+        !startTime.toLowerCase().includes("am")
+      ) {
+        const [hour, minute] = startTime.split(":");
+        startTime = `${hour.padStart(2, "0")}:${minute}`;
+      }
+
+      return [startTime, endTime];
+    }
+    return;
+  };
 
   const extractInformation = (text) => {
     const info = {};
@@ -419,69 +417,78 @@ const NewBooking = ({ isNew = false }) => {
     info.contactNumber = text.match(/Contact number: (.+)/)?.[1];
     return info;
   };
-const handleGenerate = () => {
-  const info = extractInformation(autoFillData);
-  const formattedDate = formatDateString(info.date);
-  const [formattedStartTime, formattedEndTime] = convertTimeFormat(info.time);
-  const studentYear = parseInt(info.studentLevel);
-  const [firstName, lastName] = info.teacher ? info.teacher.split(' ') : [null, null];
+  const handleGenerate = () => {
+    const info = extractInformation(autoFillData);
+    const formattedDate = formatDateString(info.date);
+    const [formattedStartTime, formattedEndTime] = convertTimeFormat(info.time);
+    const studentYear = parseInt(info.studentLevel);
+    const [firstName, lastName] = info.teacher
+      ? info.teacher.split(" ")
+      : [null, null];
 
-  setData(prev => {
-    const newProgramStreams = prev.Delivery.programStreams.includes(info.program) 
-      ? prev.Delivery.programStreams 
-      : [...prev.Delivery.programStreams, info.program];
+    setData((prev) => {
+      const newProgramStreams = prev.Delivery.programStreams.includes(
+        info.program
+      )
+        ? prev.Delivery.programStreams
+        : [...prev.Delivery.programStreams, info.program];
 
-    let newSchools = prev.School.schools;
-    console.log(newSchools)
-    
-    let schoolExists = newSchools.find(school => school.name === info.school);
-    if (!schoolExists) {
-      const newSchoolId = `new_${new Date().getTime()}`;
-      newSchools.push({ id: newSchoolId, name: info.school });
-      schoolExists = { id: newSchoolId, name: info.school };
-    }
-    const newState = {
-      ...prev,
-      Delivery: {
-        ...prev.Delivery,
-        programDate: formattedDate,
-        startTime: formattedStartTime,
-        endTime: formattedEndTime,
-        streamSelect: info.program,
-        programStreams: newProgramStreams
-      },
-      School: {
-        ...prev.School,
-        schools: newSchools,
-        schoolSelect: schoolExists,
-        registeredStudents: parseInt(info.numberOfStudents),
-        studentYears: prev.School.studentYears,
-        contactInfo: {
-          ...prev.School.contactInfo,
-          firstName: firstName || prev.School.contactInfo.firstName,
-          lastName: lastName || prev.School.contactInfo.lastName,
-          phoneNumber: info.contactNumber !== "TBC" ? info.contactNumber : prev.School.contactInfo.phoneNumber,
-        }
-      },
-      Others: {
-        expenses: info.cost
+      let newSchools = prev.School.schools;
+      console.log(newSchools);
+
+      let schoolExists = newSchools.find(
+        (school) => school.name === info.school
+      );
+      if (!schoolExists) {
+        const newSchoolId = `new_${new Date().getTime()}`;
+        newSchools.push({ id: newSchoolId, name: info.school });
+        schoolExists = { id: newSchoolId, name: info.school };
       }
-    };
-    
-    console.log("New state:", newState);
-    return newState;
-  });
+      const newState = {
+        ...prev,
+        Delivery: {
+          ...prev.Delivery,
+          programDate: formattedDate,
+          startTime: formattedStartTime,
+          endTime: formattedEndTime,
+          streamSelect: info.program,
+          programStreams: newProgramStreams,
+        },
+        School: {
+          ...prev.School,
+          schools: newSchools,
+          schoolSelect: schoolExists,
+          registeredStudents: parseInt(info.numberOfStudents),
+          studentYears: prev.School.studentYears,
+          contactInfo: {
+            ...prev.School.contactInfo,
+            firstName: firstName || prev.School.contactInfo.firstName,
+            lastName: lastName || prev.School.contactInfo.lastName,
+            phoneNumber:
+              info.contactNumber !== "TBC"
+                ? info.contactNumber
+                : prev.School.contactInfo.phoneNumber,
+          },
+        },
+        Others: {
+          expenses: info.cost,
+        },
+      };
 
-  closePopup();
-};
+      console.log("New state:", newState);
+      return newState;
+    });
 
-const handleDateChange = (category, field, value) => {
-    setData(prev => ({
+    closePopup();
+  };
+
+  const handleDateChange = (category, field, value) => {
+    setData((prev) => ({
       ...prev,
       [category]: {
         ...prev[category],
-        [field]: value  
-      }
+        [field]: value,
+      },
     }));
   };
 
@@ -490,7 +497,7 @@ const handleDateChange = (category, field, value) => {
     facilitators: [],
     location: [],
     module: [],
-    exhibition: []
+    exhibition: [],
   });
 
   const handleDelete = async (event) => {
@@ -498,13 +505,13 @@ const handleDateChange = (category, field, value) => {
     try {
       const response = await deleteBooking(oneBooking.id);
       console.log("Booking Delete successfully!", response);
-      alert("Delete Successfully!")
+      alert("Delete Successfully!");
       navigate("/dashboard");
     } catch (error) {
       console.error("Creating booking failed:", error);
     }
-  }
-  
+  };
+
   const handleUpdate = async (event) => {
     event.preventDefault();
 
@@ -531,17 +538,16 @@ const handleDateChange = (category, field, value) => {
       isAllergy: true,
       isPartner: data.School.isPartnerSchool === "Y",
     };
-    console.log("wocaocaocaoo222")
-    console.log(data.Delivery.templateSelect)
+    console.log("wocaocaocaoo222");
+    console.log(data.Delivery.templateSelect);
 
-    const schoolId = await updateSchoolById(oneBooking.school.id,schoolData);
+    const schoolId = await updateSchoolById(oneBooking.school.id, schoolData);
 
     // const checklistId = await createNewChecklist(data.Delivery.templateSelect);
 
     const schoolIdValue = schoolId.id;
 
-    const checklistvalue = oneBooking.checklist_id
-
+    const checklistvalue = oneBooking.checklist_id;
 
     const bus_test_status = 1;
     const busData = {
@@ -553,7 +559,6 @@ const handleDateChange = (category, field, value) => {
       invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
     };
 
-
     const event_test = "test";
     const bookingData = {
       event: event_test, //
@@ -564,20 +569,20 @@ const handleDateChange = (category, field, value) => {
       programStream: data.Delivery.streamSelect, //
       checklist_id: checklistvalue, //
       facilitators: data.Delivery.facilitatorsSelect, //
-      location: data.Delivery.locationSelect|| "", //
+      location: data.Delivery.locationSelect || "", //
       date: data.Delivery.programDate, //
       term: parseInt(data.Delivery.term, 10), // +
       startTime: startDate,
       endTime: endDate,
-      module_id: data.Delivery.moduleSelects,//
+      module_id: data.Delivery.moduleSelects, //
       exibition: data.Delivery.exhibitionSelect, //
       note: data.Delivery.notes || "", //
       bus: busData, //
-      per_student: parseInt(data.Others.perStudent)|| 0.0, //
-      expense: parseFloat(data.Others.expenses)|| 0.0, //
-      income: parseFloat(data.Others.income)|| 0.0, //
+      per_student: parseInt(data.Others.perStudent) || 0.0, //
+      expense: parseFloat(data.Others.expenses) || 0.0, //
+      income: parseFloat(data.Others.income) || 0.0, //
       // profit: parseFloat(data.Others.profit), //
-      profit:0.0
+      profit: 0.0,
     };
     // console.log(bookingData);
     const newOptions = {
@@ -585,50 +590,57 @@ const handleDateChange = (category, field, value) => {
       delivery_location: originalOptions.location.slice(),
       facilitators: originalOptions.facilitators.slice(),
       exhibition: originalOptions.exhibition.slice(),
-      program_stream: originalOptions.programStreams.slice()
+      program_stream: originalOptions.programStreams.slice(),
     };
-    
+
     console.log(originalOptions.programStreams);
     console.log(data.Delivery.streamSelect);
-    
+
     if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
       newOptions.program_stream.push(data.Delivery.streamSelect);
     }
-    
-    if (data.Delivery.moduleSelects.some(module => !originalOptions.module.includes(module))) {
-      newOptions.module.push(...data.Delivery.moduleSelects.filter(module => !originalOptions.module.includes(module)));
+
+    if (
+      data.Delivery.moduleSelects.some(
+        (module) => !originalOptions.module.includes(module)
+      )
+    ) {
+      newOptions.module.push(
+        ...data.Delivery.moduleSelects.filter(
+          (module) => !originalOptions.module.includes(module)
+        )
+      );
     }
-    
-    if (!originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)) {
+
+    if (
+      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
+    ) {
       newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
     }
-    
+
     if (!originalOptions.location.includes(data.Delivery.locationSelect)) {
       newOptions.delivery_location.push(data.Delivery.locationSelect);
     }
-    
+
     if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect)) {
       newOptions.exhibition.push(data.Delivery.exhibitionSelect);
     }
-    
-    console.log('New Options:', newOptions);
-    updateMiscellaneous(newOptions);
-    
-      try {
-        const response = await updateBooking(oneBooking.id,bookingData);
-        console.log("Booking created successfully!", response);
-        alert("Update Successfull!")
-        navigate("/dashboard");
-      } catch (error) {
-        console.error("Creating booking failed:", error);
-      }
-    };
-  
 
+    console.log("New Options:", newOptions);
+    updateMiscellaneous(newOptions);
+
+    try {
+      const response = await updateBooking(oneBooking.id, bookingData);
+      console.log("Booking created successfully!", response);
+      alert("Update Successfull!");
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Creating booking failed:", error);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
 
     const startDate = formatDateTime(
       data.Delivery.programDate,
@@ -638,8 +650,8 @@ const handleDateChange = (category, field, value) => {
       data.Delivery.programDate,
       data.Delivery.endTime
     );
-    console.log(data.School.schoolSelect)
-    console.log(data.School.schoolSelect.name)
+    console.log(data.School.schoolSelect);
+    console.log(data.School.schoolSelect.name);
     const schoolData = {
       name: data.School.schoolSelect.name,
       studentYear: data.School.studentYears,
@@ -655,8 +667,8 @@ const handleDateChange = (category, field, value) => {
       isAllergy: true,
       isPartner: data.School.isPartnerSchool === "Y",
     };
-    console.log("wocaocaocaoo")
-    console.log(data.Delivery.templateSelect)
+    console.log("wocaocaocaoo");
+    console.log(data.Delivery.templateSelect);
 
     const schoolId = await createNewSchool(schoolData);
 
@@ -678,7 +690,6 @@ const handleDateChange = (category, field, value) => {
       invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
     };
 
-
     const event_test = "test";
     const bookingData = {
       event: event_test, //
@@ -689,20 +700,20 @@ const handleDateChange = (category, field, value) => {
       programStream: data.Delivery.streamSelect, //
       checklist_id: checklistvalue, //
       facilitators: data.Delivery.facilitatorsSelect, //
-      location: data.Delivery.locationSelect|| "", //
+      location: data.Delivery.locationSelect || "", //
       date: data.Delivery.programDate, //
       term: parseInt(data.Delivery.term, 10), // +
       startTime: startDate,
       endTime: endDate,
-      module_id: data.Delivery.moduleSelects,//
+      module_id: data.Delivery.moduleSelects, //
       exibition: data.Delivery.exhibitionSelect, //
       note: data.Delivery.notes || "", //
       bus: busData, //
-      per_student: parseInt(data.Others.perStudent)|| 0.0, //
-      expense: parseFloat(data.Others.expenses)|| 0.0, //
-      income: parseFloat(data.Others.income)|| 0.0, //
+      per_student: parseInt(data.Others.perStudent) || 0.0, //
+      expense: parseFloat(data.Others.expenses) || 0.0, //
+      income: parseFloat(data.Others.income) || 0.0, //
       // profit: parseFloat(data.Others.profit), //
-      profit:0.0
+      profit: 0.0,
     };
     // console.log(bookingData);
     const newOptions = {
@@ -710,87 +721,93 @@ const handleDateChange = (category, field, value) => {
       delivery_location: originalOptions.location.slice(),
       facilitators: originalOptions.facilitators.slice(),
       exhibition: originalOptions.exhibition.slice(),
-      program_stream: originalOptions.programStreams.slice()
+      program_stream: originalOptions.programStreams.slice(),
     };
-    
+
     console.log(originalOptions.programStreams);
     console.log(data.Delivery.streamSelect);
-    
+
     if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
       newOptions.program_stream.push(data.Delivery.streamSelect);
     }
-    
-    if (data.Delivery.moduleSelects.some(module => !originalOptions.module.includes(module))) {
-      newOptions.module.push(...data.Delivery.moduleSelects.filter(module => !originalOptions.module.includes(module)));
+
+    if (
+      data.Delivery.moduleSelects.some(
+        (module) => !originalOptions.module.includes(module)
+      )
+    ) {
+      newOptions.module.push(
+        ...data.Delivery.moduleSelects.filter(
+          (module) => !originalOptions.module.includes(module)
+        )
+      );
     }
-    
-    if (!originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)) {
+
+    if (
+      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
+    ) {
       newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
     }
-    
+
     if (!originalOptions.location.includes(data.Delivery.locationSelect)) {
       newOptions.delivery_location.push(data.Delivery.locationSelect);
     }
-    
+
     if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect)) {
       newOptions.exhibition.push(data.Delivery.exhibitionSelect);
     }
-    
-    console.log('New Options:', newOptions);
+
+    console.log("New Options:", newOptions);
     updateMiscellaneous(newOptions);
-    
-      try {
-        const response = await createNewBooking(bookingData);
-        console.log("Booking created successfully!", response);
-        alert("Create Successfull!")
-        navigate("/dashboard");
-      } catch (error) {
-        DeleteSchoolById(schoolIdValue);
-        DeleteCheckListById(checklistvalue);
-        console.error("Creating booking failed:", error);
-      }
-    };
 
+    try {
+      const response = await createNewBooking(bookingData);
+      console.log("Booking created successfully!", response);
+      alert("Create Successfull!");
+      navigate("/dashboard");
+    } catch (error) {
+      DeleteSchoolById(schoolIdValue);
+      DeleteCheckListById(checklistvalue);
+      console.error("Creating booking failed:", error);
+    }
+  };
 
+  const handleChange = (category, field, value) => {
+    setData((prev) => ({
+      ...prev,
+      [category]: {
+        ...prev[category],
+        [field]: value,
+      },
+    }));
+  };
 
-    const handleChange = (category, field, value) => {
-      setData((prev) => ({
+  const handleMultiSelectChange = (category, field, index, value) => {
+    setData((prev) => {
+      const updatedField = [...prev[category][field]];
+      updatedField[index] = value;
+      return {
         ...prev,
         [category]: {
           ...prev[category],
-          [field]: value,
+          [field]: updatedField,
         },
-      }));
-    };
+      };
+    });
+  };
 
-    const handleMultiSelectChange = (category, field, index, value) => {
-      setData((prev) => {
-        const updatedField = [...prev[category][field]];
-        updatedField[index] = value;
-        return {
-          ...prev,
-          [category]: {
-            ...prev[category],
-            [field]: updatedField,
-          },
-        };
-      });
-    };
-    
-    const handleCreateOption = (category, field, newOption) => {
-      setData((prev) => {
-        const updatedField = [...prev[category][field], newOption];
-        return {
-          ...prev,
-          [category]: {
-            ...prev[category],
-            [field]: updatedField,
-          },
-        };
-      });
-    };
-    
-
+  const handleCreateOption = (category, field, newOption) => {
+    setData((prev) => {
+      const updatedField = [...prev[category][field], newOption];
+      return {
+        ...prev,
+        [category]: {
+          ...prev[category],
+          [field]: updatedField,
+        },
+      };
+    });
+  };
 
   const handleChangeNested = (category, nestedField, subField, value) => {
     setData((prev) => ({
@@ -806,101 +823,113 @@ const handleDateChange = (category, field, value) => {
   };
 
   const YNoptions = [
-    { value: 'Y', label: 'Yes' },
-    { value: 'N', label: 'No' }
+    { value: "Y", label: "Yes" },
+    { value: "N", label: "No" },
   ];
-
 
   const statusOptions = [
-    { value: 'delivered', label: 'delivered' },
-    { value: 'processing', label: 'processing' },
-    { value: 'pending', label: 'pending' },
-    { value: 'canceled', label: 'canceled' }
+    { value: "delivered", label: "delivered" },
+    { value: "processing", label: "processing" },
+    { value: "pending", label: "pending" },
+    { value: "canceled", label: "canceled" },
   ];
-
 
   const uniqueArray = (array) => [...new Set(array)];
 
-const streamOptions = uniqueArray(data.Delivery.programStreams)?.map(stream => ({
-  value: stream,
-  label: stream
-})) || [];
+  const streamOptions =
+    uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+      value: stream,
+      label: stream,
+    })) || [];
 
-const facilitatorOptions = uniqueArray(data.Delivery.facilitators)?.map(facilitator => ({
-  value: facilitator,
-  label: facilitator
-})) || [];
+  const facilitatorOptions =
+    uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
+      value: facilitator,
+      label: facilitator,
+    })) || [];
 
-const locationOptions = uniqueArray(data.Delivery.location)?.map(location => ({
-  value: location,
-  label: location
-})) || [];
+  const locationOptions =
+    uniqueArray(data.Delivery.location)?.map((location) => ({
+      value: location,
+      label: location,
+    })) || [];
 
-const moduleOptions = data.Delivery.module?.map(module_id => ({
-  value: module_id,
-  label: module_id
-}))|| [];
+  const moduleOptions =
+    data.Delivery.module?.map((module_id) => ({
+      value: module_id,
+      label: module_id,
+    })) || [];
 
+  const schoolOptions =
+    data.School && data.School.schools
+      ? data.School.schools.reduce((unique, school) => {
+          if (!unique.some((item) => item.label === school.name)) {
+            unique.push({ value: school.name, label: school.name });
+          }
+          return unique;
+        }, [])
+      : [];
 
-const schoolOptions = data.School && data.School.schools ? data.School.schools.reduce((unique, school) => {
-  if (!unique.some(item => item.label === school.name)) {
-    unique.push({ value: school.name, label: school.name });
-  }
-  return unique;
-}, []) : [];
+  const handleSelectChange =
+    (category, field, arrayName) => (selectedOption) => {
+      setData((prev) => {
+        const updatedPrev = { ...prev };
 
-
-const handleSelectChange = (category, field, arrayName) => selectedOption => {
-  setData(prev => {
-    const updatedPrev = { ...prev };
-
-    if (!updatedPrev[category]) {
-      updatedPrev[category] = {};
-    }
-
-    if (field === 'schoolSelect') {
-      updatedPrev[category].schools = updatedPrev[category].schools || [];
-      if (selectedOption && !updatedPrev[category].schools.some(school => school.name === selectedOption.value)) {
-        updatedPrev[category].schools.push({ name: selectedOption.value });
-      }
-      updatedPrev[category][field] = selectedOption ? { name: selectedOption.value } : null;
-    } else {
-      console.log(category)
-      console.log(arrayName)
-      if (selectedOption && selectedOption.__isNew__) {
-        updatedPrev[category][arrayName] = updatedPrev[category][arrayName] || [];
-        if (!updatedPrev[category][arrayName].includes(selectedOption.value)) {
-          updatedPrev[category][arrayName].push(selectedOption.value);
+        if (!updatedPrev[category]) {
+          updatedPrev[category] = {};
         }
-      }
-      updatedPrev[category][field] = selectedOption ? selectedOption.value : null;
-    }
 
-    return updatedPrev;
-  });
-};
+        if (field === "schoolSelect") {
+          updatedPrev[category].schools = updatedPrev[category].schools || [];
+          if (
+            selectedOption &&
+            !updatedPrev[category].schools.some(
+              (school) => school.name === selectedOption.value
+            )
+          ) {
+            updatedPrev[category].schools.push({ name: selectedOption.value });
+          }
+          updatedPrev[category][field] = selectedOption
+            ? { name: selectedOption.value }
+            : null;
+        } else {
+          console.log(category);
+          console.log(arrayName);
+          if (selectedOption && selectedOption.__isNew__) {
+            updatedPrev[category][arrayName] =
+              updatedPrev[category][arrayName] || [];
+            if (
+              !updatedPrev[category][arrayName].includes(selectedOption.value)
+            ) {
+              updatedPrev[category][arrayName].push(selectedOption.value);
+            }
+          }
+          updatedPrev[category][field] = selectedOption
+            ? selectedOption.value
+            : null;
+        }
 
-  
-  
+        return updatedPrev;
+      });
+    };
 
+  const animatedComponents = makeAnimated();
 
+  const templateOptions =
+    data.Delivery.templates?.map((template) => ({
+      value: template.id,
+      label: template.name,
+    })) || [];
 
-  const animatedComponents = makeAnimated(); 
-
-  const templateOptions = data.Delivery.templates?.map(template => ({
-    value: template.id,
-    label: template.name
-  }))|| [];
-
-  const exhibitionOptions = data.Delivery.exhibition?.map(exhibition => ({
-    value: exhibition,
-    label: exhibition
-  }))|| [];
-
+  const exhibitionOptions =
+    data.Delivery.exhibition?.map((exhibition) => ({
+      value: exhibition,
+      label: exhibition,
+    })) || [];
 
   return (
     <>
-    <Modal show={loading}>
+      <Modal show={loading}>
         <div>Loading data...</div>
       </Modal>
       {isNew && <Header>Create New Booking</Header>}
@@ -968,7 +997,7 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
           </div>
         </div>
       )}
-      
+
       <div>
         {/* bookingChecklist should be a prop to be parse in */}
         {!isNew && activeCategory === "Checklist" && (
@@ -976,71 +1005,105 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
-                <label>Program Stream:</label>
-          <CreatableSelect
-            value={streamOptions.find(option => option.value === data.Delivery.streamSelect)}
-            onChange={handleSelectChange('Delivery', 'streamSelect', 'programStreams')}
-            onCreateOption={(newOption) => {
-              handleCreateOption('Delivery', 'programStreams', newOption);
-              handleSelectChange('Delivery', 'streamSelect', 'programStreams')({ value: newOption, __isNew__: true });
-            }}
-            options={streamOptions}
-            placeholder="Please select a stream"
-            isClearable
-            isSearchable
-            formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
-          />
+            <label>Program Stream:</label>
+            <CreatableSelect
+              value={streamOptions.find(
+                (option) => option.value === data.Delivery.streamSelect
+              )}
+              onChange={handleSelectChange(
+                "Delivery",
+                "streamSelect",
+                "programStreams"
+              )}
+              onCreateOption={(newOption) => {
+                handleCreateOption("Delivery", "programStreams", newOption);
+                handleSelectChange(
+                  "Delivery",
+                  "streamSelect",
+                  "programStreams"
+                )({ value: newOption, __isNew__: true });
+              }}
+              options={streamOptions}
+              placeholder="Please select a stream"
+              isClearable
+              isSearchable
+              formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
+            />
 
-        {isNew && <label>Template:</label>}
-        {isNew &&<Select
-            components={animatedComponents}
-            value={templateOptions.find(option => option.value === data.Delivery.templateSelect)}
-            onChange={handleSelectChange("Delivery", "templateSelect")}
-            options={templateOptions}
-            placeholder="Please select a template"
-            isClearable
-            isSearchable
-          /> }
-          <label>Facilitators:</label>
-          <CreatableSelect
-            value={facilitatorOptions.find(option => option.value === data.Delivery.facilitatorsSelect)}
-            onChange={handleSelectChange("Delivery", "facilitatorsSelect", "facilitators")}
-            onCreateOption={(newOption) => {
-              handleCreateOption("Delivery", "facilitators", newOption);
-              handleSelectChange("Delivery", "facilitatorsSelect", "facilitators")({ value: newOption, __isNew__: true });
-            }}
-            options={facilitatorOptions}
-            placeholder="Please select a facilitator"
-            isClearable
-            isSearchable
-            formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
-          />
-        <label>Delivery Location:</label>
-        <CreatableSelect
-          value={locationOptions.find(option => option.value === data.Delivery.locationSelect)}
-          onChange={handleSelectChange("Delivery", "locationSelect", "location")}
-          onCreateOption={(newOption) => {
-            handleCreateOption("Delivery", "location", newOption);
-            handleSelectChange("Delivery", "locationSelect", "location")({ value: newOption, __isNew__: true });
-          }}
-          options={locationOptions}
-          placeholder="Please select a location"
-          isClearable
-          isSearchable
-          formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
-        />
-          <label>Program status:</label>
-          <Select
-            components={animatedComponents}
-            value={statusOptions.find(option => option.value === data.Delivery.status)}
-            onChange={(e) =>
-                handleChange("Delivery", "status", e.value)
-              }
-            options={statusOptions}
-            placeholder="Please select a status"
-            isClearable
-            isSearchable
-        />
+            {isNew && <label>Template:</label>}
+            {isNew && (
+              <Select
+                components={animatedComponents}
+                value={templateOptions.find(
+                  (option) => option.value === data.Delivery.templateSelect
+                )}
+                onChange={handleSelectChange("Delivery", "templateSelect")}
+                options={templateOptions}
+                placeholder="Please select a template"
+                isClearable
+                isSearchable
+              />
+            )}
+            <label>Facilitators:</label>
+            <CreatableSelect
+              value={facilitatorOptions.find(
+                (option) => option.value === data.Delivery.facilitatorsSelect
+              )}
+              onChange={handleSelectChange(
+                "Delivery",
+                "facilitatorsSelect",
+                "facilitators"
+              )}
+              onCreateOption={(newOption) => {
+                handleCreateOption("Delivery", "facilitators", newOption);
+                handleSelectChange(
+                  "Delivery",
+                  "facilitatorsSelect",
+                  "facilitators"
+                )({ value: newOption, __isNew__: true });
+              }}
+              options={facilitatorOptions}
+              placeholder="Please select a facilitator"
+              isClearable
+              isSearchable
+              formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
+            />
+            <label>Delivery Location:</label>
+            <CreatableSelect
+              value={locationOptions.find(
+                (option) => option.value === data.Delivery.locationSelect
+              )}
+              onChange={handleSelectChange(
+                "Delivery",
+                "locationSelect",
+                "location"
+              )}
+              onCreateOption={(newOption) => {
+                handleCreateOption("Delivery", "location", newOption);
+                handleSelectChange(
+                  "Delivery",
+                  "locationSelect",
+                  "location"
+                )({ value: newOption, __isNew__: true });
+              }}
+              options={locationOptions}
+              placeholder="Please select a location"
+              isClearable
+              isSearchable
+              formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
+            />
+            <label>Program status:</label>
+            <Select
+              components={animatedComponents}
+              value={statusOptions.find(
+                (option) => option.value === data.Delivery.status
+              )}
+              onChange={(e) => handleChange("Delivery", "status", e.value)}
+              options={statusOptions}
+              placeholder="Please select a status"
+              isClearable
+              isSearchable
+            />
             <label>Program Date:</label>
             <input
               type="date"
@@ -1062,49 +1125,79 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
             </select>
 
             <label>Time (Start):</label>
-              <input
-                type="time"
-                value={data.Delivery.startTime}
-                onChange={(e) => handleChange("Delivery", "startTime", e.target.value)}
-              />
+            <input
+              type="time"
+              value={data.Delivery.startTime}
+              onChange={(e) =>
+                handleChange("Delivery", "startTime", e.target.value)
+              }
+            />
 
-              <label>Time (End) *:</label>
-              <input
-                type="time"
-                value={data.Delivery.endTime}
-                onChange={(e) => handleChange("Delivery", "endTime", e.target.value)}
-              />
+            <label>Time (End) *:</label>
+            <input
+              type="time"
+              value={data.Delivery.endTime}
+              onChange={(e) =>
+                handleChange("Delivery", "endTime", e.target.value)
+              }
+            />
 
+            {["Module 1", "Module 2", "Module 3"].map((label, index) => (
+              <React.Fragment key={label}>
+                <label>
+                  {label}
+                  {index === 0 ? " *" : ""}:
+                </label>
+                <CreatableSelect
+                  value={moduleOptions.find(
+                    (option) =>
+                      option.value === data.Delivery.moduleSelects[index]
+                  )}
+                  onChange={(selectedOption) =>
+                    handleMultiSelectChange(
+                      "Delivery",
+                      "moduleSelects",
+                      index,
+                      selectedOption.value
+                    )
+                  }
+                  onCreateOption={(newOption) => {
+                    handleCreateOption("Delivery", "module", newOption);
+                    handleMultiSelectChange(
+                      "Delivery",
+                      "moduleSelects",
+                      index,
+                      newOption
+                    );
+                  }}
+                  options={moduleOptions}
+                  placeholder={
+                    index === 0 ? "Please select a module" : "Optional"
+                  }
+                  isClearable
+                  isSearchable
+                />
+              </React.Fragment>
+            ))}
 
-
-      {["Module 1", "Module 2", "Module 3"].map((label, index) => (
-        <React.Fragment key={label}>
-          <label>{label}{index === 0 ? " *" : ""}:</label>
-          <CreatableSelect
-            value={moduleOptions.find(option => option.value === data.Delivery.moduleSelects[index])}
-            onChange={(selectedOption) => handleMultiSelectChange("Delivery", "moduleSelects", index, selectedOption.value)}
-            onCreateOption={(newOption) => {
-              handleCreateOption("Delivery", "module", newOption);
-              handleMultiSelectChange("Delivery", "moduleSelects", index, newOption);
-            }}
-            options={moduleOptions}
-            placeholder={index === 0 ? "Please select a module" : "Optional"}
-            isClearable
-            isSearchable
-          />
-        </React.Fragment>
-      ))}
-
-
-
-          <label>Exhibition:</label>
+            <label>Exhibition:</label>
             <CreatableSelect
               components={animatedComponents}
-              value={exhibitionOptions.find(option => option.value === data.Delivery.exhibitionSelect)}
-              onChange={handleSelectChange("Delivery", "exhibitionSelect", "exhibition")}
+              value={exhibitionOptions.find(
+                (option) => option.value === data.Delivery.exhibitionSelect
+              )}
+              onChange={handleSelectChange(
+                "Delivery",
+                "exhibitionSelect",
+                "exhibition"
+              )}
               onCreateOption={(newOption) => {
                 handleCreateOption("Delivery", "exhibition", newOption);
-                handleSelectChange("Delivery", "exhibitionSelect", "exhibition")({ value: newOption, __isNew__: true });
+                handleSelectChange(
+                  "Delivery",
+                  "exhibitionSelect",
+                  "exhibition"
+                )({ value: newOption, __isNew__: true });
               }}
               options={exhibitionOptions}
               placeholder="Please select an exhibition"
@@ -1125,26 +1218,27 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
 
         {activeCategory === "School" && (
           <form className="newBookingForm">
-        <label htmlFor="school-input">School Name:</label>
-        <CreatableSelect
-            id="school-input"
-            value={schoolOptions.find(option => option.value === data.School.schoolSelect.name)}
-            onChange={handleSelectChange("School", "schoolSelect",)}
-            options={schoolOptions}
-            placeholder="Please select a School"
-            isClearable
-            isSearchable
-            formatCreateLabel={inputValue => `Add "${inputValue}"`}
-          />
+            <label htmlFor="school-input">School Name:</label>
+            <CreatableSelect
+              id="school-input"
+              value={schoolOptions.find(
+                (option) => option.value === data.School.schoolSelect.name
+              )}
+              onChange={handleSelectChange("School", "schoolSelect")}
+              options={schoolOptions}
+              placeholder="Please select a School"
+              isClearable
+              isSearchable
+              formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
+            />
 
-
-
-
-          <div className="form-group">
+            <div className="form-group">
               <label htmlFor="student-year-select">Student Years:</label>
               <Select
                 id="student-year-select"
-                value={yearOptions.find(option => option.value === data.School.studentYears)}
+                value={yearOptions.find(
+                  (option) => option.value === data.School.studentYears
+                )}
                 onChange={handleSelectChange("School", "studentYears")}
                 options={yearOptions}
                 placeholder="Please select a year"
@@ -1152,7 +1246,6 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
                 isSearchable
               />
             </div>
-
 
             <label>Student # (registered):</label>
             <input
@@ -1163,15 +1256,19 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
               }
             />
 
-              <label>Low SES:</label>
-              <Select
-                value={YNoptions.find(option => option.value === data.School.lowSES)}
-                onChange={(selectedOption) => handleChange("School", "lowSES", selectedOption.value)}
-                options={YNoptions}
-                placeholder="Yes or No"
-                isClearable={true} 
-                isSearchable={false} 
-              />
+            <label>Low SES:</label>
+            <Select
+              value={YNoptions.find(
+                (option) => option.value === data.School.lowSES
+              )}
+              onChange={(selectedOption) =>
+                handleChange("School", "lowSES", selectedOption.value)
+              }
+              options={YNoptions}
+              placeholder="Yes or No"
+              isClearable={true}
+              isSearchable={false}
+            />
 
             <fieldset>
               <legend>School Contact:</legend>
@@ -1251,101 +1348,123 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
               }
             />
 
-      <label>Accessibility Needs Communicated:</label>
-        <Select
-          value={YNoptions.find(option => option.value === data.School.accessibilityNeeds)}
-          onChange={(selectedOption) =>
-            handleChange("School", "accessibilityNeeds", selectedOption.value)
-          }
-          options={YNoptions}
-          placeholder="Yes or No"
-          isClearable={true}
-          isSearchable={false}
-        />
-      <label>Allergen and Anaphylaxis Communicated:</label>
+            <label>Accessibility Needs Communicated:</label>
+            <Select
+              value={YNoptions.find(
+                (option) => option.value === data.School.accessibilityNeeds
+              )}
+              onChange={(selectedOption) =>
+                handleChange(
+                  "School",
+                  "accessibilityNeeds",
+                  selectedOption.value
+                )
+              }
+              options={YNoptions}
+              placeholder="Yes or No"
+              isClearable={true}
+              isSearchable={false}
+            />
+            <label>Allergen and Anaphylaxis Communicated:</label>
             <textarea
               value={data.Delivery.notes}
               onChange={(e) =>
                 handleChange("School", "allergenInfo", e.target.value)
               }
             />
-      
 
-      <label>Is Partner School:</label>
-      <Select
-        value={YNoptions.find(option => option.value === data.School.isPartnerSchool)}
-        onChange={(selectedOption) =>
-          handleChange("School", "isPartnerSchool", selectedOption.value)
-        }
-        options={YNoptions}
-        placeholder="Yes or No"
-        isClearable={true}
-        isSearchable={false}
-      />
+            <label>Is Partner School:</label>
+            <Select
+              value={YNoptions.find(
+                (option) => option.value === data.School.isPartnerSchool
+              )}
+              onChange={(selectedOption) =>
+                handleChange("School", "isPartnerSchool", selectedOption.value)
+              }
+              options={YNoptions}
+              placeholder="Yes or No"
+              isClearable={true}
+              isSearchable={false}
+            />
           </form>
         )}
-      {activeCategory === "Bus" && (
-        <form className="newBookingForm">
-          <label htmlFor="bus-req">BUS REQ:</label>
-      <Select
-        id="bus-req"
-        value={YNoptions.find(option => option.value === data.Bus.busReq)}
-        onChange={(selectedOption) => handleChange("Bus", "busReq", selectedOption.value)}
-        options={YNoptions}
-        placeholder="Yes or No"
-        isClearable={true}
-      />
+        {activeCategory === "Bus" && (
+          <form className="newBookingForm">
+            <label htmlFor="bus-req">BUS REQ:</label>
+            <Select
+              id="bus-req"
+              value={YNoptions.find(
+                (option) => option.value === data.Bus.busReq
+              )}
+              onChange={(selectedOption) =>
+                handleChange("Bus", "busReq", selectedOption.value)
+              }
+              options={YNoptions}
+              placeholder="Yes or No"
+              isClearable={true}
+            />
 
-      {data.Bus.busReq === "Y" && (
-        <>
-          <label>BUS BOOKED:</label>
-          <Select
-            id="bus-booked"
-            value={YNoptions.find(option => option.value === data.Bus.busBooked)}
-            onChange={(selectedOption) => handleChange("Bus", "busBooked", selectedOption.value)}
-            options={YNoptions}
-            placeholder="Yes or No"
-            isClearable={true}
-          />
+            {data.Bus.busReq === "Y" && (
+              <>
+                <label>BUS BOOKED:</label>
+                <Select
+                  id="bus-booked"
+                  value={YNoptions.find(
+                    (option) => option.value === data.Bus.busBooked
+                  )}
+                  onChange={(selectedOption) =>
+                    handleChange("Bus", "busBooked", selectedOption.value)
+                  }
+                  options={YNoptions}
+                  placeholder="Yes or No"
+                  isClearable={true}
+                />
 
-          <label htmlFor="status">Status:</label>
-          <Select
-            id="status"
-            value={statusOptions.find(option => option.value === data.Bus.status)}
-            onChange={(selectedOption) => handleChange("Bus", "status", selectedOption.value)}
-            options={statusOptions}
-            placeholder="Select Status"
-            isClearable={true}
-          />
+                <label htmlFor="status">Status:</label>
+                <Select
+                  id="status"
+                  value={statusOptions.find(
+                    (option) => option.value === data.Bus.status
+                  )}
+                  onChange={(selectedOption) =>
+                    handleChange("Bus", "status", selectedOption.value)
+                  }
+                  options={statusOptions}
+                  placeholder="Select Status"
+                  isClearable={true}
+                />
 
-          <label htmlFor="price">Price:</label>
-          <input
-            id="price"
-            type="text"
-            value={data.Bus.price}
-            onChange={(e) => handleChange("Bus", "price", e.target.value)}
-          />
+                <label htmlFor="price">Price:</label>
+                <input
+                  id="price"
+                  type="text"
+                  value={data.Bus.price}
+                  onChange={(e) => handleChange("Bus", "price", e.target.value)}
+                />
 
-          <label htmlFor="date-paid">Date Paid:</label>
-          <input
-            id="date-paid"
-            type="date"
-            value={data.Bus.datePaid}
-            onChange={(e) => handleDateChange("Bus", "datePaid", e.target.value)}
-          />
+                <label htmlFor="date-paid">Date Paid:</label>
+                <input
+                  id="date-paid"
+                  type="date"
+                  value={data.Bus.datePaid}
+                  onChange={(e) =>
+                    handleDateChange("Bus", "datePaid", e.target.value)
+                  }
+                />
 
-          <label htmlFor="invoice-number">Invoice #:</label>
-          <input
-            id="invoice-number"
-            type="text"
-            value={data.Bus.invoiceNumber}
-            onChange={(e) => handleChange("Bus", "invoiceNumber", e.target.value)}
-          />
-        </>
-      )}
-        </form>
-      )}
-
+                <label htmlFor="invoice-number">Invoice #:</label>
+                <input
+                  id="invoice-number"
+                  type="text"
+                  value={data.Bus.invoiceNumber}
+                  onChange={(e) =>
+                    handleChange("Bus", "invoiceNumber", e.target.value)
+                  }
+                />
+              </>
+            )}
+          </form>
+        )}
 
         {activeCategory === "Others" && (
           <form className="newBookingForm">
@@ -1384,15 +1503,21 @@ const handleSelectChange = (category, field, arrayName) => selectedOption => {
           <Button type="discard" onClick={handleDiscard}>
             DISCARD
           </Button>
-          {isNew &&<Button type="submit" onClick={handleSubmit}>
-            SAVE
-          </Button>}
-          {!isNew &&<Button type="submit" onClick={handleUpdate}>
-            UPDATE
-          </Button>}
-          {!isNew &&<Button type="delete" onClick={handleDelete}>
-            Delete
-          </Button>}
+          {isNew && (
+            <Button type="submit" onClick={handleSubmit}>
+              SAVE
+            </Button>
+          )}
+          {!isNew && (
+            <Button type="submit" onClick={handleUpdate}>
+              UPDATE
+            </Button>
+          )}
+          {!isNew && (
+            <Button type="delete" onClick={handleDelete}>
+              Delete
+            </Button>
+          )}
         </div>
       )}
     </>

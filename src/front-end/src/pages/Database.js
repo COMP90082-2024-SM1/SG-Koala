@@ -23,7 +23,7 @@ import {
   faArrowRight,
   faArrowLeft,
 } from "@fortawesome/free-solid-svg-icons";
-import { getAllBooking } from "../api/NewbookingAPI";
+import { getAllBooking } from "../api/BookingAPI";
 
 function Database() {
   const [data, setData] = useState([]);

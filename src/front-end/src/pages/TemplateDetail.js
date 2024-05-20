@@ -11,7 +11,7 @@ import {
   deleteTemplate,
   createTemplate,
 } from "../api/TemplateAPI";
-import { getChecklistById, updateChecklistById } from "../api/NewbookingAPI";
+import { getChecklistById, updateChecklistById } from "../api/BookingAPI";
 import "../styles/TemplateDetail.css";
 
 const Item = ({
@@ -42,7 +42,7 @@ const Item = ({
   };
 
   const openLink = () => {
-    window.open(link, '_blank', 'noopener,noreferrer');
+    window.open(link, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -52,23 +52,23 @@ const Item = ({
         onChange={handleChange(setName)}
         onBlur={updateTask}
         className="templateDetailInput"
-              placeholder="task name"
-              data-testid={`task-name-${index}`}
+        placeholder="task name"
+        data-testid={`task-name-${index}`}
       />
       <input
         value={link}
         onChange={handleChange(setLink)}
         onBlur={updateTask}
         className="templateDetailInput"
-              placeholder="link (optional)"
-              data-testid={`task-link-${index}`}
-          />
-          {link && (
+        placeholder="link (optional)"
+        data-testid={`task-link-${index}`}
+      />
+      {link && (
         <button
           onClick={openLink}
-                  className="templateDetailButton templateDetailLinkButton"
+          className="templateDetailButton templateDetailLinkButton"
         >
-           <FontAwesomeIcon icon={faLink} style={{ fontSize: "15px" }} />
+          <FontAwesomeIcon icon={faLink} style={{ fontSize: "15px" }} />
         </button>
       )}
       <button
@@ -351,8 +351,8 @@ const TemplateDetail = ({ checklistId }) => {
           <form onSubmit={onSubmit} className="templateDetailAddItem">
             <button
               className="templateDetailButton templateDetailAddButton"
-                          type="submit"
-                          aria-label="Add Task"
+              type="submit"
+              aria-label="Add Task"
             >
               <FontAwesomeIcon icon={faPlus} style={{ fontSize: "30px" }} />
             </button>
