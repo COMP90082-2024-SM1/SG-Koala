@@ -191,8 +191,11 @@ const NewBooking = ({ isNew = false }) => {
           });
           setLoading(false);
         })
-
-        .catch((error) => console.error("Error fetching data:", error));
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          alert("Error! Please try again later");
+          navigate("/dashboard");
+        });
       setLoading(false);
     } else {
       setLoading(true);
@@ -291,7 +294,12 @@ const NewBooking = ({ isNew = false }) => {
           });
         })
 
-        .catch((error) => console.error("Error fetching data:", error));
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          alert("Error! Please try again later");
+          navigate("/dashboard");
+        });
+      setLoading(false);
     }
   }, []);
 
@@ -505,15 +513,17 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleDelete = async (event) => {
     event.preventDefault();
-    setDeleting(true)
+    setDeleting(true);
     try {
       const response = await deleteBooking(oneBooking.id);
       console.log("Booking Delete successfully!", response);
       navigate("/dashboard");
     } catch (error) {
-      console.error("Creating booking failed:", error);
+      console.error("delete booking failed:", error);
+      alert("Error! Please try again later");
+      navigate("/dashboard");
     }
-    setDeleting(false)
+    setDeleting(false);
   };
 
   const handleUpdate = async (event) => {
@@ -641,7 +651,9 @@ const NewBooking = ({ isNew = false }) => {
       alert("Update Successfull!");
       navigate("/dashboard");
     } catch (error) {
-      console.error("Creating booking failed:", error);
+      console.error("update booking failed:", error);
+      alert("Error! Please try again later");
+      navigate("/dashboard");
     }
     setUpdating(false);
   };
@@ -778,7 +790,7 @@ const NewBooking = ({ isNew = false }) => {
       DeleteCheckListById(checklistvalue);
       console.error("Creating booking failed:", error);
     }
-    setCreating(false)
+    setCreating(false);
   };
 
   const handleChange = (category, field, value) => {
