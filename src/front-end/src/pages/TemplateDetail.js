@@ -385,7 +385,7 @@ const TemplateDetail = ({ checklistId }) => {
             </Button>
             {id === "create-new" ? (
               <Button onClick={handleCreate} type="save">
-                Create
+                CREATE
               </Button>
             ) : (
               <Button onClick={handleSave} type="save">
