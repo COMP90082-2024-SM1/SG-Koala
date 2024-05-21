@@ -659,6 +659,7 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const handleSubmit = async (event) => {
+    checkForm(data)
     setCreating(true);
     event.preventDefault();
 
@@ -1545,7 +1546,7 @@ const NewBooking = ({ isNew = false }) => {
           )}
           {!isNew && (
             <Button type="delete" onClick={handleDelete}>
-              Delete
+              DELETE
             </Button>
           )}
         </div>
