@@ -116,11 +116,15 @@ function Calendar() {
             return (
                 <ul className="calendar-todo-list">
                     {displayList.map((item, index) => (
-                        <li key={index} style={{ display: 'flex', flexDirection:'row', justifyContent: 'space-between', width: '100%', padding: '0 5px', backgroundColor: '#cbe3ff', margin: '3px 0', borderRadius: '10px' }}>
-                            <span style={{ textAlign: 'start' }}><Badge /> <a href={`/booking/${item.id}/`} target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}><b>{item.title}</b></a></span>
+                        <li key={index} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%', padding: '0 5px', backgroundColor: '#cbe3ff', margin: '3px 0', borderRadius: '10px' }}>
+                            <span style={{ textAlign: 'start' }}>
+                                <Badge />
+                                <a href={`/booking/${item.id}/`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                    <b>{formatEventName(item.title)}</b>
+                                </a>
+                            </span>
                             {item.time}
                         </li>
-
                     ))}
                     {moreCount > 0 && (
                         <li>
@@ -130,7 +134,7 @@ function Calendar() {
                                     ref={el => popoverRefs.current[dateString] = el}>
                                     {list.map((item, index) => (
                                         <p key={index}>
-                                            <b><a href={`/booking/${item.id}/`} target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>{item.title}</a> </b>{item.time}
+                                            <b><a href={`/booking/${item.id}/`} target="_blank" style={{ textDecoration: 'none', color: 'inherit' }}>{formatEventName(item.title)}</a> </b>{item.time}
                                         </p>
                                     ))}
                                 </Popover>
@@ -142,6 +146,11 @@ function Calendar() {
         }
         return null;
     };
+
+
+    function formatEventName(name) {
+        return name.length > 14 ? `${name.substring(0, 14)}...` : name;
+    }
 
     return (
         <>
