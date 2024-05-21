@@ -34,7 +34,7 @@ const Dashboard = () => {
     all: [],
     upcoming: [],
     completed: [],
-    cancelled: [],
+    canceled: [],
     pending: [],
   });
 
@@ -67,7 +67,7 @@ const Dashboard = () => {
           all: data,
           upcoming: data.filter((booking) => booking.status === "Processing"),
           completed: data.filter((booking) => booking.status === "Delivered"),
-          cancelled: data.filter((booking) => booking.status === "Cancelled"),
+          canceled: data.filter((booking) => booking.status === "Canceled"),
           pending: data.filter((booking) => booking.status === "Pending"),
         });
         const uniqueLocations = Array.from(
@@ -154,7 +154,7 @@ const Dashboard = () => {
           : "Booking - All"}
       </Header>
       <div className="dashboardFilterSection">
-        {["all", "pending", "upcoming", "completed", "cancelled"].map(
+        {["all", "pending", "upcoming", "completed", "canceled"].map(
           (type) => (
             <button
               key={type}
