@@ -5,3 +5,4 @@ venv/
 __pycache__/
 *.py[cod]
 src/front-end/package-lock.json
+src/front-end/.env
