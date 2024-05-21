@@ -136,6 +136,7 @@ const NewBooking = ({ isNew = false }) => {
     // console.log(data.Delivery.streamSelect)
     console.log(data.School.schoolSelect);
     console.log(data.School);
+    console.log(schoolOptions)
     // console.log(streamOptions)
     // console.log(locationOptions)
     // console.log(moduleOptions)
@@ -277,7 +278,6 @@ const NewBooking = ({ isNew = false }) => {
                 busReq: bookingData.bus.bus_req === true ? "Y" : "N",
                 busBooked: bookingData.bus.isBooked === true ? "Y" : "N",
                 // what status 1 and 0
-                status: bookingData.bus.status === 0 ? "processing" : "paid",
                 price: bookingData.bus.price,
                 datePaid: bookingData.bus.date_paid,
                 invoiceNumber: bookingData.bus.invoice,
@@ -902,7 +902,7 @@ const NewBooking = ({ isNew = false }) => {
         }
 
         if (field === "schoolSelect") {
-          updatedPrev[category].schools = updatedPrev[category].schools || [];
+          updatedPrev[category].schools = updatedPrev[category].schools || [""];
           if (
             selectedOption &&
             !updatedPrev[category].schools.some(
@@ -915,8 +915,6 @@ const NewBooking = ({ isNew = false }) => {
             ? { name: selectedOption.value }
             : null;
         } else {
-          console.log(category);
-          console.log(arrayName);
           if (selectedOption && selectedOption.__isNew__) {
             updatedPrev[category][arrayName] =
               updatedPrev[category][arrayName] || [];
@@ -930,7 +928,6 @@ const NewBooking = ({ isNew = false }) => {
             ? selectedOption.value
             : null;
         }
-
         return updatedPrev;
       });
     };
@@ -1252,9 +1249,13 @@ const NewBooking = ({ isNew = false }) => {
             <label htmlFor="school-input">School Name:</label>
             <CreatableSelect
               id="school-input"
-              value={schoolOptions.find(
-                (option) => option.value === data.School.schoolSelect.name
-              )}
+              value={
+                data.School && data.School.schoolSelect
+                  ? schoolOptions.find(
+                      (option) => option.value === data.School.schoolSelect.name
+                    )
+                  : null
+              }
               onChange={handleSelectChange("School", "schoolSelect")}
               options={schoolOptions}
               placeholder="Please select a School"
@@ -1451,19 +1452,6 @@ const NewBooking = ({ isNew = false }) => {
                   isClearable={true}
                 />
 
-                <label htmlFor="status">Status:</label>
-                <Select
-                  id="status"
-                  value={statusOptions.find(
-                    (option) => option.value === data.Bus.status
-                  )}
-                  onChange={(selectedOption) =>
-                    handleChange("Bus", "status", selectedOption.value)
-                  }
-                  options={statusOptions}
-                  placeholder="Select Status"
-                  isClearable={true}
-                />
 
                 <label htmlFor="price">Price:</label>
                 <input
