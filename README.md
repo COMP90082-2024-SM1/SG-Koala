@@ -124,7 +124,13 @@ The application offers a comprehensive set of features designed to enhance user 
     - End: 24/05/2024
     - Duration: 4 weeks
   - Log
-    - N/A
+    - ADD `Autofill Functionality`
+    - ADD `Analytics Page`
+    - ADD `Calendar Page`
+    - ADD `Backend Testing`on GitHub repo
+    - UPDATE `Database Page`
+    - UPDATE `Dashboard Page`
+    - UPDATE `docs` on GitHub repo
   ### Sprint Four
   - Date
     - Start: 27/05/2024
@@ -172,7 +178,8 @@ The application offers a comprehensive set of features designed to enhance user 
 
 ## Demo
 **Sprint2 Video**: watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
-**Sprint3 Website**: watch on [SG-Koala on Web]()
+
+**Sprint3 Website**: watch on [Koala Management System](https://regal-profiterole-7e6b9f.netlify.app/)
 
 ## Contact
 | Name                | Email                                  | GitHub                               |
