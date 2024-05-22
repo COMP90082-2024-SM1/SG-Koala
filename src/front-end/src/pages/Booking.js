@@ -241,7 +241,6 @@ const NewBooking = ({ isNew = false }) => {
                   startTime: formattedStartTime,
                   endTime: formattedEndTime,
                   checklistId: bookingData.checklist_id,
-                  //templates: templateData,
                 },
                 School: {
                   ...prev.School,
@@ -254,7 +253,6 @@ const NewBooking = ({ isNew = false }) => {
                     lastName: bookingData.school.contactLastName,
                     email: bookingData.school.email,
                     phoneNumber: bookingData.school.phone,
-                    // no job title in database
                     jobTitle: "",
                   },
                   additionalComments: bookingData.school.note,
@@ -289,6 +287,7 @@ const NewBooking = ({ isNew = false }) => {
 
         .catch((error) => {
           console.error("Error fetching data:", error);
+          setLoading(false);
           alert("Error! Please try again later");
           navigate("/dashboard");
         });
@@ -511,13 +510,13 @@ const NewBooking = ({ isNew = false }) => {
     setDeleting(true);
     try {
       const response = deleteBooking(oneBooking.id);
-      setDeleting(false);
       navigate("/dashboard");
     } catch (error) {
       console.error("delete booking failed:", error);
       alert("Error! Please try again later");
-      setDeleting(false);
       navigate("/dashboard");
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -649,8 +648,9 @@ const NewBooking = ({ isNew = false }) => {
       console.error("update booking failed:", error);
       alert("Error! Please try again later");
       navigate("/dashboard");
+    } finally {
+      setUpdating(false);
     }
-    setUpdating(false);
   };
 
   const handleSubmit = async (event) => {
@@ -786,14 +786,15 @@ const NewBooking = ({ isNew = false }) => {
 
       try {
         const response = createNewBooking(bookingData);
-        setCreating(false);
+        //setCreating(false);
         navigate("/dashboard");
       } catch (error) {
         DeleteSchoolById(schoolIdValue);
         DeleteCheckListById(checklistvalue);
         console.error("Creating booking failed:", error);
+      } finally {
+        setCreating(false);
       }
-      setCreating(false);
     }
   };
 

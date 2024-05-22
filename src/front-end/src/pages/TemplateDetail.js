@@ -127,6 +127,7 @@ const TemplateDetail = ({ checklistId }) => {
           setLoading(false);
         } catch (error) {
           setLoading(false);
+          alert(`[ERROR] ${error}`);
         }
       }
     };
@@ -244,7 +245,11 @@ const TemplateDetail = ({ checklistId }) => {
   };
 
   const handleDiscard = () => {
-    navigate("/templates");
+    if (!checklistId) {
+      navigate("/templates");
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   const handleCreate = async () => {
@@ -377,9 +382,11 @@ const TemplateDetail = ({ checklistId }) => {
           </form>
           <hr className="templateDetailHr" />
           <div className="templateDetailButtons">
-            <Button onClick={handleDelete} type="delete">
-              DELETE
-            </Button>
+            {!checklistId && (
+              <Button onClick={handleDelete} type="delete">
+                DELETE
+              </Button>
+            )}
             <Button onClick={handleDiscard} type="discard">
               DISCARD
             </Button>
