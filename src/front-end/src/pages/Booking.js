@@ -133,16 +133,7 @@ const NewBooking = ({ isNew = false }) => {
   });
 
   const handleCategoryClick = (category) => {
-    // console.log(data.Delivery.streamSelect)
-    console.log(data.School.schoolSelect);
-    console.log(data.School);
-    console.log(schoolOptions)
-    // console.log(streamOptions)
-    // console.log(locationOptions)
-    // console.log(moduleOptions)
     setActiveCategory(category);
-    // console.log("得到的数据")
-    console.log(oneBooking);
   };
 
   const openPopup = () => {
@@ -163,7 +154,7 @@ const NewBooking = ({ isNew = false }) => {
   }));
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     if (isNew) {
       Promise.all([getAllMiscellaneous(), getAllSchool(), getAllTemplates()])
         .then(([miscellaneousData, schoolData, templateData]) => {
@@ -220,78 +211,80 @@ const NewBooking = ({ isNew = false }) => {
           const studentYears = Array.isArray(bookingData.school.studentYears)
             ? bookingData.school.studentYears
             : [bookingData.school.studentYears];
-          getBookingById(bookingId).then((bookingData) => {
-            const formattedDate = bookingData.date.split("T")[0];
-            const formattedStartTime = bookingData.startTime
-              ? bookingData.startTime.split("T")[1].substring(0, 5)
-              : "";
-            const formattedEndTime = bookingData.endTime
-              ? bookingData.endTime.split("T")[1].substring(0, 5)
-              : "";
-            console.log("newnewnewnewn");
-            setData((prev) => ({
-              ...prev,
-              Delivery: {
-                streamSelect: bookingData.programStream,
-                facilitatorsSelect: bookingData.facilitators,
-                locationSelect: bookingData.location,
-                moduleSelects: bookingData.module_id || ["", "", ""],
-                exhibitionSelect: bookingData.exibition,
-                templateSelect: bookingData.checklist.name,
-                term: bookingData.term,
-                programStreams: miscellaneousData.program_stream,
-                facilitators: miscellaneousData.facilitators,
-                location: miscellaneousData.delivery_location,
-                module: miscellaneousData.module,
-                exhibition: miscellaneousData.exhibition,
-                status: bookingData.status,
-                programDate: formattedDate,
-                startTime: formattedStartTime,
-                endTime: formattedEndTime,
-                checklistId: bookingData.checklist_id,
-                //templates: templateData,
-              },
-              School: {
-                ...prev.School,
-                schoolSelect: bookingData.school,
-                studentYears: bookingData.school.studentYear,
-                lowSES: bookingData.school.lowSES === true ? "Y" : "N",
-                registeredStudents: bookingData.school.numStudentRegistered,
-                contactInfo: {
-                  firstName: bookingData.school.contactFirstName,
-                  lastName: bookingData.school.contactLastName,
-                  email: bookingData.school.email,
-                  phoneNumber: bookingData.school.phone,
-                  // no job title in database
-                  jobTitle: "",
+          getBookingById(bookingId)
+            .then((bookingData) => {
+              const formattedDate = bookingData.date.split("T")[0];
+              const formattedStartTime = bookingData.startTime
+                ? bookingData.startTime.split("T")[1].substring(0, 5)
+                : "";
+              const formattedEndTime = bookingData.endTime
+                ? bookingData.endTime.split("T")[1].substring(0, 5)
+                : "";
+              console.log("newnewnewnewn");
+              setData((prev) => ({
+                ...prev,
+                Delivery: {
+                  streamSelect: bookingData.programStream,
+                  facilitatorsSelect: bookingData.facilitators,
+                  locationSelect: bookingData.location,
+                  moduleSelects: bookingData.module_id || ["", "", ""],
+                  exhibitionSelect: bookingData.exibition,
+                  templateSelect: bookingData.checklist.name,
+                  term: bookingData.term,
+                  programStreams: miscellaneousData.program_stream,
+                  facilitators: miscellaneousData.facilitators,
+                  location: miscellaneousData.delivery_location,
+                  module: miscellaneousData.module,
+                  exhibition: miscellaneousData.exhibition,
+                  status: bookingData.status,
+                  programDate: formattedDate,
+                  startTime: formattedStartTime,
+                  endTime: formattedEndTime,
+                  checklistId: bookingData.checklist_id,
+                  //templates: templateData,
                 },
-                additionalComments: bookingData.school.note,
-                accessibilityNeeds:
-                  bookingData.school.isAccessibility === true ? "Y" : "N",
-                allergenInfo: bookingData.school.isAllergy === true ? "Y" : "N",
-                isPartnerSchool:
-                  bookingData.school.isPartner === true ? "Y" : "N",
-                schools: schoolData,
-              },
-              Bus: {
-                ...prev.Bus,
-                busReq: bookingData.bus.bus_req === true ? "Y" : "N",
-                busBooked: bookingData.bus.isBooked === true ? "Y" : "N",
-                // what status 1 and 0
-                price: bookingData.bus.price,
-                datePaid: bookingData.bus.date_paid,
-                invoiceNumber: bookingData.bus.invoice,
-              },
-              Others: {
-                ...prev.Others,
-                perStudent: bookingData.per_student,
-                expenses: bookingData.expense,
-                income: bookingData.income,
-                // profit is not need to be here
-              },
-            }));
-          }).then(()=> setLoading(false));
-          
+                School: {
+                  ...prev.School,
+                  schoolSelect: bookingData.school,
+                  studentYears: bookingData.school.studentYear,
+                  lowSES: bookingData.school.lowSES === true ? "Y" : "N",
+                  registeredStudents: bookingData.school.numStudentRegistered,
+                  contactInfo: {
+                    firstName: bookingData.school.contactFirstName,
+                    lastName: bookingData.school.contactLastName,
+                    email: bookingData.school.email,
+                    phoneNumber: bookingData.school.phone,
+                    // no job title in database
+                    jobTitle: "",
+                  },
+                  additionalComments: bookingData.school.note,
+                  accessibilityNeeds:
+                    bookingData.school.isAccessibility === true ? "Y" : "N",
+                  allergenInfo:
+                    bookingData.school.isAllergy === true ? "Y" : "N",
+                  isPartnerSchool:
+                    bookingData.school.isPartner === true ? "Y" : "N",
+                  schools: schoolData,
+                },
+                Bus: {
+                  ...prev.Bus,
+                  busReq: bookingData.bus.bus_req === true ? "Y" : "N",
+                  busBooked: bookingData.bus.isBooked === true ? "Y" : "N",
+                  // what status 1 and 0
+                  price: bookingData.bus.price,
+                  datePaid: bookingData.bus.date_paid,
+                  invoiceNumber: bookingData.bus.invoice,
+                },
+                Others: {
+                  ...prev.Others,
+                  perStudent: bookingData.per_student,
+                  expenses: bookingData.expense,
+                  income: bookingData.income,
+                  // profit is not need to be here
+                },
+              }));
+            })
+            .then(() => setLoading(false));
         })
 
         .catch((error) => {
@@ -311,56 +304,55 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const checkForm = (data) => {
-    console.log(data);
-    const { moduleSelects } = data.Delivery;
-    // check moduel
-    const startDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.startTime
-    );
-    const endDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.endTime
-    );
-    let errors = [];
-    if (!data.Delivery.streamSelect) {
-      errors.push("Program Stream is required.");
-    }
-    if (!moduleSelects[0]) {
-      errors.push("Module 1 is required.");
-    }
-    if (!data.Delivery.facilitatorsSelect) {
-      errors.push("Facilitator is required.");
-    }
-    if (!data.School.contactInfo.firstName) {
-      errors.push("Contact first name is required.");
-    }
-    if (!data.School.contactInfo.lastName) {
-      errors.push("Contact last name is required.");
-    }
-    if (!data.School.contactInfo.email) {
-      errors.push("Email address is required.");
-    }
-    if (!data.School.contactInfo.phoneNumber) {
-      errors.push("Phone number is required.");
-    }
-    if (!data.Bus.busReq) {
-      errors.push("Bus requirement is required.");
-    }
-    if (!startDate) {
-      errors.push("Start Time is required.");
-    }
-    if (!endDate) {
-      errors.push("End Time is required.");
-    }
-    if (!data.Delivery.exhibitionSelect) {
-      errors.push("ExhibitionSelect Time is required.");
-    }
-
-    if (errors.length > 0) {
-      alert(errors.join('\n'));
-    }
-    return ;
+    // console.log(data);
+    // const { moduleSelects } = data.Delivery;
+    // // check moduel
+    // const startDate = formatDateTime(
+    //   data.Delivery.programDate,
+    //   data.Delivery.startTime
+    // );
+    // const endDate = formatDateTime(
+    //   data.Delivery.programDate,
+    //   data.Delivery.endTime
+    // );
+    // let errors = [];
+    // if (!data.Delivery.streamSelect) {
+    //   errors.push("Program Stream is required.");
+    // }
+    // if (!moduleSelects[0]) {
+    //   errors.push("Module 1 is required.");
+    // }
+    // if (!data.Delivery.facilitatorsSelect) {
+    //   errors.push("Facilitator is required.");
+    // }
+    // if (!data.School.contactInfo.firstName) {
+    //   errors.push("Contact first name is required.");
+    // }
+    // if (!data.School.contactInfo.lastName) {
+    //   errors.push("Contact last name is required.");
+    // }
+    // if (!data.School.contactInfo.email) {
+    //   errors.push("Email address is required.");
+    // }
+    // if (!data.School.contactInfo.phoneNumber) {
+    //   errors.push("Phone number is required.");
+    // }
+    // if (!data.Bus.busReq) {
+    //   errors.push("Bus requirement is required.");
+    // }
+    // if (!startDate) {
+    //   errors.push("Start Time is required.");
+    // }
+    // if (!endDate) {
+    //   errors.push("End Time is required.");
+    // }
+    // if (!data.Delivery.exhibitionSelect) {
+    //   errors.push("ExhibitionSelect Time is required.");
+    // }
+    // if (errors.length > 0) {
+    //   alert(errors.join("\n"));
+    // }
+    // return errors;
   };
 
   const formatDateString = (dateStr) => {
@@ -388,7 +380,6 @@ const NewBooking = ({ isNew = false }) => {
     }
     return;
   };
-
 
   const convertTimeFormat = (timeStr) => {
     const times = timeStr.split("-").map((t) => t.trim());
@@ -519,15 +510,15 @@ const NewBooking = ({ isNew = false }) => {
     event.preventDefault();
     setDeleting(true);
     try {
-      const response = await deleteBooking(oneBooking.id);
-      console.log("Booking Delete successfully!", response);
+      const response = deleteBooking(oneBooking.id);
+      setDeleting(false);
       navigate("/dashboard");
     } catch (error) {
       console.error("delete booking failed:", error);
       alert("Error! Please try again later");
+      setDeleting(false);
       navigate("/dashboard");
     }
-    setDeleting(false);
   };
 
   const handleUpdate = async (event) => {
@@ -663,140 +654,146 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const handleSubmit = async (event) => {
-    if (checkForm(data)){
-    }else{
+    if (checkForm(data)) {
+    } else {
       setCreating(true);
-    event.preventDefault();
+      event.preventDefault();
 
-    const startDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.startTime
-    );
-    const endDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.endTime
-    );
-    console.log(data.School.schoolSelect);
-    console.log(data.School.schoolSelect.name);
-    const schoolData = {
-      name: data.School.schoolSelect.name,
-      studentYear: data.School.studentYears,
-      numStudentRegistered: parseInt(data.School.registeredStudents),
-      lowSES: data.School.lowSES === "Y",
-      allergy: data.School.allergenInfo || " ",
-      teachingArea: data.School.contactInfo.jobTitle,
-      contactFirstName: data.School.contactInfo.firstName,
-      contactLastName: data.School.contactInfo.lastName,
-      email: data.School.contactInfo.email,
-      phone: data.School.contactInfo.phoneNumber,
-      note: data.School.additionalComments || "",
-      isAccessibility: data.School.accessibilityNeeds === "Y",
-      isAllergy: true,
-      isPartner: data.School.isPartnerSchool === "Y",
-    };
-    console.log("wocaocaocaoo");
-    console.log(data.Delivery.templateSelect);
+      const startDate = formatDateTime(
+        data.Delivery.programDate,
+        data.Delivery.startTime
+      );
+      const endDate = formatDateTime(
+        data.Delivery.programDate,
+        data.Delivery.endTime
+      );
+      console.log(data.School.schoolSelect);
+      console.log(data.School.schoolSelect.name);
+      const schoolData = {
+        name: data.School.schoolSelect.name,
+        studentYear: data.School.studentYears,
+        numStudentRegistered: parseInt(data.School.registeredStudents),
+        lowSES: data.School.lowSES === "Y",
+        allergy: data.School.allergenInfo || " ",
+        teachingArea: data.School.contactInfo.jobTitle,
+        contactFirstName: data.School.contactInfo.firstName,
+        contactLastName: data.School.contactInfo.lastName,
+        email: data.School.contactInfo.email,
+        phone: data.School.contactInfo.phoneNumber,
+        note: data.School.additionalComments || "",
+        isAccessibility: data.School.accessibilityNeeds === "Y",
+        isAllergy: true,
+        isPartner: data.School.isPartnerSchool === "Y",
+      };
+      console.log("wocaocaocaoo");
+      console.log(data.Delivery.templateSelect);
 
-    const schoolId = await createNewSchool(schoolData);
+      const schoolId = await createNewSchool(schoolData);
 
-    const checklistId = await createNewChecklist(data.Delivery.templateSelect);
+      const checklistId = await createNewChecklist(
+        data.Delivery.templateSelect
+      );
 
-    const schoolIdValue = schoolId._id;
+      const schoolIdValue = schoolId._id;
 
-    const checklistvalue = checklistId._id;
-    console.log(checklistId);
-    console.log(checklistvalue);
+      const checklistvalue = checklistId._id;
+      console.log(checklistId);
+      console.log(checklistvalue);
 
-    const bus_test_status = 1;
-    const busData = {
-      busReq: data.Bus.busReq === "Y",
-      isBooked: data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
-      status: data.Bus.busReq === "Y" ? bus_test_status : "0",
-      price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "0.0",
-      date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
-      invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
-    };
+      const bus_test_status = 1;
+      const busData = {
+        busReq: data.Bus.busReq === "Y",
+        isBooked:
+          data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
+        status: data.Bus.busReq === "Y" ? bus_test_status : "0",
+        price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "0.0",
+        date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
+        invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
+      };
 
-    const event_test = "test";
-    const bookingData = {
-      event: event_test, //
-      status: data.Delivery.status, //
-      name: data.School.schoolSelect.name, //
-      // school_id: data.School.schoolSelect, //
-      school_id: schoolIdValue,
-      programStream: data.Delivery.streamSelect, //
-      checklist_id: checklistvalue, //
-      facilitators: data.Delivery.facilitatorsSelect, //
-      location: data.Delivery.locationSelect || "", //
-      date: data.Delivery.programDate, //
-      term: parseInt(data.Delivery.term, 10), // +
-      startTime: startDate,
-      endTime: endDate,
-      module_id: data.Delivery.moduleSelects, //
-      exibition: data.Delivery.exhibitionSelect, //
-      note: data.Delivery.notes || "", //
-      bus: busData, //
-      per_student: parseInt(data.Others.perStudent) || 0.0, //
-      expense: parseFloat(data.Others.expenses) || 0.0, //
-      income: parseFloat(data.Others.income) || 0.0, //
-      // profit: parseFloat(data.Others.profit), //
-      profit: 0.0,
-    };
-    // console.log(bookingData);
-    const newOptions = {
-      module: originalOptions.module.slice(),
-      delivery_location: originalOptions.location.slice(),
-      facilitators: originalOptions.facilitators.slice(),
-      exhibition: originalOptions.exhibition.slice(),
-      program_stream: originalOptions.programStreams.slice(),
-    };
+      const event_test = "test";
+      const bookingData = {
+        event: event_test, //
+        status: data.Delivery.status, //
+        name: data.School.schoolSelect.name, //
+        // school_id: data.School.schoolSelect, //
+        school_id: schoolIdValue,
+        programStream: data.Delivery.streamSelect, //
+        checklist_id: checklistvalue, //
+        facilitators: data.Delivery.facilitatorsSelect, //
+        location: data.Delivery.locationSelect || "", //
+        date: data.Delivery.programDate, //
+        term: parseInt(data.Delivery.term, 10), // +
+        startTime: startDate,
+        endTime: endDate,
+        module_id: data.Delivery.moduleSelects, //
+        exibition: data.Delivery.exhibitionSelect, //
+        note: data.Delivery.notes || "", //
+        bus: busData, //
+        per_student: parseInt(data.Others.perStudent) || 0.0, //
+        expense: parseFloat(data.Others.expenses) || 0.0, //
+        income: parseFloat(data.Others.income) || 0.0, //
+        // profit: parseFloat(data.Others.profit), //
+        profit: 0.0,
+      };
+      // console.log(bookingData);
+      const newOptions = {
+        module: originalOptions.module.slice(),
+        delivery_location: originalOptions.location.slice(),
+        facilitators: originalOptions.facilitators.slice(),
+        exhibition: originalOptions.exhibition.slice(),
+        program_stream: originalOptions.programStreams.slice(),
+      };
 
-    console.log(originalOptions.programStreams);
-    console.log(data.Delivery.streamSelect);
+      console.log(originalOptions.programStreams);
+      console.log(data.Delivery.streamSelect);
 
-    if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
-      newOptions.program_stream.push(data.Delivery.streamSelect);
-    }
+      if (
+        !originalOptions.programStreams.includes(data.Delivery.streamSelect)
+      ) {
+        newOptions.program_stream.push(data.Delivery.streamSelect);
+      }
 
-    if (
-      data.Delivery.moduleSelects.some(
-        (module) => !originalOptions.module.includes(module)
-      )
-    ) {
-      newOptions.module.push(
-        ...data.Delivery.moduleSelects.filter(
+      if (
+        data.Delivery.moduleSelects.some(
           (module) => !originalOptions.module.includes(module)
         )
-      );
-    }
+      ) {
+        newOptions.module.push(
+          ...data.Delivery.moduleSelects.filter(
+            (module) => !originalOptions.module.includes(module)
+          )
+        );
+      }
 
-    if (
-      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
-    ) {
-      newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
-    }
+      if (
+        !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
+      ) {
+        newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
+      }
 
-    if (!originalOptions.location.includes(data.Delivery.locationSelect)) {
-      newOptions.delivery_location.push(data.Delivery.locationSelect);
-    }
+      if (!originalOptions.location.includes(data.Delivery.locationSelect)) {
+        newOptions.delivery_location.push(data.Delivery.locationSelect);
+      }
 
-    if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect)) {
-      newOptions.exhibition.push(data.Delivery.exhibitionSelect);
-    }
+      if (
+        !originalOptions.exhibition.includes(data.Delivery.exhibitionSelect)
+      ) {
+        newOptions.exhibition.push(data.Delivery.exhibitionSelect);
+      }
 
-    console.log("New Options:", newOptions);
-    updateMiscellaneous(newOptions);
+      updateMiscellaneous(newOptions);
 
-    try {
-      const response = await createNewBooking(bookingData);
-
-      navigate("/dashboard");
-    } catch (error) {
-      DeleteSchoolById(schoolIdValue);
-      DeleteCheckListById(checklistvalue);
-      console.error("Creating booking failed:", error);
-    }
-    setCreating(false);
+      try {
+        const response = createNewBooking(bookingData);
+        setCreating(false);
+        navigate("/dashboard");
+      } catch (error) {
+        DeleteSchoolById(schoolIdValue);
+        DeleteCheckListById(checklistvalue);
+        console.error("Creating booking failed:", error);
+      }
+      setCreating(false);
     }
   };
 
@@ -1039,7 +1036,7 @@ const NewBooking = ({ isNew = false }) => {
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
-            <label>Program Stream:</label>
+            <label>Program Stream*:</label>
             <CreatableSelect
               value={streamOptions.find(
                 (option) => option.value === data.Delivery.streamSelect
@@ -1064,7 +1061,7 @@ const NewBooking = ({ isNew = false }) => {
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
 
-            {isNew && <label>Template:</label>}
+            {isNew && <label>Template*:</label>}
             {isNew && (
               <Select
                 components={animatedComponents}
@@ -1078,7 +1075,7 @@ const NewBooking = ({ isNew = false }) => {
                 isSearchable
               />
             )}
-            <label>Facilitators:</label>
+            <label>Facilitators*:</label>
             <CreatableSelect
               value={facilitatorOptions.find(
                 (option) => option.value === data.Delivery.facilitatorsSelect
@@ -1126,7 +1123,7 @@ const NewBooking = ({ isNew = false }) => {
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
-            <label>Program status:</label>
+            <label>Program status*:</label>
             <Select
               components={animatedComponents}
               value={statusOptions.find(
@@ -1138,7 +1135,7 @@ const NewBooking = ({ isNew = false }) => {
               isClearable={false}
               isSearchable
             />
-            <label>Program Date:</label>
+            <label>Program Date*:</label>
             <input
               type="date"
               value={data.Delivery.programDate}
@@ -1147,7 +1144,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Term:</label>
+            <label>Term*:</label>
             <select
               value={data.Delivery.term}
               onChange={(e) => handleChange("Delivery", "term", e.target.value)}
@@ -1158,7 +1155,7 @@ const NewBooking = ({ isNew = false }) => {
               <option value="2">4</option>
             </select>
 
-            <label>Time (Start):</label>
+            <label>Time (Start)*:</label>
             <input
               type="time"
               value={data.Delivery.startTime}
@@ -1167,7 +1164,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Time (End) *:</label>
+            <label>Time (End)*:</label>
             <input
               type="time"
               value={data.Delivery.endTime}
@@ -1214,7 +1211,7 @@ const NewBooking = ({ isNew = false }) => {
               </React.Fragment>
             ))}
 
-            <label>Exhibition:</label>
+            <label>Exhibition*:</label>
             <CreatableSelect
               components={animatedComponents}
               value={exhibitionOptions.find(
@@ -1252,26 +1249,26 @@ const NewBooking = ({ isNew = false }) => {
 
         {activeCategory === "School" && (
           <form className="newBookingForm">
-            <label htmlFor="school-input">School Name:</label>
+            <label htmlFor="school-input">School Name*:</label>
             <CreatableSelect
-          id="school-input"
-          value={
-            data.School && data.School.schoolSelect
-              ? schoolOptions.find(
-                  (option) => option.value === data.School.schoolSelect.name
-                )
-              : null
-          }
-          onChange={handleSelectChange("School", "schoolSelect")}
-          options={schoolOptions}
-          placeholder="Please select a School"
-          isClearable={false}
-          isSearchable
-          formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
-        />
+              id="school-input"
+              value={
+                data.School && data.School.schoolSelect
+                  ? schoolOptions.find(
+                      (option) => option.value === data.School.schoolSelect.name
+                    )
+                  : null
+              }
+              onChange={handleSelectChange("School", "schoolSelect")}
+              options={schoolOptions}
+              placeholder="Please select a School"
+              isClearable={false}
+              isSearchable
+              formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
+            />
 
             <div className="form-group">
-              <label htmlFor="student-year-select">Student Years:</label>
+              <label htmlFor="student-year-select">Student Years*:</label>
               <Select
                 id="student-year-select"
                 value={yearOptions.find(
@@ -1285,7 +1282,7 @@ const NewBooking = ({ isNew = false }) => {
               />
             </div>
 
-            <label>Student # (registered):</label>
+            <label>Student Number*:</label>
             <input
               type="number"
               value={data.School.registeredStudents}
@@ -1294,7 +1291,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Low SES:</label>
+            <label>Low SES*:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.lowSES
@@ -1310,7 +1307,7 @@ const NewBooking = ({ isNew = false }) => {
 
             <fieldset>
               <legend>School Contact:</legend>
-              <label>First Name:</label>
+              <label>First Name*:</label>
               <input
                 type="text"
                 value={data.School.contactInfo.firstName}
@@ -1324,7 +1321,7 @@ const NewBooking = ({ isNew = false }) => {
                 }
               />
 
-              <label>Last Name:</label>
+              <label>Last Name*:</label>
               <input
                 type="text"
                 value={data.School.contactInfo.lastName}
@@ -1337,7 +1334,7 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Email Address:</label>
+              <label>Email Address*:</label>
               <input
                 type="email"
                 value={data.School.contactInfo.email}
@@ -1350,7 +1347,7 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Phone Number:</label>
+              <label>Phone Number*:</label>
               <input
                 type="tel"
                 value={data.School.contactInfo.phoneNumber}
@@ -1386,7 +1383,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Accessibility Needs Communicated:</label>
+            <label>Accessibility Needs Communicated*:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.accessibilityNeeds
@@ -1411,7 +1408,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Is Partner School:</label>
+            <label>Is Partner School*:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.isPartnerSchool
@@ -1457,7 +1454,6 @@ const NewBooking = ({ isNew = false }) => {
                   placeholder="Yes or No"
                   isClearable={false}
                 />
-
 
                 <label htmlFor="price">Price:</label>
                 <input

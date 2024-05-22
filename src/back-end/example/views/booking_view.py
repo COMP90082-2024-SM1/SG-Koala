@@ -82,7 +82,6 @@ class BookingView(APIView):
             if booking_collection.find_one({'_id': result.inserted_id}):
                 school_id = ObjectId(request.data['school_id'])
                 school_email = school_collection.find_one({'_id': school_id})['email']
-                # change to school email
                 send_booking_ref_to_client(str(result.inserted_id), [school_email], 
                                            "We have received your booking request. You will recive a new email when the team confirms the booking.",
                                            "Science Gallery Received Booking Request")
@@ -141,14 +140,12 @@ class BookingViewID(APIView):
             update_result = collection.update_one({'_id': ObjectId(kwargs['id'])}, {'$set': new_data})
             if update_result.matched_count == 0:
                 return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
-            # send confirmation email to client
             
             school_collection = db['school']
            
             if booking_document['status'] != new_data['status'] and new_data['status'] == 'Processing' and  booking_document['status'] == 'Pending':
                 school_id = ObjectId(request.data['school_id'])
                 school_email = school_collection.find_one({'_id': school_id})['email']
-                # change to school email
                 send_booking_ref_to_client(kwargs['id'], [school_email], 
                                            "Thank you for your patience. We have confirmed your booking.",
                                            "Science Gallery Booking Confirmation")
