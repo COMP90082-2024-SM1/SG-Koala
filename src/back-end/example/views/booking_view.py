@@ -163,9 +163,18 @@ class BookingViewID(APIView):
 
         if booking_document:
             school_id = booking_document['school_id']
+            checklist_id = booking_document['checklist_id']
             school_collection = db['school']
+            checklist_collection = db['checklist']
+
             school_email = school_collection.find_one({'_id': ObjectId(school_id)})['email']
+            school_delete = school_collection.delete_one({'_id': school_id})
+            if school_delete.deleted_count == 0:
+                return Response({'error': 'No record found with the specified school ID'},status=status.HTTP_404_NOT_FOUND)
             
+            checklist_delete = checklist_collection.delete_one({'_id': checklist_id})
+            if checklist_delete.deleted_count == 0:
+                return Response({'error': 'No record found with the specified ID'},status=status.HTTP_404_NOT_FOUND)
 
         delete_result = collection.delete_one({'_id': ObjectId(kwargs['id'])})
 
