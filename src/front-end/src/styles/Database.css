@@ -1,53 +1,122 @@
-
-.bg{
-    background-color: #ddd;
+.bg {
+  background-color: #ddd;
 }
-.scrollx{
-    overflow-x: auto;
+.scrollx {
+  overflow-x: auto;
 }
-.table{
-    table-layout: auto;
-    width: 100%;
-}
-
-.th{
-    height: 50px;
-    vertical-align: center;
-    text-align: left;
-    font-size: 18px;
-    padding: 8px;
-    background-color: #dddddd;
-    white-space: nowrap;
+.table {
+  table-layout: auto;
+  width: 100%;
 }
 
-.td{
-    height: 50px;
-    border-bottom: 1px solid #ddd;
-    vertical-align: bottom;
-    text-align: left;
-    padding: 8px;
-    white-space: nowrap;
+.th {
+  height: 50px;
+  vertical-align: center;
+  text-align: left;
+  font-size: 18px;
+  padding: 8px;
+  background-color: #dddddd;
+  white-space: nowrap;
 }
 
-tr:nth-child(odd){background-color: #f9f9f9;}
-tr:nth-child(even){background-color: #eeeeee;}
-tr:hover {background-color: #ddd;}
-
-.Button1{
-    border: none;
-    background-color: #dddddd;
-    padding: 2px;
+.td {
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: bottom;
+  text-align: left;
+  padding: 8px;
+  white-space: nowrap;
 }
 
-.Button2{
-    border: none;
-    background-color: #dddddd;
-    padding: 5px;
+tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+tr:nth-child(even) {
+  background-color: #eeeeee;
+}
+tr:hover {
+  background-color: #ddd;
 }
 
-.showMessage{
-    border: 1px solid #000000;
-    background-color: #dfdfdf;
-    position: absolute;
-    padding: 2px;
+.Button1 {
+  border: none;
+  background-color: #dddddd;
+  padding: 2px;
+}
+
+.Button2 {
+  border: none;
+  background-color: #dddddd;
+  padding: 5px;
+}
+
+.showMessage {
+  border: 1px solid #000000;
+  background-color: #dfdfdf;
+  position: absolute;
+  padding: 2px;
+}
+.miscEditButton {
+  background-color: var(--grey-color);
+  border: 1px solid var(--white-color);
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+.editMisc {
+  margin-bottom: 10px;
+}
+
+.miscPopup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+  overflow: auto;
+}
+.miscButtons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+.miscContent {
+  background-color: var(--white-color);
+  display: block;
+
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  width: 1500px;
+}
+.miscDataForm {
+  max-width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+}
+.miscDataForm label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.miscSection {
+  margin-right: 40px;
+}
+.miscDelete:hover {
+  color: var(--negative-color) !important;
+  border: 3px solid var(--negative-color) !important;
+}
+.eachMisc {
+  display: inline-block;
+}
+
+.eachMisc input {
+  margin: 10px;
 }

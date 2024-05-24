@@ -12,7 +12,10 @@ import { Grouped_Columns } from "../components/Table/Column";
 import { Popover } from "@material-ui/core";
 import ColumnFilter from "../components/Table/ColumnFilter";
 import GlobalFilter from "../components/Table/GlobalFilter";
-import { TypographyParagraph } from "../components/Typography/Typography";
+import {
+  TypographyParagraph,
+  TypographyH3,
+} from "../components/Typography/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSort,
@@ -22,13 +25,30 @@ import {
   faBars,
   faArrowRight,
   faArrowLeft,
+  faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { getAllBooking } from "../api/BookingAPI";
+import {
+  getAllBooking,
+  getAllMiscellaneous,
+  updateMiscellaneous,
+} from "../api/BookingAPI";
 import Modal from "../components/PopUp/PopUp";
+import { Button } from "../components/Button/Button";
+import { useNavigate } from "react-router-dom";
 
 function Database() {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [miscData, setMiscData] = useState({
+    program_stream: [],
+    facilitators: [],
+    delivery_location: [],
+    module: [],
+    exhibition: [],
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,6 +171,63 @@ function Database() {
     <FontAwesomeIcon icon={faArrowLeft} style={{ fontSize: "15px" }} />
   );
 
+  const openPopup = async () => {
+    setLoading(true);
+    setIsPopupOpen(true);
+    try {
+      const miscellaneousData = await getAllMiscellaneous();
+      setMiscData({
+        program_stream: miscellaneousData.program_stream,
+        facilitators: miscellaneousData.facilitators,
+        delivery_location: miscellaneousData.delivery_location,
+        module: miscellaneousData.module,
+        exhibition: miscellaneousData.exhibition,
+      });
+    } catch (error) {
+      alert("Error! Please try again later");
+      navigate("/database");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+  };
+
+  const handleChange = (arrayName, index, event) => {
+    const updatedArray = [...miscData[arrayName]];
+    updatedArray[index] = event.target.value;
+    setMiscData({
+      ...miscData,
+      [arrayName]: updatedArray,
+    });
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setUpdating(true);
+    try {
+      updateMiscellaneous(miscData);
+      alert("Update Successfull!");
+    } catch (error) {
+      alert("Error! Please try again later");
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const handleMiscRemove = (arrayName, index) => {
+    setMiscData((prevDetails) => ({
+      ...prevDetails,
+      [arrayName]: prevDetails[arrayName].filter((_, i) => i !== index),
+    }));
+  };
+
+  const convertName = (arrayName) => {
+    return arrayName.replace("_", " ").toUpperCase();
+  };
+
   if (loading) {
     return (
       <div>
@@ -164,6 +241,69 @@ function Database() {
   return (
     <div>
       <Header> Database </Header>
+      <div className="editMisc">
+        <button className="miscEditButton" onClick={openPopup}>
+          <span>Edit Selectable Options</span>
+        </button>
+      </div>
+
+      {isPopupOpen && (
+        <div className="miscPopup">
+          <Modal show={loading}>
+            <div>Loading...</div>
+          </Modal>
+          <Modal show={updating}>
+            <div>Saving...</div>
+          </Modal>
+          {!loading && (
+            <div className="miscContent">
+              <form className="miscDataForm">
+                {Object.keys(miscData)?.map((arrayName) => (
+                  <div key={arrayName} className="miscSection">
+                    <TypographyH3>{convertName(arrayName)}</TypographyH3>
+                    {miscData[arrayName] &&
+                      miscData[arrayName].map((item, index) => (
+                        <div key={`${arrayName}-${index}`}>
+                          <label className="eachMisc">
+                            {index + 1}:
+                            <input
+                              type="text"
+                              value={item}
+                              onChange={(event) =>
+                                handleChange(arrayName, index, event)
+                              }
+                            />
+                            <button
+                              onClick={(event) => {
+                                event.preventDefault();
+                                handleMiscRemove(arrayName, index);
+                              }}
+                              className="miscButtons miscDelete eachMisc"
+                            >
+                              <FontAwesomeIcon
+                                icon={faTrash}
+                                style={{ fontSize: "15px" }}
+                              />
+                            </button>
+                          </label>
+                        </div>
+                      ))}
+                  </div>
+                ))}
+              </form>
+              <div className="miscButtons">
+                <Button type="discard" onClick={closePopup}>
+                  Back
+                </Button>
+                <Button type="submit" onClick={handleSubmit}>
+                  SAVE
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       <div className="bg">
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />{" "}
         <select onChange={handleSelectGroup} value={selectGroup}>
