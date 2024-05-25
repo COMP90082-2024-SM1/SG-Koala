@@ -37,13 +37,20 @@ const NewBooking = ({ isNew = false }) => {
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [streamOptions, setStreamOptions] = useState([]);
+  const [facilitatorOptions, setFacilitatorOptions] = useState([]);
+  const [locationOptions, setLocationOptions] = useState([]);
+  const [moduleOptions, setModuleOptions] = useState([]);
+  const [exhibitionOptions, setExhibitionOptions] = useState([]);
+
+
 
   const [data, setData] = useState({
     Delivery: {
       streamSelect: "",
       facilitatorsSelect: "",
       locationSelect: "",
-      moduleSelects: ["", "Option", "Option"],
+      moduleSelects: ["", "", ""],
       exhibitionSelect: "",
       templateSelect: "",
       term: 1,
@@ -90,7 +97,7 @@ const NewBooking = ({ isNew = false }) => {
       streamSelect: "",
       facilitatorsSelect: "",
       locationSelect: "",
-      moduleSelects: ["", "", "empty"],
+      moduleSelects: ["", "option", "option"],
       exhibitionSelect: "",
       templateSelect: "",
       term: 1,
@@ -132,8 +139,97 @@ const NewBooking = ({ isNew = false }) => {
     },
   });
 
+  useEffect(() => {
+    const initialOptions = uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+      value: stream,
+      label: stream,
+    })) || [];
+
+    const selectedStream = data.Delivery.streamSelect;
+    if (selectedStream && !initialOptions.find(option => option.value === selectedStream)) {
+      initialOptions.push({ value: selectedStream, label: selectedStream });
+    }
+
+    setStreamOptions(initialOptions);
+  }, [data.Delivery.programStreams, data.Delivery.streamSelect]);
+
+
+  useEffect(() => {
+  
+    const initialStreamOptions = uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+      value: stream,
+      label: stream,
+    })) || [];
+
+    const selectedStream = data.Delivery.streamSelect;
+    if (selectedStream && !initialStreamOptions.find(option => option.value === selectedStream)) {
+      initialStreamOptions.push({ value: selectedStream, label: selectedStream });
+    }
+
+    setStreamOptions(initialStreamOptions);
+
+
+    const initialFacilitatorOptions = uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
+      value: facilitator,
+      label: facilitator,
+    })) || [];
+
+    const selectedFacilitator = data.Delivery.facilitatorsSelect;
+    if (selectedFacilitator && !initialFacilitatorOptions.find(option => option.value === selectedFacilitator)) {
+      initialFacilitatorOptions.push({ value: selectedFacilitator, label: selectedFacilitator });
+    }
+
+    setFacilitatorOptions(initialFacilitatorOptions);
+
+
+    const initialLocationOptions = uniqueArray(data.Delivery.location)?.map((location) => ({
+      value: location,
+      label: location,
+    })) || [];
+
+    const selectedLocation = data.Delivery.locationSelect;
+    if (selectedLocation && !initialLocationOptions.find(option => option.value === selectedLocation)) {
+      initialLocationOptions.push({ value: selectedLocation, label: selectedLocation });
+    }
+
+    setLocationOptions(initialLocationOptions);
+  }, [data.Delivery.programStreams, data.Delivery.streamSelect, data.Delivery.facilitators, data.Delivery.facilitatorsSelect, data.Delivery.location, data.Delivery.locationSelect]);
+
+
+  useEffect(() => {
+    const initialModuleOptions = uniqueArray(data.Delivery.module)?.map((module_id) => ({
+      value: module_id,
+      label: module_id,
+    })) || [];
+
+    const validModuleSelects = data.Delivery.moduleSelects.filter(select => select !== "");
+
+    validModuleSelects.forEach((selectedModule) => {
+      if (selectedModule && !initialModuleOptions.find(option => option.value === selectedModule)) {
+        initialModuleOptions.push({ value: selectedModule, label: selectedModule });
+      }
+    });
+
+    setModuleOptions(initialModuleOptions);
+
+
+    const initialExhibitionOptions = uniqueArray(data.Delivery.exhibition)?.map((exhibition) => ({
+      value: exhibition,
+      label: exhibition,
+    })) || [];
+
+    const selectedExhibition = data.Delivery.exhibitionSelect;
+    if (selectedExhibition && !initialExhibitionOptions.find(option => option.value === selectedExhibition)) {
+      initialExhibitionOptions.push({ value: selectedExhibition, label: selectedExhibition });
+    }
+
+    setExhibitionOptions(initialExhibitionOptions);
+  }, [data.Delivery.module, data.Delivery.moduleSelects, data.Delivery.exhibition, data.Delivery.exhibitionSelect]);
+
   const handleCategoryClick = (category) => {
+    console.log(streamOptions)
     setActiveCategory(category);
+    console.log(data.Delivery.moduleSelects)
   };
 
   const openPopup = () => {
@@ -227,7 +323,7 @@ const NewBooking = ({ isNew = false }) => {
                   streamSelect: bookingData.programStream,
                   facilitatorsSelect: bookingData.facilitators,
                   locationSelect: bookingData.location,
-                  moduleSelects: bookingData.module_id || ["", "", ""],
+                  moduleSelects: bookingData.module_id || ["", "option", "option"],
                   exhibitionSelect: bookingData.exibition,
                   templateSelect: bookingData.checklist.name,
                   term: bookingData.term,
@@ -303,55 +399,52 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const checkForm = (data) => {
-    // console.log(data);
-    // const { moduleSelects } = data.Delivery;
-    // // check moduel
-    // const startDate = formatDateTime(
-    //   data.Delivery.programDate,
-    //   data.Delivery.startTime
-    // );
-    // const endDate = formatDateTime(
-    //   data.Delivery.programDate,
-    //   data.Delivery.endTime
-    // );
-    // let errors = [];
-    // if (!data.Delivery.streamSelect) {
-    //   errors.push("Program Stream is required.");
-    // }
-    // if (!moduleSelects[0]) {
-    //   errors.push("Module 1 is required.");
-    // }
-    // if (!data.Delivery.facilitatorsSelect) {
-    //   errors.push("Facilitator is required.");
-    // }
-    // if (!data.School.contactInfo.firstName) {
-    //   errors.push("Contact first name is required.");
-    // }
-    // if (!data.School.contactInfo.lastName) {
-    //   errors.push("Contact last name is required.");
-    // }
-    // if (!data.School.contactInfo.email) {
-    //   errors.push("Email address is required.");
-    // }
-    // if (!data.School.contactInfo.phoneNumber) {
-    //   errors.push("Phone number is required.");
-    // }
-    // if (!data.Bus.busReq) {
-    //   errors.push("Bus requirement is required.");
-    // }
-    // if (!startDate) {
-    //   errors.push("Start Time is required.");
-    // }
-    // if (!endDate) {
-    //   errors.push("End Time is required.");
-    // }
-    // if (!data.Delivery.exhibitionSelect) {
-    //   errors.push("ExhibitionSelect Time is required.");
-    // }
-    // if (errors.length > 0) {
-    //   alert(errors.join("\n"));
-    // }
-    // return errors;
+    console.log(data);
+    const { moduleSelects } = data.Delivery;
+    // check moduel
+    const startDate = formatDateTime(
+      data.Delivery.programDate,
+      data.Delivery.startTime
+    );
+    const endDate = formatDateTime(
+      data.Delivery.programDate,
+      data.Delivery.endTime
+    );
+    let errors = [];
+    if (!data.Delivery.streamSelect) {
+      errors.push("Program Stream is required.");
+    }
+    if (!moduleSelects[0]) {
+      errors.push("Module 1 is required.");
+    }
+    if (!data.School.contactInfo.firstName) {
+      errors.push("Contact first name is required.");
+    }
+    if (!data.School.contactInfo.lastName) {
+      errors.push("Contact last name is required.");
+    }
+    if (!data.School.contactInfo.email) {
+      errors.push("Email address is required.");
+    }
+    if (!data.School.contactInfo.phoneNumber) {
+      errors.push("Phone number is required.");
+    }
+    if (!data.Bus.busReq) {
+      errors.push("Bus requirement is required.");
+    }
+    if (!startDate) {
+      errors.push("Start Time is required.");
+    }
+    if (!endDate) {
+      errors.push("End Time is required.");
+    }
+    if (!data.Delivery.exhibitionSelect) {
+      errors.push("ExhibitionSelect Time is required.");
+    }
+    if (errors.length > 0) {
+      alert(errors.join("\n"));
+    }
+    return errors;
   };
 
   const formatDateString = (dateStr) => {
@@ -623,17 +716,21 @@ const NewBooking = ({ isNew = false }) => {
     }
 
     if (
-      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
+      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)&&
+      data.Delivery.facilitatorsSelect !== ""
     ) {
       newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
     }
 
-    if (!originalOptions.location.includes(data.Delivery.locationSelect)) {
+    if (!originalOptions.location.includes(data.Delivery.locationSelect)&& data.Delivery.locationSelect !== "") {
       newOptions.delivery_location.push(data.Delivery.locationSelect);
     }
 
-    if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect)) {
+    if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect) && data.Delivery.exhibitionSelect !== "") {
       newOptions.exhibition.push(data.Delivery.exhibitionSelect);
+    }
+    if (!originalOptions.module.includes(data.Delivery.moduleSelects) && data.Delivery.moduleSelects !== "") {
+      newOptions.module.push(data.Delivery.moduleSelects);
     }
 
     console.log("New Options:", newOptions);
@@ -654,7 +751,8 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const handleSubmit = async (event) => {
-    if (checkForm(data)) {
+    const errors = checkForm(data);
+    if (errors.length !== 0) {
     } else {
       setCreating(true);
       event.preventDefault();
@@ -687,6 +785,7 @@ const NewBooking = ({ isNew = false }) => {
       };
       console.log("wocaocaocaoo");
       console.log(data.Delivery.templateSelect);
+      
 
       const schoolId = await createNewSchool(schoolData);
 
@@ -697,8 +796,7 @@ const NewBooking = ({ isNew = false }) => {
       const schoolIdValue = schoolId._id;
 
       const checklistvalue = checklistId._id;
-      console.log(checklistId);
-      console.log(checklistvalue);
+
 
       const bus_test_status = 1;
       const busData = {
@@ -710,6 +808,8 @@ const NewBooking = ({ isNew = false }) => {
         date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
         invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
       };
+
+      const validModuleSelects = data.Delivery.moduleSelects.filter(select => select !== "");
 
       const event_test = "test";
       const bookingData = {
@@ -726,7 +826,7 @@ const NewBooking = ({ isNew = false }) => {
         term: parseInt(data.Delivery.term, 10), // +
         startTime: startDate,
         endTime: endDate,
-        module_id: data.Delivery.moduleSelects, //
+        module_id: validModuleSelects, //
         exibition: data.Delivery.exhibitionSelect, //
         note: data.Delivery.notes || "", //
         bus: busData, //
@@ -744,6 +844,9 @@ const NewBooking = ({ isNew = false }) => {
         exhibition: originalOptions.exhibition.slice(),
         program_stream: originalOptions.programStreams.slice(),
       };
+      console.log("modile id")
+      console.log(data.Delivery.moduleSelects)
+      
 
       console.log(originalOptions.programStreams);
       console.log(data.Delivery.streamSelect);
@@ -756,15 +859,15 @@ const NewBooking = ({ isNew = false }) => {
 
       if (
         data.Delivery.moduleSelects.some(
-          (module) => !originalOptions.module.includes(module)
+          (module) => module !== "" && !originalOptions.module.includes(module)
         )
       ) {
         newOptions.module.push(
           ...data.Delivery.moduleSelects.filter(
-            (module) => !originalOptions.module.includes(module)
+            (module) => module !== "" && !originalOptions.module.includes(module)
           )
         );
-      }
+      }      
 
       if (
         !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
@@ -781,6 +884,8 @@ const NewBooking = ({ isNew = false }) => {
       ) {
         newOptions.exhibition.push(data.Delivery.exhibitionSelect);
       }
+      console.log("????")
+      console.log(newOptions)
 
       updateMiscellaneous(newOptions);
 
@@ -809,18 +914,30 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const handleMultiSelectChange = (category, field, index, value) => {
-    setData((prev) => {
-      const updatedField = [...prev[category][field]];
-      updatedField[index] = value;
-      return {
-        ...prev,
-        [category]: {
-          ...prev[category],
-          [field]: updatedField,
-        },
-      };
+    setData((prevData) => {
+      const newData = { ...prevData };
+  
+      if (!newData[category]) {
+        newData[category] = {};
+      }
+  
+      if (!newData[category][field]) {
+        newData[category][field] = [];
+      }
+  
+      if (value === null) {
+        newData[category][field][index] = "";
+        newData[category][field] = newData[category][field].filter(
+          (item, idx) => idx !== index
+        );
+      } else {
+        newData[category][field][index] = value;
+      }
+  
+      return newData;
     });
   };
+  
 
   const handleCreateOption = (category, field, newOption) => {
     setData((prev) => {
@@ -862,29 +979,31 @@ const NewBooking = ({ isNew = false }) => {
 
   const uniqueArray = (array) => [...new Set(array)];
 
-  const streamOptions =
-    uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
-      value: stream,
-      label: stream,
-    })) || [];
+  // const streamOptions =
+  //   uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+  //     value: stream,
+  //     label: stream,
+  //   })) || [];
 
-  const facilitatorOptions =
-    uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
-      value: facilitator,
-      label: facilitator,
-    })) || [];
+  // const facilitatorOptions =
+  //   uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
+  //     value: facilitator,
+  //     label: facilitator,
+  //   })) || [];
 
-  const locationOptions =
-    uniqueArray(data.Delivery.location)?.map((location) => ({
-      value: location,
-      label: location,
-    })) || [];
+  // const locationOptions =
+  //   uniqueArray(data.Delivery.location)?.map((location) => ({
+  //     value: location,
+  //     label: location,
+  //   })) || [];
 
-  const moduleOptions =
-    data.Delivery.module?.map((module_id) => ({
-      value: module_id,
-      label: module_id,
-    })) || [];
+  // const moduleOptions =
+  //   data.Delivery.module?.map((module_id) => ({
+  //     value: module_id,
+  //     label: module_id,
+  //   })) || [];
+
+
 
   const schoolOptions =
     data.School && data.School.schools
@@ -895,47 +1014,55 @@ const NewBooking = ({ isNew = false }) => {
           return unique;
         }, [])
       : [];
-
-  const handleSelectChange =
-    (category, field, arrayName) => (selectedOption) => {
-      setData((prev) => {
-        const updatedPrev = { ...prev };
-
-        if (!updatedPrev[category]) {
-          updatedPrev[category] = {};
-        }
-
-        if (field === "schoolSelect") {
-          updatedPrev[category].schools = updatedPrev[category].schools || [""];
-          if (
-            selectedOption &&
-            !updatedPrev[category].schools.some(
-              (school) => school.name === selectedOption.value
-            )
-          ) {
-            updatedPrev[category].schools.push({ name: selectedOption.value });
+      const handleSelectChange = (category, field, arrayName) => (selectedOption) => {
+        setData((prev) => {
+          const updatedPrev = { ...prev };
+      
+          if (!updatedPrev[category]) {
+            updatedPrev[category] = {};
           }
-          updatedPrev[category][field] = selectedOption
-            ? { name: selectedOption.value }
-            : null;
-        } else {
-          if (selectedOption && selectedOption.__isNew__) {
-            updatedPrev[category][arrayName] =
-              updatedPrev[category][arrayName] || [];
-            if (
-              !updatedPrev[category][arrayName].includes(selectedOption.value)
-            ) {
-              updatedPrev[category][arrayName].push(selectedOption.value);
+      
+          if (field === "schoolSelect") {
+            updatedPrev[category].schools = updatedPrev[category].schools || [];
+            if (selectedOption) {
+              if (
+                !updatedPrev[category].schools.some(
+                  (school) => school.name === selectedOption.value
+                )
+              ) {
+                updatedPrev[category].schools.push({ name: selectedOption.value });
+              }
+              updatedPrev[category][field] = { name: selectedOption.value };
+            } else {
+              updatedPrev[category].schools = updatedPrev[category].schools.filter(
+                (school) => school.name !== updatedPrev[category][field].name
+              );
+              updatedPrev[category][field] = null;
             }
+          } else {
+            if (selectedOption && selectedOption.__isNew__) {
+              updatedPrev[category][arrayName] =
+                updatedPrev[category][arrayName] || [];
+              if (
+                !updatedPrev[category][arrayName].includes(selectedOption.value)
+              ) {
+                updatedPrev[category][arrayName].push(selectedOption.value);
+              }
+            } else if (!selectedOption) {
+              updatedPrev[category][arrayName] = updatedPrev[category][arrayName].filter(
+                (item) => item !== updatedPrev[category][field]
+              );
+            }
+            updatedPrev[category][field] = selectedOption
+              ? selectedOption.value
+              : null;
           }
-          updatedPrev[category][field] = selectedOption
-            ? selectedOption.value
-            : null;
-        }
-        return updatedPrev;
-      });
-    };
-
+          return updatedPrev;
+        });
+      };
+      
+      
+      
   const animatedComponents = makeAnimated();
 
   const templateOptions =
@@ -944,11 +1071,11 @@ const NewBooking = ({ isNew = false }) => {
       label: template.name,
     })) || [];
 
-  const exhibitionOptions =
-    data.Delivery.exhibition?.map((exhibition) => ({
-      value: exhibition,
-      label: exhibition,
-    })) || [];
+  // const exhibitionOptions =
+  //   data.Delivery.exhibition?.map((exhibition) => ({
+  //     value: exhibition,
+  //     label: exhibition,
+  //   })) || [];
 
   return (
     <>
@@ -1037,8 +1164,9 @@ const NewBooking = ({ isNew = false }) => {
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
-            <label>Program Stream*:</label>
-            <CreatableSelect
+          
+      <label>Program Stream <span style={{ color: 'red' }}>*</span>:</label>
+              <CreatableSelect
               value={streamOptions.find(
                 (option) => option.value === data.Delivery.streamSelect
               )}
@@ -1054,15 +1182,19 @@ const NewBooking = ({ isNew = false }) => {
                   "streamSelect",
                   "programStreams"
                 )({ value: newOption, __isNew__: true });
+
+                setStreamOptions((prevOptions) => [
+                  ...prevOptions,
+                  { value: newOption, label: newOption },
+                ]);
               }}
               options={streamOptions}
               placeholder="Please select a stream"
-              isClearable={false}
+              isClearable
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
-
-            {isNew && <label>Template*:</label>}
+            {isNew && <label>Template<span style={{ color: 'red' }}>*</span>:</label>}
             {isNew && (
               <Select
                 components={animatedComponents}
@@ -1072,11 +1204,11 @@ const NewBooking = ({ isNew = false }) => {
                 onChange={handleSelectChange("Delivery", "templateSelect")}
                 options={templateOptions}
                 placeholder="Please select a template"
-                isClearable={false}
+                isClearable
                 isSearchable
               />
             )}
-            <label>Facilitators*:</label>
+             <label>Facilitators<span style={{ color: 'red' }}>*</span>:</label>
             <CreatableSelect
               value={facilitatorOptions.find(
                 (option) => option.value === data.Delivery.facilitatorsSelect
@@ -1093,13 +1225,19 @@ const NewBooking = ({ isNew = false }) => {
                   "facilitatorsSelect",
                   "facilitators"
                 )({ value: newOption, __isNew__: true });
+
+                setFacilitatorOptions((prevOptions) => [
+                  ...prevOptions,
+                  { value: newOption, label: newOption },
+                ]);
               }}
               options={facilitatorOptions}
               placeholder="Please select a facilitator"
-              isClearable={false}
+              isClearable
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
+
             <label>Delivery Location:</label>
             <CreatableSelect
               value={locationOptions.find(
@@ -1117,14 +1255,19 @@ const NewBooking = ({ isNew = false }) => {
                   "locationSelect",
                   "location"
                 )({ value: newOption, __isNew__: true });
+
+                setLocationOptions((prevOptions) => [
+                  ...prevOptions,
+                  { value: newOption, label: newOption },
+                ]);
               }}
               options={locationOptions}
               placeholder="Please select a location"
-              isClearable={false}
+              isClearable
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
-            <label>Program status*:</label>
+            <label>Program status<span style={{ color: 'red' }}>*</span>:</label>
             <Select
               components={animatedComponents}
               value={statusOptions.find(
@@ -1133,10 +1276,10 @@ const NewBooking = ({ isNew = false }) => {
               onChange={(e) => handleChange("Delivery", "status", e.value)}
               options={statusOptions}
               placeholder="Please select a status"
-              isClearable={false}
+              isClearable
               isSearchable
             />
-            <label>Program Date*:</label>
+            <label>Program Date<span style={{ color: 'red' }}>*</span>:</label>
             <input
               type="date"
               value={data.Delivery.programDate}
@@ -1145,7 +1288,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Term*:</label>
+            <label>Term<span style={{ color: 'red' }}>*</span>:</label>
             <select
               value={data.Delivery.term}
               onChange={(e) => handleChange("Delivery", "term", e.target.value)}
@@ -1156,7 +1299,7 @@ const NewBooking = ({ isNew = false }) => {
               <option value="2">4</option>
             </select>
 
-            <label>Time (Start)*:</label>
+            <label>Time (Start)<span style={{ color: 'red' }}>*</span>:</label>
             <input
               type="time"
               value={data.Delivery.startTime}
@@ -1165,7 +1308,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Time (End)*:</label>
+            <label>Time (End)<span style={{ color: 'red' }}>*</span>:</label>
             <input
               type="time"
               value={data.Delivery.endTime}
@@ -1174,69 +1317,79 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            {["Module 1", "Module 2", "Module 3"].map((label, index) => (
-              <React.Fragment key={label}>
-                <label>
-                  {label}
-                  {index === 0 ? " *" : ""}:
-                </label>
-                <CreatableSelect
-                  value={moduleOptions.find(
-                    (option) =>
-                      option.value === data.Delivery.moduleSelects[index]
-                  )}
-                  onChange={(selectedOption) =>
-                    handleMultiSelectChange(
-                      "Delivery",
-                      "moduleSelects",
-                      index,
-                      selectedOption.value
-                    )
-                  }
-                  onCreateOption={(newOption) => {
-                    handleCreateOption("Delivery", "module", newOption);
-                    handleMultiSelectChange(
-                      "Delivery",
-                      "moduleSelects",
-                      index,
-                      newOption
-                    );
-                  }}
-                  options={moduleOptions}
-                  placeholder={
-                    index === 0 ? "Please select a module" : "Optional"
-                  }
-                  isClearable={false}
-                  isSearchable
-                />
-              </React.Fragment>
-            ))}
-
-            <label>Exhibition*:</label>
-            <CreatableSelect
-              components={animatedComponents}
-              value={exhibitionOptions.find(
-                (option) => option.value === data.Delivery.exhibitionSelect
-              )}
-              onChange={handleSelectChange(
+{["Module 1", "Module 2", "Module 3"].map((label, index) => (
+        <React.Fragment key={label}>
+          <label>
+            {label}
+            {index === 0 ? " *" : ""}:
+          </label>
+          <CreatableSelect
+            value={moduleOptions.find(
+              (option) =>
+                option.value === data.Delivery.moduleSelects[index]
+            )}
+            onChange={(selectedOption) =>
+              handleMultiSelectChange(
                 "Delivery",
-                "exhibitionSelect",
-                "exhibition"
-              )}
-              onCreateOption={(newOption) => {
-                handleCreateOption("Delivery", "exhibition", newOption);
-                handleSelectChange(
-                  "Delivery",
-                  "exhibitionSelect",
-                  "exhibition"
-                )({ value: newOption, __isNew__: true });
-              }}
-              options={exhibitionOptions}
-              placeholder="Please select an exhibition"
-              isClearable={false}
-              isSearchable
-              formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
-            />
+                "moduleSelects",
+                index,
+                selectedOption ? selectedOption.value : null
+              )
+            }
+            onCreateOption={(newOption) => {
+              handleCreateOption("Delivery", "module", newOption);
+              handleMultiSelectChange(
+                "Delivery",
+                "moduleSelects",
+                index,
+                newOption
+              );
+
+              setModuleOptions((prevOptions) => [
+                ...prevOptions,
+                { value: newOption, label: newOption },
+              ]);
+            }}
+            options={moduleOptions}
+            placeholder={
+              index === 0 ? "Please select a module" : "Optional"
+            }
+            isClearable
+            isSearchable
+          />
+        </React.Fragment>
+      ))}
+
+      <label>Exhibition<span style={{ color: 'red' }}>*</span>:</label>
+      <CreatableSelect
+        components={animatedComponents}
+        value={exhibitionOptions.find(
+          (option) => option.value === data.Delivery.exhibitionSelect
+        )}
+        onChange={handleSelectChange(
+          "Delivery",
+          "exhibitionSelect",
+          "exhibition"
+        )}
+        onCreateOption={(newOption) => {
+          handleCreateOption("Delivery", "exhibition", newOption);
+          handleSelectChange(
+            "Delivery",
+            "exhibitionSelect",
+            "exhibition"
+          )({ value: newOption, __isNew__: true });
+
+          setExhibitionOptions((prevOptions) => [
+            ...prevOptions,
+            { value: newOption, label: newOption },
+          ]);
+        }}
+        options={exhibitionOptions}
+        placeholder="Please select an exhibition"
+        isClearable
+        isSearchable
+        formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
+      />
 
             <label>Notes:</label>
             <textarea
@@ -1250,7 +1403,7 @@ const NewBooking = ({ isNew = false }) => {
 
         {activeCategory === "School" && (
           <form className="newBookingForm">
-            <label htmlFor="school-input">School Name*:</label>
+            <label htmlFor="school-input">School Name<span style={{ color: 'red' }}>*</span>:</label>
             <CreatableSelect
               id="school-input"
               value={
@@ -1263,13 +1416,13 @@ const NewBooking = ({ isNew = false }) => {
               onChange={handleSelectChange("School", "schoolSelect")}
               options={schoolOptions}
               placeholder="Please select a School"
-              isClearable={false}
+              isClearable
               isSearchable
               formatCreateLabel={(inputValue) => `Add "${inputValue}"`}
             />
 
             <div className="form-group">
-              <label htmlFor="student-year-select">Student Years*:</label>
+              <label htmlFor="student-year-select">Student Years<span style={{ color: 'red' }}>*</span>:</label>
               <Select
                 id="student-year-select"
                 value={yearOptions.find(
@@ -1278,12 +1431,12 @@ const NewBooking = ({ isNew = false }) => {
                 onChange={handleSelectChange("School", "studentYears")}
                 options={yearOptions}
                 placeholder="Please select a year"
-                isClearable={false}
+                isClearable
                 isSearchable
               />
             </div>
 
-            <label>Student Number*:</label>
+            <label>Student Number<span style={{ color: 'red' }}>*</span>:</label>
             <input
               type="number"
               value={data.School.registeredStudents}
@@ -1292,7 +1445,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Low SES*:</label>
+            <label>Low SES:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.lowSES
@@ -1302,13 +1455,13 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable={false}
+              isClearable
               isSearchable={false}
             />
 
             <fieldset>
               <legend>School Contact:</legend>
-              <label>First Name*:</label>
+              <label>First Name<span style={{ color: 'red' }}>*</span>:</label>
               <input
                 type="text"
                 value={data.School.contactInfo.firstName}
@@ -1322,7 +1475,7 @@ const NewBooking = ({ isNew = false }) => {
                 }
               />
 
-              <label>Last Name*:</label>
+              <label>Last Name<span style={{ color: 'red' }}>*</span>:</label>
               <input
                 type="text"
                 value={data.School.contactInfo.lastName}
@@ -1335,7 +1488,7 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Email Address*:</label>
+              <label>Email Address<span style={{ color: 'red' }}>*</span>:</label>
               <input
                 type="email"
                 value={data.School.contactInfo.email}
@@ -1348,7 +1501,7 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Phone Number*:</label>
+              <label>Phone Number<span style={{ color: 'red' }}>*</span>:</label>
               <input
                 type="tel"
                 value={data.School.contactInfo.phoneNumber}
@@ -1384,7 +1537,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Accessibility Needs Communicated*:</label>
+            <label>Accessibility Needs Communicate<span style={{ color: 'red' }}>*</span>:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.accessibilityNeeds
@@ -1398,7 +1551,7 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable={false}
+              isClearable
               isSearchable={false}
             />
             <label>Allergen and Anaphylaxis Communicated:</label>
@@ -1409,7 +1562,7 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Is Partner School*:</label>
+            <label>Is Partner School<span style={{ color: 'red' }}>*</span>:</label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.isPartnerSchool
@@ -1419,14 +1572,14 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable={false}
+              isClearable
               isSearchable={false}
             />
           </form>
         )}
         {activeCategory === "Bus" && (
           <form className="newBookingForm">
-            <label htmlFor="bus-req">BUS REQ:</label>
+            <label htmlFor="bus-req">BUS REQ<span style={{ color: 'red' }}>*</span>:</label>
             <Select
               id="bus-req"
               value={YNoptions.find(
@@ -1437,7 +1590,7 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable={false}
+              isClearable
             />
 
             {data.Bus.busReq === "Y" && (
@@ -1453,7 +1606,7 @@ const NewBooking = ({ isNew = false }) => {
                   }
                   options={YNoptions}
                   placeholder="Yes or No"
-                  isClearable={false}
+                  isClearable
                 />
 
                 <label htmlFor="price">Price:</label>
