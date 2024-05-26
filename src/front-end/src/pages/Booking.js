@@ -43,8 +43,6 @@ const NewBooking = ({ isNew = false }) => {
   const [moduleOptions, setModuleOptions] = useState([]);
   const [exhibitionOptions, setExhibitionOptions] = useState([]);
 
-
-
   const [data, setData] = useState({
     Delivery: {
       streamSelect: "",
@@ -140,96 +138,149 @@ const NewBooking = ({ isNew = false }) => {
   });
 
   useEffect(() => {
-    const initialOptions = uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
-      value: stream,
-      label: stream,
-    })) || [];
+    const initialOptions =
+      uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+        value: stream,
+        label: stream,
+      })) || [];
 
     const selectedStream = data.Delivery.streamSelect;
-    if (selectedStream && !initialOptions.find(option => option.value === selectedStream)) {
+    if (
+      selectedStream &&
+      !initialOptions.find((option) => option.value === selectedStream)
+    ) {
       initialOptions.push({ value: selectedStream, label: selectedStream });
     }
 
     setStreamOptions(initialOptions);
   }, [data.Delivery.programStreams, data.Delivery.streamSelect]);
 
-
   useEffect(() => {
-  
-    const initialStreamOptions = uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
-      value: stream,
-      label: stream,
-    })) || [];
+    const initialStreamOptions =
+      uniqueArray(data.Delivery.programStreams)?.map((stream) => ({
+        value: stream,
+        label: stream,
+      })) || [];
 
     const selectedStream = data.Delivery.streamSelect;
-    if (selectedStream && !initialStreamOptions.find(option => option.value === selectedStream)) {
-      initialStreamOptions.push({ value: selectedStream, label: selectedStream });
+    if (
+      selectedStream &&
+      !initialStreamOptions.find((option) => option.value === selectedStream)
+    ) {
+      initialStreamOptions.push({
+        value: selectedStream,
+        label: selectedStream,
+      });
     }
 
     setStreamOptions(initialStreamOptions);
 
-
-    const initialFacilitatorOptions = uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
-      value: facilitator,
-      label: facilitator,
-    })) || [];
+    const initialFacilitatorOptions =
+      uniqueArray(data.Delivery.facilitators)?.map((facilitator) => ({
+        value: facilitator,
+        label: facilitator,
+      })) || [];
 
     const selectedFacilitator = data.Delivery.facilitatorsSelect;
-    if (selectedFacilitator && !initialFacilitatorOptions.find(option => option.value === selectedFacilitator)) {
-      initialFacilitatorOptions.push({ value: selectedFacilitator, label: selectedFacilitator });
+    if (
+      selectedFacilitator &&
+      !initialFacilitatorOptions.find(
+        (option) => option.value === selectedFacilitator
+      )
+    ) {
+      initialFacilitatorOptions.push({
+        value: selectedFacilitator,
+        label: selectedFacilitator,
+      });
     }
 
     setFacilitatorOptions(initialFacilitatorOptions);
 
-
-    const initialLocationOptions = uniqueArray(data.Delivery.location)?.map((location) => ({
-      value: location,
-      label: location,
-    })) || [];
+    const initialLocationOptions =
+      uniqueArray(data.Delivery.location)?.map((location) => ({
+        value: location,
+        label: location,
+      })) || [];
 
     const selectedLocation = data.Delivery.locationSelect;
-    if (selectedLocation && !initialLocationOptions.find(option => option.value === selectedLocation)) {
-      initialLocationOptions.push({ value: selectedLocation, label: selectedLocation });
+    if (
+      selectedLocation &&
+      !initialLocationOptions.find(
+        (option) => option.value === selectedLocation
+      )
+    ) {
+      initialLocationOptions.push({
+        value: selectedLocation,
+        label: selectedLocation,
+      });
     }
 
     setLocationOptions(initialLocationOptions);
-  }, [data.Delivery.programStreams, data.Delivery.streamSelect, data.Delivery.facilitators, data.Delivery.facilitatorsSelect, data.Delivery.location, data.Delivery.locationSelect]);
-
+  }, [
+    data.Delivery.programStreams,
+    data.Delivery.streamSelect,
+    data.Delivery.facilitators,
+    data.Delivery.facilitatorsSelect,
+    data.Delivery.location,
+    data.Delivery.locationSelect,
+  ]);
 
   useEffect(() => {
-    const initialModuleOptions = uniqueArray(data.Delivery.module)?.map((module_id) => ({
-      value: module_id,
-      label: module_id,
-    })) || [];
+    const initialModuleOptions =
+      uniqueArray(data.Delivery.module)?.map((module_id) => ({
+        value: module_id,
+        label: module_id,
+      })) || [];
 
-    const validModuleSelects = data.Delivery.moduleSelects.filter(select => select !== "");
+    const validModuleSelects = data.Delivery.moduleSelects.filter(
+      (select) => select !== ""
+    );
 
     validModuleSelects.forEach((selectedModule) => {
-      if (selectedModule && !initialModuleOptions.find(option => option.value === selectedModule)) {
-        initialModuleOptions.push({ value: selectedModule, label: selectedModule });
+      if (
+        selectedModule &&
+        !initialModuleOptions.find((option) => option.value === selectedModule)
+      ) {
+        initialModuleOptions.push({
+          value: selectedModule,
+          label: selectedModule,
+        });
       }
     });
 
     setModuleOptions(initialModuleOptions);
 
-
-    const initialExhibitionOptions = uniqueArray(data.Delivery.exhibition)?.map((exhibition) => ({
-      value: exhibition,
-      label: exhibition,
-    })) || [];
+    const initialExhibitionOptions =
+      uniqueArray(data.Delivery.exhibition)?.map((exhibition) => ({
+        value: exhibition,
+        label: exhibition,
+      })) || [];
 
     const selectedExhibition = data.Delivery.exhibitionSelect;
-    if (selectedExhibition && !initialExhibitionOptions.find(option => option.value === selectedExhibition)) {
-      initialExhibitionOptions.push({ value: selectedExhibition, label: selectedExhibition });
+    if (
+      selectedExhibition &&
+      !initialExhibitionOptions.find(
+        (option) => option.value === selectedExhibition
+      )
+    ) {
+      initialExhibitionOptions.push({
+        value: selectedExhibition,
+        label: selectedExhibition,
+      });
     }
 
     setExhibitionOptions(initialExhibitionOptions);
-  }, [data.Delivery.module, data.Delivery.moduleSelects, data.Delivery.exhibition, data.Delivery.exhibitionSelect]);
+  }, [
+    data.Delivery.module,
+    data.Delivery.moduleSelects,
+    data.Delivery.exhibition,
+    data.Delivery.exhibitionSelect,
+  ]);
 
   const handleCategoryClick = (category) => {
-    console.log(streamOptions)
+    console.log(streamOptions);
     setActiveCategory(category);
-    console.log(data.Delivery.moduleSelects)
+    console.log(data.Delivery.moduleSelects);
   };
 
   const openPopup = () => {
@@ -323,7 +374,11 @@ const NewBooking = ({ isNew = false }) => {
                   streamSelect: bookingData.programStream,
                   facilitatorsSelect: bookingData.facilitators,
                   locationSelect: bookingData.location,
-                  moduleSelects: bookingData.module_id || ["", "option", "option"],
+                  moduleSelects: bookingData.module_id || [
+                    "",
+                    "option",
+                    "option",
+                  ],
                   exhibitionSelect: bookingData.exibition,
                   templateSelect: bookingData.checklist.name,
                   term: bookingData.term,
@@ -344,6 +399,7 @@ const NewBooking = ({ isNew = false }) => {
                   studentYears: bookingData.school.studentYear,
                   lowSES: bookingData.school.lowSES === true ? "Y" : "N",
                   registeredStudents: bookingData.school.numStudentRegistered,
+                  attendedStudents: bookingData.school.numStudentAttended,
                   contactInfo: {
                     firstName: bookingData.school.contactFirstName,
                     lastName: bookingData.school.contactLastName,
@@ -557,6 +613,7 @@ const NewBooking = ({ isNew = false }) => {
           schools: newSchools,
           schoolSelect: schoolExists,
           registeredStudents: parseInt(info.numberOfStudents),
+          attendedStudents: parseInt(info.numberOfStudents),
           studentYears: prev.School.studentYears,
           contactInfo: {
             ...prev.School.contactInfo,
@@ -629,6 +686,7 @@ const NewBooking = ({ isNew = false }) => {
       name: data.School.schoolSelect.name,
       studentYear: data.School.studentYears,
       numStudentRegistered: parseInt(data.School.registeredStudents),
+      numStudentAttended: parseInt(data.School.attendedStudents),
       lowSES: data.School.lowSES === "Y",
       allergy: data.School.allergenInfo || " ",
       teachingArea: data.School.contactInfo.jobTitle,
@@ -641,8 +699,6 @@ const NewBooking = ({ isNew = false }) => {
       isAllergy: true,
       isPartner: data.School.isPartnerSchool === "Y",
     };
-    console.log("wocaocaocaoo222");
-    console.log(data.Delivery.templateSelect);
 
     const schoolId = await updateSchoolById(oneBooking.school.id, schoolData);
 
@@ -687,7 +743,7 @@ const NewBooking = ({ isNew = false }) => {
       // profit: parseFloat(data.Others.profit), //
       profit: 0.0,
     };
-    // console.log(bookingData);
+
     const newOptions = {
       module: originalOptions.module.slice(),
       delivery_location: originalOptions.location.slice(),
@@ -695,9 +751,6 @@ const NewBooking = ({ isNew = false }) => {
       exhibition: originalOptions.exhibition.slice(),
       program_stream: originalOptions.programStreams.slice(),
     };
-
-    console.log(originalOptions.programStreams);
-    console.log(data.Delivery.streamSelect);
 
     if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
       newOptions.program_stream.push(data.Delivery.streamSelect);
@@ -716,24 +769,34 @@ const NewBooking = ({ isNew = false }) => {
     }
 
     if (
-      !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)&&
+      !originalOptions.facilitators.includes(
+        data.Delivery.facilitatorsSelect
+      ) &&
       data.Delivery.facilitatorsSelect !== ""
     ) {
       newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
     }
 
-    if (!originalOptions.location.includes(data.Delivery.locationSelect)&& data.Delivery.locationSelect !== "") {
+    if (
+      !originalOptions.location.includes(data.Delivery.locationSelect) &&
+      data.Delivery.locationSelect !== ""
+    ) {
       newOptions.delivery_location.push(data.Delivery.locationSelect);
     }
 
-    if (!originalOptions.exhibition.includes(data.Delivery.exhibitionSelect) && data.Delivery.exhibitionSelect !== "") {
+    if (
+      !originalOptions.exhibition.includes(data.Delivery.exhibitionSelect) &&
+      data.Delivery.exhibitionSelect !== ""
+    ) {
       newOptions.exhibition.push(data.Delivery.exhibitionSelect);
     }
-    if (!originalOptions.module.includes(data.Delivery.moduleSelects) && data.Delivery.moduleSelects !== "") {
+    if (
+      !originalOptions.module.includes(data.Delivery.moduleSelects) &&
+      data.Delivery.moduleSelects !== ""
+    ) {
       newOptions.module.push(data.Delivery.moduleSelects);
     }
 
-    console.log("New Options:", newOptions);
     updateMiscellaneous(newOptions);
 
     try {
@@ -765,12 +828,12 @@ const NewBooking = ({ isNew = false }) => {
         data.Delivery.programDate,
         data.Delivery.endTime
       );
-      console.log(data.School.schoolSelect);
-      console.log(data.School.schoolSelect.name);
+
       const schoolData = {
         name: data.School.schoolSelect.name,
         studentYear: data.School.studentYears,
         numStudentRegistered: parseInt(data.School.registeredStudents),
+        numStudentAttended: parseInt(data.School.attendedStudents),
         lowSES: data.School.lowSES === "Y",
         allergy: data.School.allergenInfo || " ",
         teachingArea: data.School.contactInfo.jobTitle,
@@ -783,9 +846,6 @@ const NewBooking = ({ isNew = false }) => {
         isAllergy: true,
         isPartner: data.School.isPartnerSchool === "Y",
       };
-      console.log("wocaocaocaoo");
-      console.log(data.Delivery.templateSelect);
-      
 
       const schoolId = await createNewSchool(schoolData);
 
@@ -796,7 +856,6 @@ const NewBooking = ({ isNew = false }) => {
       const schoolIdValue = schoolId._id;
 
       const checklistvalue = checklistId._id;
-
 
       const bus_test_status = 1;
       const busData = {
@@ -809,7 +868,9 @@ const NewBooking = ({ isNew = false }) => {
         invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
       };
 
-      const validModuleSelects = data.Delivery.moduleSelects.filter(select => select !== "");
+      const validModuleSelects = data.Delivery.moduleSelects.filter(
+        (select) => select !== ""
+      );
 
       const event_test = "test";
       const bookingData = {
@@ -836,7 +897,7 @@ const NewBooking = ({ isNew = false }) => {
         // profit: parseFloat(data.Others.profit), //
         profit: 0.0,
       };
-      // console.log(bookingData);
+
       const newOptions = {
         module: originalOptions.module.slice(),
         delivery_location: originalOptions.location.slice(),
@@ -844,9 +905,8 @@ const NewBooking = ({ isNew = false }) => {
         exhibition: originalOptions.exhibition.slice(),
         program_stream: originalOptions.programStreams.slice(),
       };
-      console.log("modile id")
-      console.log(data.Delivery.moduleSelects)
-      
+      console.log("modile id");
+      console.log(data.Delivery.moduleSelects);
 
       console.log(originalOptions.programStreams);
       console.log(data.Delivery.streamSelect);
@@ -864,10 +924,11 @@ const NewBooking = ({ isNew = false }) => {
       ) {
         newOptions.module.push(
           ...data.Delivery.moduleSelects.filter(
-            (module) => module !== "" && !originalOptions.module.includes(module)
+            (module) =>
+              module !== "" && !originalOptions.module.includes(module)
           )
         );
-      }      
+      }
 
       if (
         !originalOptions.facilitators.includes(data.Delivery.facilitatorsSelect)
@@ -884,8 +945,8 @@ const NewBooking = ({ isNew = false }) => {
       ) {
         newOptions.exhibition.push(data.Delivery.exhibitionSelect);
       }
-      console.log("????")
-      console.log(newOptions)
+      console.log("????");
+      console.log(newOptions);
 
       updateMiscellaneous(newOptions);
 
@@ -916,15 +977,15 @@ const NewBooking = ({ isNew = false }) => {
   const handleMultiSelectChange = (category, field, index, value) => {
     setData((prevData) => {
       const newData = { ...prevData };
-  
+
       if (!newData[category]) {
         newData[category] = {};
       }
-  
+
       if (!newData[category][field]) {
         newData[category][field] = [];
       }
-  
+
       if (value === null) {
         newData[category][field][index] = "";
         newData[category][field] = newData[category][field].filter(
@@ -933,11 +994,10 @@ const NewBooking = ({ isNew = false }) => {
       } else {
         newData[category][field][index] = value;
       }
-  
+
       return newData;
     });
   };
-  
 
   const handleCreateOption = (category, field, newOption) => {
     setData((prev) => {
@@ -1003,8 +1063,6 @@ const NewBooking = ({ isNew = false }) => {
   //     label: module_id,
   //   })) || [];
 
-
-
   const schoolOptions =
     data.School && data.School.schools
       ? data.School.schools.reduce((unique, school) => {
@@ -1014,55 +1072,58 @@ const NewBooking = ({ isNew = false }) => {
           return unique;
         }, [])
       : [];
-      const handleSelectChange = (category, field, arrayName) => (selectedOption) => {
-        setData((prev) => {
-          const updatedPrev = { ...prev };
-      
-          if (!updatedPrev[category]) {
-            updatedPrev[category] = {};
-          }
-      
-          if (field === "schoolSelect") {
-            updatedPrev[category].schools = updatedPrev[category].schools || [];
-            if (selectedOption) {
-              if (
-                !updatedPrev[category].schools.some(
-                  (school) => school.name === selectedOption.value
-                )
-              ) {
-                updatedPrev[category].schools.push({ name: selectedOption.value });
-              }
-              updatedPrev[category][field] = { name: selectedOption.value };
-            } else {
-              updatedPrev[category].schools = updatedPrev[category].schools.filter(
-                (school) => school.name !== updatedPrev[category][field].name
-              );
-              updatedPrev[category][field] = null;
+  const handleSelectChange =
+    (category, field, arrayName) => (selectedOption) => {
+      setData((prev) => {
+        const updatedPrev = { ...prev };
+
+        if (!updatedPrev[category]) {
+          updatedPrev[category] = {};
+        }
+
+        if (field === "schoolSelect") {
+          updatedPrev[category].schools = updatedPrev[category].schools || [];
+          if (selectedOption) {
+            if (
+              !updatedPrev[category].schools.some(
+                (school) => school.name === selectedOption.value
+              )
+            ) {
+              updatedPrev[category].schools.push({
+                name: selectedOption.value,
+              });
             }
+            updatedPrev[category][field] = { name: selectedOption.value };
           } else {
-            if (selectedOption && selectedOption.__isNew__) {
-              updatedPrev[category][arrayName] =
-                updatedPrev[category][arrayName] || [];
-              if (
-                !updatedPrev[category][arrayName].includes(selectedOption.value)
-              ) {
-                updatedPrev[category][arrayName].push(selectedOption.value);
-              }
-            } else if (!selectedOption) {
-              updatedPrev[category][arrayName] = updatedPrev[category][arrayName].filter(
-                (item) => item !== updatedPrev[category][field]
-              );
-            }
-            updatedPrev[category][field] = selectedOption
-              ? selectedOption.value
-              : null;
+            updatedPrev[category].schools = updatedPrev[
+              category
+            ].schools.filter(
+              (school) => school.name !== updatedPrev[category][field].name
+            );
+            updatedPrev[category][field] = null;
           }
-          return updatedPrev;
-        });
-      };
-      
-      
-      
+        } else {
+          if (selectedOption && selectedOption.__isNew__) {
+            updatedPrev[category][arrayName] =
+              updatedPrev[category][arrayName] || [];
+            if (
+              !updatedPrev[category][arrayName].includes(selectedOption.value)
+            ) {
+              updatedPrev[category][arrayName].push(selectedOption.value);
+            }
+          } else if (!selectedOption) {
+            updatedPrev[category][arrayName] = updatedPrev[category][
+              arrayName
+            ].filter((item) => item !== updatedPrev[category][field]);
+          }
+          updatedPrev[category][field] = selectedOption
+            ? selectedOption.value
+            : null;
+        }
+        return updatedPrev;
+      });
+    };
+
   const animatedComponents = makeAnimated();
 
   const templateOptions =
@@ -1164,9 +1225,10 @@ const NewBooking = ({ isNew = false }) => {
         )}
         {activeCategory === "Delivery" && (
           <form className="newBookingForm">
-          
-      <label>Program Stream <span style={{ color: 'red' }}>*</span>:</label>
-              <CreatableSelect
+            <label>
+              Program Stream <span style={{ color: "red" }}>*</span>:
+            </label>
+            <CreatableSelect
               value={streamOptions.find(
                 (option) => option.value === data.Delivery.streamSelect
               )}
@@ -1194,7 +1256,11 @@ const NewBooking = ({ isNew = false }) => {
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
-            {isNew && <label>Template<span style={{ color: 'red' }}>*</span>:</label>}
+            {isNew && (
+              <label>
+                Template<span style={{ color: "red" }}>*</span>:
+              </label>
+            )}
             {isNew && (
               <Select
                 components={animatedComponents}
@@ -1208,7 +1274,9 @@ const NewBooking = ({ isNew = false }) => {
                 isSearchable
               />
             )}
-             <label>Facilitators<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Facilitators<span style={{ color: "red" }}>*</span>:
+            </label>
             <CreatableSelect
               value={facilitatorOptions.find(
                 (option) => option.value === data.Delivery.facilitatorsSelect
@@ -1267,7 +1335,9 @@ const NewBooking = ({ isNew = false }) => {
               isSearchable
               formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
             />
-            <label>Program status<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Program status<span style={{ color: "red" }}>*</span>:
+            </label>
             <Select
               components={animatedComponents}
               value={statusOptions.find(
@@ -1279,7 +1349,9 @@ const NewBooking = ({ isNew = false }) => {
               isClearable
               isSearchable
             />
-            <label>Program Date<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Program Date<span style={{ color: "red" }}>*</span>:
+            </label>
             <input
               type="date"
               value={data.Delivery.programDate}
@@ -1288,18 +1360,22 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Term<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Term<span style={{ color: "red" }}>*</span>:
+            </label>
             <select
               value={data.Delivery.term}
               onChange={(e) => handleChange("Delivery", "term", e.target.value)}
             >
               <option value="1">1</option>
               <option value="2">2</option>
-              <option value="1">3</option>
-              <option value="2">4</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
             </select>
 
-            <label>Time (Start)<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Time (Start)<span style={{ color: "red" }}>*</span>:
+            </label>
             <input
               type="time"
               value={data.Delivery.startTime}
@@ -1308,7 +1384,9 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Time (End)<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Time (End)<span style={{ color: "red" }}>*</span>:
+            </label>
             <input
               type="time"
               value={data.Delivery.endTime}
@@ -1317,79 +1395,81 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-{["Module 1", "Module 2", "Module 3"].map((label, index) => (
-        <React.Fragment key={label}>
-          <label>
-            {label}
-            {index === 0 ? " *" : ""}:
-          </label>
-          <CreatableSelect
-            value={moduleOptions.find(
-              (option) =>
-                option.value === data.Delivery.moduleSelects[index]
-            )}
-            onChange={(selectedOption) =>
-              handleMultiSelectChange(
+            {["Module 1", "Module 2", "Module 3"].map((label, index) => (
+              <React.Fragment key={label}>
+                <label>
+                  {label}
+                  {index === 0 ? " *" : ""}:
+                </label>
+                <CreatableSelect
+                  value={moduleOptions.find(
+                    (option) =>
+                      option.value === data.Delivery.moduleSelects[index]
+                  )}
+                  onChange={(selectedOption) =>
+                    handleMultiSelectChange(
+                      "Delivery",
+                      "moduleSelects",
+                      index,
+                      selectedOption ? selectedOption.value : null
+                    )
+                  }
+                  onCreateOption={(newOption) => {
+                    handleCreateOption("Delivery", "module", newOption);
+                    handleMultiSelectChange(
+                      "Delivery",
+                      "moduleSelects",
+                      index,
+                      newOption
+                    );
+
+                    setModuleOptions((prevOptions) => [
+                      ...prevOptions,
+                      { value: newOption, label: newOption },
+                    ]);
+                  }}
+                  options={moduleOptions}
+                  placeholder={
+                    index === 0 ? "Please select a module" : "Optional"
+                  }
+                  isClearable
+                  isSearchable
+                />
+              </React.Fragment>
+            ))}
+
+            <label>
+              Exhibition<span style={{ color: "red" }}>*</span>:
+            </label>
+            <CreatableSelect
+              components={animatedComponents}
+              value={exhibitionOptions.find(
+                (option) => option.value === data.Delivery.exhibitionSelect
+              )}
+              onChange={handleSelectChange(
                 "Delivery",
-                "moduleSelects",
-                index,
-                selectedOption ? selectedOption.value : null
-              )
-            }
-            onCreateOption={(newOption) => {
-              handleCreateOption("Delivery", "module", newOption);
-              handleMultiSelectChange(
-                "Delivery",
-                "moduleSelects",
-                index,
-                newOption
-              );
+                "exhibitionSelect",
+                "exhibition"
+              )}
+              onCreateOption={(newOption) => {
+                handleCreateOption("Delivery", "exhibition", newOption);
+                handleSelectChange(
+                  "Delivery",
+                  "exhibitionSelect",
+                  "exhibition"
+                )({ value: newOption, __isNew__: true });
 
-              setModuleOptions((prevOptions) => [
-                ...prevOptions,
-                { value: newOption, label: newOption },
-              ]);
-            }}
-            options={moduleOptions}
-            placeholder={
-              index === 0 ? "Please select a module" : "Optional"
-            }
-            isClearable
-            isSearchable
-          />
-        </React.Fragment>
-      ))}
-
-      <label>Exhibition<span style={{ color: 'red' }}>*</span>:</label>
-      <CreatableSelect
-        components={animatedComponents}
-        value={exhibitionOptions.find(
-          (option) => option.value === data.Delivery.exhibitionSelect
-        )}
-        onChange={handleSelectChange(
-          "Delivery",
-          "exhibitionSelect",
-          "exhibition"
-        )}
-        onCreateOption={(newOption) => {
-          handleCreateOption("Delivery", "exhibition", newOption);
-          handleSelectChange(
-            "Delivery",
-            "exhibitionSelect",
-            "exhibition"
-          )({ value: newOption, __isNew__: true });
-
-          setExhibitionOptions((prevOptions) => [
-            ...prevOptions,
-            { value: newOption, label: newOption },
-          ]);
-        }}
-        options={exhibitionOptions}
-        placeholder="Please select an exhibition"
-        isClearable
-        isSearchable
-        formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
-      />
+                setExhibitionOptions((prevOptions) => [
+                  ...prevOptions,
+                  { value: newOption, label: newOption },
+                ]);
+              }}
+              options={exhibitionOptions}
+              placeholder="Please select an exhibition"
+              isClearable
+              isSearchable
+              formatCreateLabel={(inputValue) => `Create "${inputValue}"`}
+            />
 
             <label>Notes:</label>
             <textarea
@@ -1403,7 +1483,9 @@ const NewBooking = ({ isNew = false }) => {
 
         {activeCategory === "School" && (
           <form className="newBookingForm">
-            <label htmlFor="school-input">School Name<span style={{ color: 'red' }}>*</span>:</label>
+            <label htmlFor="school-input">
+              School Name<span style={{ color: "red" }}>*</span>:
+            </label>
             <CreatableSelect
               id="school-input"
               value={
@@ -1422,7 +1504,9 @@ const NewBooking = ({ isNew = false }) => {
             />
 
             <div className="form-group">
-              <label htmlFor="student-year-select">Student Years<span style={{ color: 'red' }}>*</span>:</label>
+              <label htmlFor="student-year-select">
+                Student Years<span style={{ color: "red" }}>*</span>:
+              </label>
               <Select
                 id="student-year-select"
                 value={yearOptions.find(
@@ -1436,12 +1520,23 @@ const NewBooking = ({ isNew = false }) => {
               />
             </div>
 
-            <label>Student Number<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Student Registered<span style={{ color: "red" }}>*</span>:
+            </label>
             <input
               type="number"
               value={data.School.registeredStudents}
               onChange={(e) =>
                 handleChange("School", "registeredStudents", e.target.value)
+              }
+            />
+
+            <label>Student Attended:</label>
+            <input
+              type="number"
+              value={data.School.attendedStudents}
+              onChange={(e) =>
+                handleChange("School", "attendedStudents", e.target.value)
               }
             />
 
@@ -1461,7 +1556,9 @@ const NewBooking = ({ isNew = false }) => {
 
             <fieldset>
               <legend>School Contact:</legend>
-              <label>First Name<span style={{ color: 'red' }}>*</span>:</label>
+              <label>
+                First Name<span style={{ color: "red" }}>*</span>:
+              </label>
               <input
                 type="text"
                 value={data.School.contactInfo.firstName}
@@ -1475,7 +1572,9 @@ const NewBooking = ({ isNew = false }) => {
                 }
               />
 
-              <label>Last Name<span style={{ color: 'red' }}>*</span>:</label>
+              <label>
+                Last Name<span style={{ color: "red" }}>*</span>:
+              </label>
               <input
                 type="text"
                 value={data.School.contactInfo.lastName}
@@ -1488,7 +1587,9 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Email Address<span style={{ color: 'red' }}>*</span>:</label>
+              <label>
+                Email Address<span style={{ color: "red" }}>*</span>:
+              </label>
               <input
                 type="email"
                 value={data.School.contactInfo.email}
@@ -1501,7 +1602,9 @@ const NewBooking = ({ isNew = false }) => {
                   )
                 }
               />
-              <label>Phone Number<span style={{ color: 'red' }}>*</span>:</label>
+              <label>
+                Phone Number<span style={{ color: "red" }}>*</span>:
+              </label>
               <input
                 type="tel"
                 value={data.School.contactInfo.phoneNumber}
@@ -1537,7 +1640,10 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Accessibility Needs Communicate<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Accessibility Needs Communicate
+              <span style={{ color: "red" }}>*</span>:
+            </label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.accessibilityNeeds
@@ -1562,7 +1668,9 @@ const NewBooking = ({ isNew = false }) => {
               }
             />
 
-            <label>Is Partner School<span style={{ color: 'red' }}>*</span>:</label>
+            <label>
+              Is Partner School<span style={{ color: "red" }}>*</span>:
+            </label>
             <Select
               value={YNoptions.find(
                 (option) => option.value === data.School.isPartnerSchool
@@ -1579,7 +1687,9 @@ const NewBooking = ({ isNew = false }) => {
         )}
         {activeCategory === "Bus" && (
           <form className="newBookingForm">
-            <label htmlFor="bus-req">BUS REQ<span style={{ color: 'red' }}>*</span>:</label>
+            <label htmlFor="bus-req">
+              BUS REQ<span style={{ color: "red" }}>*</span>:
+            </label>
             <Select
               id="bus-req"
               value={YNoptions.find(

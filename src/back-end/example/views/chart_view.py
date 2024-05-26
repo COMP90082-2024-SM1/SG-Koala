@@ -8,67 +8,68 @@ from rest_framework import status
 from db_connection import connect_mongodb
 import json
 
-#analysis charts api
+
+# analysis charts api
 class ChartOneView(APIView):
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         booking_collection = db["booking"]
 
-        pipeline = [
-            {
-                "$lookup": {
-                    "from": "school",
-                    "localField": "school_id",
-                    "foreignField": "_id",
-                    "as": "school_info",
-                }
-            },
-            {
-                "$unwind": {
-                    "path": "$school_info",
-                    "preserveNullAndEmptyArrays": False,
-                }
-            },
-            {
-                "$project": {
-                    "month": {"$month": "$startTime"},
-                    "numStudentAttended": "$school_info.numStudentAttended",
-                    "numStudentRegistered": "$school_info.numStudentRegistered",
-                }
-            },
-            {
-                "$group": {
-                    "_id": "$month",
-                    "total_participants": {"$sum": "$numStudentAttended"},
-                    "total_registrants": {"$sum": "$numStudentRegistered"},
-                }
-            },
-            {"$sort": {"_id": 1}},
-        ]
+        try:
+            pipeline = [
+                {
+                    "$lookup": {
+                        "from": "school",
+                        "localField": "school_id",
+                        "foreignField": "_id",
+                        "as": "school_info",
+                    }
+                },
+                {
+                    "$unwind": {
+                        "path": "$school_info",
+                        "preserveNullAndEmptyArrays": False,
+                    }
+                },
+                {
+                    "$project": {
+                        "month": {"$month": "$startTime"},
+                        "numStudentAttended": "$school_info.numStudentAttended",
+                        "numStudentRegistered": "$school_info.numStudentRegistered",
+                    }
+                },
+                {
+                    "$group": {
+                        "_id": "$month",
+                        "total_participants": {"$sum": "$numStudentAttended"},
+                        "total_registrants": {"$sum": "$numStudentRegistered"},
+                    }
+                },
+                {"$sort": {"_id": 1}},
+            ]
 
-        result = list(booking_collection.aggregate(pipeline))
+            result = list(booking_collection.aggregate(pipeline))
+            participants = [0] * 12
+            registrants = [0] * 12
 
-        participants = [0] * 12
-        registrants = [0] * 12
-        for data in result:
-            month_index = data["_id"] - 1
-            participants[month_index] = data.get("total_participants", 0)
-            registrants[month_index] = data.get("total_registrants", 0)
+            for data in result:
+                month_index = data["_id"] - 1
+                participants[month_index] = data.get("total_participants", 0)
+                registrants[month_index] = data.get("total_registrants", 0)
 
-        serializer_data = {"participants": participants, "registrants": registrants}
+            data = {"participants": participants, "registrants": registrants}
 
-        # mock data
-        mock_data = {
-            "participants": [230, 210, 190, 180, 150, 140, 110, 80, 70, 50, 40, 20],
-            "registrants": [240, 220, 200, 180, 160, 140, 120, 100, 80, 60, 40, 20],
-        }
+            serializer = ChartOneSerializer(data=data)
 
-        serializer = ChartOneSerializer(data=mock_data)
+            if serializer.is_valid():
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 
 class ChartTwoView(APIView):
@@ -136,21 +137,21 @@ class ChartTwoView(APIView):
         data = {"streams": streams_data}
 
         # mock data
-        mock_data = {
-            "streams": {
-                "SCOE": [123, 234, 345, 456],
-                "STEAM": [210, 320, 430, 540],
-                "NN Tour+ (UN)EXPECTED WORKSHOP + CHICKENOSAURUS WORKSHOP": [
-                    100,
-                    200,
-                    300,
-                    400,
-                ],
-                "ART": [150, 250, 350, 450],
-            }
-        }
+        # mock_data = {
+        #     "streams": {
+        #         "SCOE": [123, 234, 345, 456],
+        #         "STEAM": [210, 320, 430, 540],
+        #         "NN Tour+ (UN)EXPECTED WORKSHOP + CHICKENOSAURUS WORKSHOP": [
+        #             100,
+        #             200,
+        #             300,
+        #             400,
+        #         ],
+        #         "ART": [150, 250, 350, 450],
+        #     }
+        # }
 
-        serializer = ChartTwoSerializer(data=mock_data)
+        serializer = ChartTwoSerializer(data=data)
 
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -204,7 +205,7 @@ class ChartThreeView(APIView):
             locations_data[location] = terms_data
 
         data = {"locations": locations_data}
-
+        print(data)
         # mock data
         mock_data = {
             "locations": {
@@ -215,7 +216,7 @@ class ChartThreeView(APIView):
             }
         }
 
-        serializer = ChartThreeSerializer(data=mock_data)
+        serializer = ChartThreeSerializer(data=data)
 
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -275,18 +276,7 @@ class ChartFourView(APIView):
 
         data = {"grades_by_stream": grades_by_stream}
 
-        # mock data
-        mock_data ={
-  "grades_by_stream": {
-    "ART": {"7": 742, "8": 813, "9": 634, "10": 921},
-    "NN Tour Workshop": {"7": 18, "8": 53, "9": 82, "10": 10},
-    "STEAM": {"7": 853, "8": 710, "9": 688, "10": 752},
-    "SCOE": {"7": 629, "8": 592, "9": 947, "10": 521}
-  }
-}
-
-
-        serializer = ChartFourSerializer(data=mock_data)
+        serializer = ChartFourSerializer(data=data)
         if serializer.is_valid():
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:

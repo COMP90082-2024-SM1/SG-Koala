@@ -273,9 +273,9 @@ const TemplateDetail = ({ checklistId }) => {
       if (!validateDetails(details, oldDetails)) return;
       setLoading(true);
       if (checklistId) {
-        const response = await updateChecklistById(checklistId, details);
+        await updateChecklistById(checklistId, details);
       } else {
-        const response = await updateTemplate(id, details);
+        await updateTemplate(id, details);
       }
       setLoading(false);
       alert("[SUCCESS] Update successfully!");
