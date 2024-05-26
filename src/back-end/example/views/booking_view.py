@@ -105,8 +105,6 @@ class BookingView(APIView):
 
 
 class BookingViewID(APIView):
-    print("????")
-
     def get(self, request, *args, **kwargs):
         if "id" not in kwargs:
             return Response(
@@ -123,25 +121,18 @@ class BookingViewID(APIView):
         booking_document = booking_collection.find_one({"_id": booking_id})
 
         if booking_document:
-            # If checklist_id exists, fetch the checklist document
             if "checklist_id" in booking_document:
                 checklist_id = ObjectId(booking_document["checklist_id"])
                 checklist_document = checklist_collection.find_one(
                     {"_id": checklist_id}
                 )
-                booking_document["checklist"] = (
-                    checklist_document  # Embed the checklist document
-                )
+                booking_document["checklist"] = checklist_document
 
-            # If school_id exists, fetch the school document
             if "school_id" in booking_document:
                 school_id = ObjectId(booking_document["school_id"])
                 school_document = school_collection.find_one({"_id": school_id})
-                booking_document["school"] = (
-                    school_document  # Embed the school document
-                )
+                booking_document["school"] = school_document
 
-            # Serialize the enriched booking document
             serializer = BookSerializer(booking_document)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -230,46 +221,82 @@ class BookingViewID(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, *args, **kwargs):
-        db = connect_mongodb()
-        school_collection = db["school"]
-        checklist_collection = db["checklist"]
-
-        school_id = kwargs.get("school_id")
-        checklist_id = kwargs.get("checklist_id")
-
-        if not school_id or not checklist_id:
+        if "id" not in kwargs:
             return Response(
-                {"error": "DELETE method expects both school_id and checklist_id"},
+                {"error": "DELETE method expects an id"},
                 status=status.HTTP_405_METHOD_NOT_ALLOWED,
             )
 
+        db = connect_mongodb()
+        booking_collection = db["booking"]
+        checklist_collection = db["checklist"]
+        school_collection = db["school"]
+
         try:
-            school_id = ObjectId(school_id)
-            checklist_id = ObjectId(checklist_id)
+            booking_id = ObjectId(kwargs["id"])
         except Exception:
             return Response(
-                {"error": "Invalid ID format"}, status=status.HTTP_400_BAD_REQUEST
+                {"error": "Invalid booking ID format"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
-        school_delete = school_collection.delete_one({"_id": school_id})
-        if school_delete.deleted_count == 0:
+        booking_document = booking_collection.find_one({"_id": booking_id})
+
+        if not booking_document:
             return Response(
-                {"error": "No record found with the specified school ID"},
+                {"error": "No booking record found with the specified ID"},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        checklist_delete = checklist_collection.delete_one({"_id": checklist_id})
-        if checklist_delete.deleted_count == 0:
+        try:
+            school_id = ObjectId(booking_document.get("school_id"))
+            checklist_id = ObjectId(booking_document.get("checklist_id"))
+        except Exception:
             return Response(
-                {"error": "No record found with the specified checklist ID"},
-                status=status.HTTP_404_NOT_FOUND,
+                {
+                    "error": "Invalid school_id or checklist_id format in booking document"
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
-        return Response(
-            {
-                "status": "success",
-                "school_deleted": school_delete.deleted_count,
-                "checklist_deleted": checklist_delete.deleted_count,
-            },
-            status=status.HTTP_200_OK,
-        )
+        session = db.client.start_session()
+        try:
+            with session.start_transaction():
+                # Delete the school document
+                school_delete = school_collection.delete_one(
+                    {"_id": school_id}, session=session
+                )
+                if school_delete.deleted_count == 0:
+                    raise Exception("No record found with the specified school ID")
+
+                # Delete the checklist document
+                checklist_delete = checklist_collection.delete_one(
+                    {"_id": checklist_id}, session=session
+                )
+                if checklist_delete.deleted_count == 0:
+                    raise Exception("No record found with the specified checklist ID")
+
+                # Delete the booking document itself
+                booking_delete = booking_collection.delete_one(
+                    {"_id": booking_id}, session=session
+                )
+                if booking_delete.deleted_count == 0:
+                    raise Exception("Failed to delete the booking record")
+
+            return Response(
+                {
+                    "status": "success",
+                    "school_deleted": school_delete.deleted_count,
+                    "checklist_deleted": checklist_delete.deleted_count,
+                    "booking_deleted": booking_delete.deleted_count,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+        finally:
+            session.end_session()
