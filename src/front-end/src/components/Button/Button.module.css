@@ -11,6 +11,10 @@
   border: 3px solid var(--positive-color);
 }
 
+.button.next {
+  border: 3px solid var(--positive-color);
+}
+
 .button.submit {
   border: 3px solid var(--positive-color);
 }
@@ -30,6 +34,11 @@
 }
 
 .button.submit:hover {
+  background-color: var(--positive-color);
+  color: white;
+}
+
+.button.next:hover {
   background-color: var(--positive-color);
   color: white;
 }

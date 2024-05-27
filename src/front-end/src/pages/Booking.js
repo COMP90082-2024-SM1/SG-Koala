@@ -28,6 +28,10 @@ import TemplateDetail from "./TemplateDetail";
 const NewBooking = ({ isNew = false }) => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("Delivery");
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const categories = ["Delivery", "School", "Bus", "Others"];
+
 
   const { bookingId } = useParams();
   // const [oneBooking, setOneBooking] = useState();
@@ -277,11 +281,22 @@ const NewBooking = ({ isNew = false }) => {
     data.Delivery.exhibitionSelect,
   ]);
 
-  const handleCategoryClick = (category) => {
-    console.log(streamOptions);
+  const handleCategoryClick = (category, step) => {
     setActiveCategory(category);
-    console.log(data.Delivery.moduleSelects);
+    setCurrentStep(step);
   };
+
+  const handleNextStep = () => {
+    setCurrentStep((prevStep) => Math.min(prevStep + 1, categories.length - 1));
+    setActiveCategory(categories[Math.min(currentStep + 1, categories.length - 1)]);
+  };
+  
+  const handlePreviousStep = () => {
+    setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
+    setActiveCategory(categories[Math.max(currentStep - 1, 0)]);
+  };
+  
+
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -333,7 +348,7 @@ const NewBooking = ({ isNew = false }) => {
         .catch((error) => {
           console.error("Error fetching data:", error);
           alert("Error! Please try again later");
-          navigate("/dashboard");
+          navigate("/dashboard",{replace:true});
         });
       setLoading(false);
     } else {
@@ -441,13 +456,13 @@ const NewBooking = ({ isNew = false }) => {
           console.error("Error fetching data:", error);
           setLoading(false);
           alert("Error! Please try again later");
-          navigate("/dashboard");
+          navigate("/dashboard",{replace:true});
         });
     }
   }, []);
 
   const handleDiscard = () => {
-    navigate("/dashboard");
+    navigate("/dashboard",{replace:true});
   };
 
   const formatDateTime = (date, time) => {
@@ -660,11 +675,11 @@ const NewBooking = ({ isNew = false }) => {
     setDeleting(true);
     try {
       const response = deleteBooking(oneBooking.id);
-      navigate("/dashboard");
+      navigate("/dashboard",{replace:true});
     } catch (error) {
       console.error("delete booking failed:", error);
       alert("Error! Please try again later");
-      navigate("/dashboard");
+      navigate("/dashboard",{replace:true});
     } finally {
       setDeleting(false);
     }
@@ -803,11 +818,11 @@ const NewBooking = ({ isNew = false }) => {
       const response = await updateBooking(oneBooking.id, bookingData);
       console.log("Booking created successfully!", response);
       alert("Update Successfull!");
-      navigate("/dashboard");
+      navigate("/dashboard",{replace:true});
     } catch (error) {
       console.error("update booking failed:", error);
       alert("Error! Please try again later");
-      navigate("/dashboard");
+      navigate("/dashboard",{replace:true});
     } finally {
       setUpdating(false);
     }
@@ -953,7 +968,7 @@ const NewBooking = ({ isNew = false }) => {
       try {
         const response = createNewBooking(bookingData);
         //setCreating(false);
-        navigate("/dashboard");
+        navigate("/dashboard" ,{replace:true});
       } catch (error) {
         DeleteSchoolById(schoolIdValue);
         DeleteCheckListById(checklistvalue);
@@ -1155,48 +1170,48 @@ const NewBooking = ({ isNew = false }) => {
       {isNew && <Header>Create New Booking</Header>}
       {!isNew && <Header> Booking Details</Header>}
       <div className="newBookingFilterSection">
-        {!isNew && (
-          <button
-            className={`newBookingFilterBtn ${
-              activeCategory === "Checklist" ? "active" : ""
-            }`}
-            onClick={() => handleCategoryClick("Checklist")}
-          >
-            Checklist
-          </button>
-        )}
+      {!isNew && (
         <button
           className={`newBookingFilterBtn ${
-            activeCategory === "Delivery" ? "active" : ""
+            activeCategory === "Checklist" ? "active" : ""
           }`}
-          onClick={() => handleCategoryClick("Delivery")}
+          onClick={() => handleCategoryClick("Checklist")}
         >
-          Delivery
+          Checklist
         </button>
-        <button
-          className={`newBookingFilterBtn ${
-            activeCategory === "School" ? "active" : ""
-          }`}
-          onClick={() => handleCategoryClick("School")}
-        >
-          School
-        </button>
-        <button
-          className={`newBookingFilterBtn ${
-            activeCategory === "Bus" ? "active" : ""
-          }`}
-          onClick={() => handleCategoryClick("Bus")}
-        >
-          Bus
-        </button>
-        <button
-          className={`newBookingFilterBtn ${
-            activeCategory === "Others" ? "active" : ""
-          }`}
-          onClick={() => handleCategoryClick("Others")}
-        >
-          Others
-        </button>
+      )}
+      <button
+        className={`newBookingFilterBtn ${
+          activeCategory === "Delivery" ? "active" : ""
+        }`}
+        onClick={() => handleCategoryClick("Delivery", 0)}
+      >
+        Delivery
+      </button>
+      <button
+        className={`newBookingFilterBtn ${
+          activeCategory === "School" ? "active" : ""
+        }`}
+        onClick={() => handleCategoryClick("School", 1)}
+      >
+        School
+      </button>
+      <button
+        className={`newBookingFilterBtn ${
+          activeCategory === "Bus" ? "active" : ""
+        }`}
+        onClick={() => handleCategoryClick("Bus", 2)}
+      >
+        Bus
+      </button>
+      <button
+        className={`newBookingFilterBtn ${
+          activeCategory === "Others" ? "active" : ""
+        }`}
+        onClick={() => handleCategoryClick("Others", 3)}
+      >
+        Others
+      </button>
         <span className="autoFillText" onClick={openPopup}>
           Do you want to autofill the information? Click here!
         </span>
@@ -1785,25 +1800,33 @@ const NewBooking = ({ isNew = false }) => {
       </div>
       {activeCategory !== "Checklist" && (
         <div className="newBookingButtons">
-          <Button type="discard" onClick={handleDiscard}>
-            DISCARD
+        <Button type="discard" onClick={handleDiscard}>
+          DISCARD
+        </Button>
+        {currentStep < categories.length - 1 && (
+          <Button type="next" onClick={handleNextStep}>
+            NEXT
           </Button>
-          {isNew && (
-            <Button type="submit" onClick={handleSubmit}>
-              SAVE
-            </Button>
-          )}
-          {!isNew && (
-            <Button type="submit" onClick={handleUpdate}>
-              UPDATE
-            </Button>
-          )}
-          {!isNew && (
-            <Button type="delete" onClick={handleDelete}>
-              DELETE
-            </Button>
-          )}
-        </div>
+        )}
+        {currentStep === categories.length - 1 && (
+          <>
+            {isNew ? (
+              <Button type="submit" onClick={handleSubmit}>
+                SAVE
+              </Button>
+            ) : (
+              <Button type="submit" onClick={handleUpdate}>
+                UPDATE
+              </Button>
+            )}
+            {!isNew && (
+              <Button type="delete" onClick={handleDelete}>
+                DELETE
+              </Button>
+            )}
+          </>
+        )}
+      </div>
       )}
     </>
   );

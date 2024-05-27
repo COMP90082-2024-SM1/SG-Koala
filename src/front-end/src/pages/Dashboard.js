@@ -19,15 +19,18 @@ function formatDate(dateStr) {
 }
 
 function formatTimeRange(startTimeStr, endTimeStr) {
-  const options = { hour: "2-digit", minute: "2-digit", hour12: false };
+  // Parsing ISO strings into Date objects
   const startTime = new Date(startTimeStr);
   const endTime = new Date(endTimeStr);
 
-  const formattedStartTime = startTime.toLocaleTimeString("en-GB", options);
-  const formattedEndTime = endTime.toLocaleTimeString("en-GB", options);
+  // Extracting hours and minutes from the Date objects in UTC
+  const formattedStartTime = `${startTime.getUTCHours().toString().padStart(2, '0')}:${startTime.getUTCMinutes().toString().padStart(2, '0')}`;
+  const formattedEndTime = `${endTime.getUTCHours().toString().padStart(2, '0')}:${endTime.getUTCMinutes().toString().padStart(2, '0')}`;
 
-  return `${formattedStartTime}-${formattedEndTime}`;
+  // Concatenating start and end times with a dash
+  return `${formattedStartTime} - ${formattedEndTime}`;
 }
+
 
 const Dashboard = () => {
   const [bookingsData, setBookingsData] = useState({
@@ -69,7 +72,11 @@ const Dashboard = () => {
           completed: data.filter((booking) => booking.status === "Delivered"),
           canceled: data.filter((booking) => booking.status === "Canceled"),
           pending: data.filter((booking) => booking.status === "Pending"),
+          
         });
+        console.log("?1")
+        console.log(data)
+        console.log(data[0].startTime)
         const uniqueLocations = Array.from(
           new Set(data.map((booking) => booking.location))
         );
@@ -126,6 +133,7 @@ const Dashboard = () => {
         return bookingStart <= end;
       });
     }
+    
 
     filteredBookings.sort((a, b) => {
       const dateA = new Date(a.startTime).getTime();
