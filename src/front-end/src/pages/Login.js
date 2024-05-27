@@ -7,6 +7,7 @@ import {
   TypographyH2,
   TypographyParagraph,
 } from "../components/Typography/Typography";
+import { LoginDetail } from "../api/LoginAPI";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,41 +18,16 @@ const Login = () => {
   const [message, setMessage] = useState("Welcome to Koala Booking System");
   const [isLogin, setIsLogin] = useState(true);
 
-  const onButtonClick = () => {
-    fetch('http://localhost:8000/api/login/', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username,password })
-      })
-      .then(response => {
-        if (!response.ok) {
-          setIsLogin(false); 
-          if(response.status === 401) {
-            setMessage("Invalid Username or Password");
-          } else if(response.status === 400) {
-            setMessage("Missing Username or Password");
-          }
-          else {
-            setMessage("Login failed with status: " + response.status);
-          }
-          throw new Error('Failed to login');
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log(JSON.stringify(data))
-        setMessage("Login Successful"); 
-        setIsLogin(true); 
-        navigate("/dashboard");
-        
-      })
-      .catch(error => {
-        console.error('Login error:', error);
-      });
-      
+  const onButtonClick = async () => {
+    try {
+      const response = await LoginDetail(username, password);
+      setMessage("Login Successful"); 
+      setIsLogin(true); 
+      navigate("/dashboard");
+    } catch (error){
+      setMessage(error.message);
+      setIsLogin(false);
+    }
   }
 
 
