@@ -15,6 +15,7 @@ from example.views import (
 
 urlpatterns = [
     path("", views.index),
+    path('login/', views.login_method,name='user_login'),
     path("booking/search", search_view.SearchAPIView.as_view(), name="search"),
     path("booking/", booking_view.BookingView.as_view(), name="booking"),
     path("booking/<str:id>/", booking_view.BookingViewID.as_view(), name="booking_id"),
