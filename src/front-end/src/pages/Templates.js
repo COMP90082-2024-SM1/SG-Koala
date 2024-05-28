@@ -24,6 +24,7 @@ const TemplateButton = ({ id, name }) => {
 function Templates() {
   const [templates, setTemplates] = useState([]);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTemplates = async () => {
@@ -32,7 +33,8 @@ function Templates() {
         const data = await getAllTemplates();
         setTemplates(data);
       } catch (error) {
-        alert("[ERROR] Failed to fetch templates.");
+        alert(`[ERROR] ${error}`);
+        navigate("/login");
       }
       setLoading(false);
     };

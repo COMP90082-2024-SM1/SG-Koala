@@ -82,7 +82,8 @@ const Dashboard = () => {
         );
         setLocationsList(uniqueLocations);
       } catch (error) {
-        console.error("Failed to fetch bookings:", error);
+        alert(`[ERROR] ${error}`);
+        navigate("/login");
       }
       setLoading(false);
     };

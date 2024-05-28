@@ -7,7 +7,11 @@ export const getAllTemplates = async () => {
       credentials: "include",
     });
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if(response.status === 403) {
+        throw new Error("Please Login first");
+      } else {
+        throw new Error("Network response was not ok");
+      }
     }
     return await response.json();
   } catch (error) {

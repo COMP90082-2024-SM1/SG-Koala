@@ -58,7 +58,8 @@ function Database() {
         setLoading(false);
         console.log("Data fetch successfully!", response);
       } catch (error) {
-        console.error("Data fetch failed:", error);
+        alert(`[ERROR] ${error}`);
+        navigate("/login");
       }
     };
     fetchData();
