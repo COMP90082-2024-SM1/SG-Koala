@@ -1,0 +1,190 @@
+.newBookingFilterSection {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.newBookingFilterBtn {
+  background-color: var(--grey-color);
+  border: 1px solid var(--white-color);
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.newBookingFilterBtn.active {
+  background-color: var(--info-color);
+  color: var(--white-color);
+}
+
+.newBookingForm {
+  background-color: var(--white-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  width: 90%;
+  max-width: 600px;
+}
+
+.newBookingForm label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.newBookingForm input,
+.newBookingForm select,
+.newBookingForm textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 15px;
+  border: 1px solid var(--grey-color);
+  border-radius: 4px;
+}
+
+.newBookingForm button {
+  background-color: var(--positive-color);
+  color: var(--white-color);
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.newBookingForm button:hover {
+  background-color: var(--positive-color);
+}
+
+.newBookingForm textarea {
+  height: 100px;
+}
+
+.checkbox-container {
+  display: flex;
+  margin-top: 10px;
+}
+
+.checkbox-container label {
+  margin-left: 8px;
+}
+
+.newBookingForm label {
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.newBookingForm input[type="text"],
+.newBookingForm input[type="email"],
+.newBookingForm input[type="tel"],
+.newBookingForm select,
+.newBookingForm textarea {
+  margin-bottom: 15px;
+}
+
+.checkbox-container input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.newBookingForm input,
+.newBookingForm select,
+.newBookingForm textarea,
+.newBookingForm button {
+  display: block;
+  width: 100%;
+}
+
+.newBookingForm input[type="checkbox"] {
+  width: auto;
+  margin-right: 10px;
+}
+
+.checkbox-label {
+  display: inline-block;
+  margin: 0;
+  margin-left: 5px;
+  width: auto;
+}
+
+.form-group {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.newBookingForm fieldset {
+  border: 1px solid var(--white-color);
+  padding: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+#newBookingStudentYear {
+  padding-bottom: 10px;
+}
+
+
+.autoFillText {
+  margin-left: 10px;
+  cursor: pointer;
+  color: var(--info-color); 
+  text-decoration: underline;
+  margin-top: 10px;
+  width: auto;
+  height: auto;
+}
+
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; 
+}
+
+.popupContent {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  width: 600px; /* Fixed width */
+  height: 600px; /* Fixed height */
+  max-width: 900px; 
+  max-height: 900px; 
+  display: flex;
+  flex-direction: column; 
+}
+
+textarea {
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; 
+  resize: none; 
+}
+
+.popupButtons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.popupButtons button {
+  cursor: pointer;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.newBookingButtons {
+  display: flex;
+  column-gap: 20px;
+  margin-left: 50%;
+}

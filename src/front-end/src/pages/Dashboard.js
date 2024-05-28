@@ -1,128 +1,115 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Dashboard.css";
 import Header from "../components/Header/Header";
-import { useNavigate } from 'react-router-dom';
+import Modal from "../components/PopUp/PopUp";
+
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { getAllBooking, getAllMiscellaneous } from "../api/DashbaordAPI";
+import { getSearchResult } from "../api/SearchAPI";
+import { TypographyH3 } from "../components/Typography/Typography";
 
 function formatDate(dateStr) {
-  const [time, date] = dateStr.split(" ");
-  const dateParts = date.split("/");
-  const newDate = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]);
-
-  const formattedDate = new Intl.DateTimeFormat("en-GB", {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-GB", {
+    weekday: "short",
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
-    weekday: "short",
-  }).format(newDate);
-  return formattedDate;
+  });
 }
 
+function formatTimeRange(startTimeStr, endTimeStr) {
+  // Parsing ISO strings into Date objects
+  const startTime = new Date(startTimeStr);
+  const endTime = new Date(endTimeStr);
+
+  // Extracting hours and minutes from the Date objects in UTC
+  const formattedStartTime = `${startTime.getUTCHours().toString().padStart(2, '0')}:${startTime.getUTCMinutes().toString().padStart(2, '0')}`;
+  const formattedEndTime = `${endTime.getUTCHours().toString().padStart(2, '0')}:${endTime.getUTCMinutes().toString().padStart(2, '0')}`;
+
+  // Concatenating start and end times with a dash
+  return `${formattedStartTime} - ${formattedEndTime}`;
+}
+
+
 const Dashboard = () => {
-  const [activeType, setActiveType] = useState("upcoming");
+  const [bookingsData, setBookingsData] = useState({
+    all: [],
+    upcoming: [],
+    completed: [],
+    canceled: [],
+    pending: [],
+  });
+
+  const [activeType, setActiveType] = useState("all");
+  const [typeOptions, setTypeOptions] = useState([]);
   const [filterType, setFilterType] = useState("all");
   const [sortOrder, setSortOrder] = useState("asc");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [filterLocation, setFilterLocation] = useState("all");
+  const navigate = useNavigate();
+  const [locationsList, setLocationsList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+  const queryParam = searchParams.get("query");
 
-  const bookingsData = {
-    upcoming: [
-      {
-        name: "MGC",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "UBC",
-        type: "workshop2",
-        time: "8:00-9:00 23/04/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-      {
-        name: "GWSC",
-        type: "workshop4",
-        time: "8:00-9:00 23/05/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "MTC",
-        type: "workshop3",
-        time: "8:00-9:00 23/06/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-      {
-        name: "MIT",
-        type: "workshop1",
-        time: "8:00-9:00 23/07/2021",
-        location: "Room1",
-        status: "Pending",
-      },
-      {
-        name: "RMIT",
-        type: "workshop5",
-        time: "8:00-9:00 23/08/2021",
-        location: "Room3",
-        status: "Pending",
-      },
-    ],
-    completed: [
-      {
-        name: "Meeting with John",
-        type: "workshop1",
-        time: "8:00-10:00 23/03/2021",
-        location: "Room2",
-        status: "Confirmed",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop2",
-        time: "8:00-9:00 23/05/2021",
-        location: "Room5",
-        status: "Confirmed",
-      },
-    ],
-    cancelled: [
-      {
-        name: "Meeting with John",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room2",
-        status: "Cancelled",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop2",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room5",
-        status: "Cancelled",
-      },
-      {
-        name: "Meeting with John",
-        type: "workshop3",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room2",
-        status: "Cancelled",
-      },
-      {
-        name: "My Hotel",
-        type: "workshop1",
-        time: "8:00-9:00 23/03/2021",
-        location: "Room5",
-        status: "Cancelled",
-      },
-    ],
-  };
+  useEffect(() => {
+    const fetchBookings = async () => {
+      setLoading(true);
+      try {
+        let response;
+        if (queryParam) {
+          response = await getSearchResult(queryParam);
+        } else {
+          response = await getAllBooking();
+        }
+        const data = await response.json();
+
+        setBookingsData({
+          all: data,
+          upcoming: data.filter((booking) => booking.status === "Processing"),
+          completed: data.filter((booking) => booking.status === "Delivered"),
+          canceled: data.filter((booking) => booking.status === "Canceled"),
+          pending: data.filter((booking) => booking.status === "Pending"),
+          
+        });
+        console.log("?1")
+        console.log(data)
+        console.log(data[0].startTime)
+        const uniqueLocations = Array.from(
+          new Set(data.map((booking) => booking.location))
+        );
+        setLocationsList(uniqueLocations);
+      } catch (error) {
+        console.error("Failed to fetch bookings:", error);
+      }
+      setLoading(false);
+    };
+    const fetchMiscellaneousData = async () => {
+      try {
+        const response = await getAllMiscellaneous();
+        const data = await response;
+        const programStreams = data.program_stream.map((stream) => ({
+          value: stream,
+          label: stream.charAt(0).toUpperCase() + stream.slice(1),
+        }));
+        setTypeOptions(programStreams);
+      } catch (error) {
+        console.error("Failed to fetch type options:", error);
+      }
+    };
+
+    fetchMiscellaneousData();
+    fetchBookings();
+  }, [searchParams]);
 
   const getFilteredAndSortedBookings = () => {
-    let filteredBookings = [...bookingsData[activeType]];
+    let filteredBookings = bookingsData[activeType];
+
     if (filterType !== "all") {
       filteredBookings = filteredBookings.filter(
-        (booking) => booking.type === filterType
+        (booking) => booking.programStream === filterType
       );
     }
     if (filterLocation !== "all") {
@@ -130,62 +117,79 @@ const Dashboard = () => {
         (booking) => booking.location === filterLocation
       );
     }
-
-    if (startDate && endDate) {
+    if (startDate) {
       const start = new Date(startDate);
-      const end = new Date(endDate);
-
       filteredBookings = filteredBookings.filter((booking) => {
-        const bookingDate = new Date(
-          booking.time.split(" ")[1].split("/").reverse().join("-")
-        );
-        return bookingDate >= start && bookingDate <= end;
+        const bookingStart = new Date(booking.startTime);
+        return bookingStart >= start;
       });
     }
 
+    if (endDate) {
+      const end = new Date(endDate);
+      end.setHours(23, 59, 59, 999);
+      filteredBookings = filteredBookings.filter((booking) => {
+        const bookingStart = new Date(booking.startTime);
+        return bookingStart <= end;
+      });
+    }
+    
+
     filteredBookings.sort((a, b) => {
-      const dateA = new Date(
-        a.time.split(" ")[1].split("/").reverse().join("-")
-      );
-      const dateB = new Date(
-        b.time.split(" ")[1].split("/").reverse().join("-")
-      );
+      const dateA = new Date(a.startTime).getTime();
+      const dateB = new Date(b.startTime).getTime();
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
+    console.log(filteredBookings);
     return filteredBookings;
   };
 
-  const navigate = useNavigate(); 
   function handleNewBooking() {
-    navigate('/new-booking');
+    navigate("/booking");
   }
 
   return (
-    <div className="dashboard-dashboard">
-      <Header> Booking </Header>
+    <>
+      <Modal show={loading}>
+        <div>Loading...</div>
+      </Modal>
+      <Header>
+        {loading
+          ? "Booking Search"
+          : queryParam
+          ? `Booking - ${queryParam}`
+          : "Booking - All"}
+      </Header>
       <div className="dashboardFilterSection">
-        {Object.keys(bookingsData).map((type) => (
-          <button
-            key={type}
-            className={`dashboardFilterBtn ${
-              activeType === type ? "dashboard-active" : ""
-            }`}
-            onClick={() => setActiveType(type)}
-          >
-            {type.charAt(0).toUpperCase() + type.slice(1)}
-          </button>
-        ))}
-        <button className="dashboardNewBookingBtn" onClick={handleNewBooking}>
+        {["all", "pending", "upcoming", "completed", "canceled"].map(
+          (type) => (
+            <button
+              key={type}
+              className={`dashboardFilterBtn ${
+                activeType === type ? "dashboard-active" : ""
+              }`}
+              onClick={() => setActiveType(type)}
+            >
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </button>
+          )
+        )}
+        <button
+          className="dashboardNewBookingBtn"
+          onClick={() => handleNewBooking()}
+        >
           <span className="plus-icon">+</span>
         </button>
       </div>
       <div className="dashboardFilterAndSort">
         <select onChange={(e) => setFilterType(e.target.value)}>
           <option value="all">All Types</option>
-          <option value="workshop1">Workshop 1</option>
-          <option value="workshop2">Workshop 2</option>
-          <option value="workshop3">Workshop 3</option>
+          {typeOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
         <div className="dashboardDateFilter">
           <label htmlFor="start-date">From: </label>
@@ -210,12 +214,13 @@ const Dashboard = () => {
             onChange={(e) => setFilterLocation(e.target.value)}
           >
             <option value="all">All Locations</option>
-            <option value="Room1">Room1</option>
-            <option value="Room2">Room2</option>
-            <option value="Room3">Room3</option>
+            {locationsList.map((location) => (
+              <option key={location} value={location}>
+                {location}
+              </option>
+            ))}
           </select>
         </div>
-
         <button
           onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
         >
@@ -224,38 +229,48 @@ const Dashboard = () => {
       </div>
       <div className="dashboardBookingsList">
         <div className="dashboardBookingHeader">
-          <div className="dashboardBookingHeader-item">Organisation Name</div>
-          <div className="dashboardBookingHeader-item">Type</div>
+          <div className="dashboardBookingHeader-item">Name</div>
+          <div className="dashboardBookingHeader-item">Stream</div>
           <div className="dashboardBookingHeader-item">Date</div>
           <div className="dashboardBookingHeader-item">Location</div>
           <div className="dashboardBookingHeader-item">Status</div>
         </div>
-        {getFilteredAndSortedBookings().map((booking, index) => (
-          <div className="dashboardBookingItem" key={index}>
-            <div className="dashboardBookingDetail">{booking.name}</div>
+        {getFilteredAndSortedBookings().length > 0 ? (
+          getFilteredAndSortedBookings().map((booking, index) => (
             <div
-              className={`dashboard-booking-type-${booking.type
-                .toLowerCase()
-                .replace(/\s+/g, "-")}`}
+              className="dashboardBookingItem"
+              key={index}
+              onClick={() => navigate(`/booking/${booking.id}`)}
             >
-              {booking.type}
+              <div className="dashboardBookingDetail">{booking.name}</div>
+              <div
+                className={`dashboard-booking-programStream-${booking.programStream
+                  .toLowerCase()
+                  .replace(/\s+/g, "-")}`}
+              >
+                {booking.programStream}
+              </div>
+              <div className="dashboardBookingDetail">
+                {formatDate(booking.startTime)}
+                <span className="dashboardSubTime">
+                  {formatTimeRange(booking.startTime, booking.endTime)}
+                </span>
+              </div>
+              <div className="dashboardBookingDetail">{booking.location}</div>
+              <div
+                className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
+              >
+                {booking.status}
+              </div>
             </div>
-            <div className="dashboardBookingDetail">
-              <span>{formatDate(booking.time)}</span>
-              <span className="dashboardSubTime">
-                {booking.time.split(" ")[0]}
-              </span>
-            </div>
-            <div className="dashboardBookingDetail">{booking.location}</div>
-            <div
-              className={`dashboardBookingStatus ${booking.status.toLowerCase()}`}
-            >
-              {booking.status}
-            </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <TypographyH3 style={{ textAlign: "center" }}>
+            There are no results found.
+          </TypographyH3>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

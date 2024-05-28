@@ -22,6 +22,7 @@ class SchoolView(APIView):
     
     def post(self, request, *args, **kwargs):
         collection = connect_mongodb()['school']
+        print(request.data)
         serializer = SchoolSerializer(data=request.data)
         if serializer.is_valid():
             # Insert data into MongoDB
@@ -31,6 +32,8 @@ class SchoolView(APIView):
             new_data['_id'] = str(result.inserted_id)
             # response_data = json.dumps(new_data, default=str)
             return Response(new_data, status=status.HTTP_201_CREATED)
+        print("Validation Failed:", serializer.errors)
+        print("#######")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

@@ -6,7 +6,7 @@
   border-radius: 10px;
   cursor: pointer;
   font-size: 20px;
-  margin-left: 60%;
+  margin-left: 50%;
 }
 
 .dashboardFilterSection {
@@ -44,8 +44,10 @@
 
 .dashboardBookingHeader,
 .dashboardBookingItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 0.5fr 1fr 1fr 0.5fr;
   align-items: center;
+  gap: 10px;
 }
 
 .dashboardBookingHeader {
@@ -57,46 +59,10 @@
 
 .dashboardBookingHeader-item,
 .dashboardBookingDetail {
-  text-align: left;
+  overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  overflow: hidden;
-  padding: 5px 10px;
 }
-
-.dashboardBookingHeader-item:nth-child(1),
-.dashboardBookingDetail:nth-child(1) {
-  width: 20%;
-}
-.dashboardBookingHeader-item:nth-child(2),
-.dashboardBookingDetail:nth-child(2) {
-  width: 10%;
-}
-.dashboardBookingHeader-item:nth-child(3),
-.dashboardBookingDetail:nth-child(3) {
-  width: 30%;
-}
-.dashboardBookingHeader-item:nth-child(4),
-.dashboardBookingDetail:nth-child(4) {
-  width: 20%;
-}
-.dashboardBookingHeader-item:nth-child(5),
-.dashboardBookingDetail:nth-child(5) {
-  width: 20%;
-}
-
-.dashboardBookingHeader-item:nth-child(3) {
-  margin-left: 80px;
-}
-
-.dashboardBookingHeader-item:nth-child(1) {
-  margin-right: 40px;
-}
-
-.dashboardBookingHeader-item:nth-child(4) {
-  margin-right: 10px;
-}
-
 .dashboardBookingStatus {
   padding: 5px 10px;
   color: var(--font-color);
@@ -105,6 +71,19 @@
   display: inline-block;
   min-width: 100px;
   position: relative;
+  justify-self: center;
+}
+
+.dashboard-booking-programStream-scoe,
+.dashboard-booking-programStream-art,
+.dashboard-booking-programStream-steam,
+.dashboard-booking-programStream-workshop1,
+.dashboard-booking-programStream-workshop4,
+.dashboard-booking-programStream-workshop5,
+.dashboard-booking-programStream-workshop2 {
+  padding: 5px;
+  margin-right: 0;
+  justify-self: start;
 }
 
 .dashboardBookingStatus::before {
@@ -120,43 +99,63 @@
   transform: translateY(-50%);
 }
 
+.dashboardBookingStatus.processing::before {
+  background-color: var(--info-color);
+}
+
+.dashboardBookingStatus.delivered::before {
+  background-color: var(--positive-color);
+}
+
+.dashboardBookingStatus.canceled::before {
+  background-color: var(--negative-color);
+}
+
 .dashboardBookingStatus.pending::before {
   background-color: var(--neutral-color);
 }
 
-.dashboardBookingStatus.confirmed::before {
-  background-color: var(--positive-color);
+.dashboardBookingStatus.processing {
+  color: var(--info-color);
 }
 
-.dashboardBookingStatus.cancelled::before {
-  background-color: var(--negative-color);
+.dashboardBookingStatus.delivered {
+  color: var(--positive-color);
+}
+
+.dashboardBookingStatus.canceled {
+  color: var(--negative-color);
 }
 
 .dashboardBookingStatus.pending {
   color: var(--neutral-color);
 }
-
-.dashboardBookingStatus.confirmed {
-  color: var(--positive-color);
-}
-
-.dashboardBookingStatus.cancelled {
-  color: var(--negative-color);
-}
-
 .dashboard-plus-icon {
   margin-right: 5px;
 }
-
-.dashboard-booking-type-restaurant {
+/* 
+.dashboard-booking-programStream-scoe {
   background-color: var(--positive-color);
   color: var(--white-color);
   border-radius: 5px;
-  padding: 5px 10px;
+  padding: 10px;
   margin-right: 60px;
 }
 
-.dashboard-booking-type-meeting {
+.dashboard-booking-programStream-:not(.dashboard-booking-programStream-scoe,
+.dashboard-booking-programStream-art, .dashboard-booking-programStream-steam) {
+  background-color: gray;
+  color: var(--white-color);
+  border-radius: 5px;
+  padding: 10px;
+  margin-right: 60px;
+}
+
+
+
+
+
+.dashboard-booking-programStream-art {
   background-color: var(--info-color);
   color: var(--white-color);
   border-radius: 5px;
@@ -164,7 +163,7 @@
   margin-right: 60px;
 }
 
-.dashboard-booking-type-workshop3 {
+.dashboard-booking-programStream-steam {
   background-color: var(--neutral-color);
   color: var(--white-color);
   border-radius: 5px;
@@ -172,7 +171,7 @@
   margin-right: 60px;
 }
 
-.dashboard-booking-type-workshop1 {
+.dashboard-booking-programStream-workshop1 {
   background-color: hsl(291, 64%, 42%);
   color: var(--white-color);
   border-radius: 5px;
@@ -180,7 +179,7 @@
   margin-right: 60px;
 }
 
-.dashboard-booking-type-workshop4 {
+.dashboard-booking-programStream-workshop4 {
   background-color: var(--info-color);
   color: var(--white-color);
   border-radius: 5px;
@@ -188,7 +187,7 @@
   margin-right: 60px;
 }
 
-.dashboard-booking-type-workshop5 {
+.dashboard-booking-programStream-workshop5 {
   background-color: var(--grey-color);
   color: var(--white-color);
   border-radius: 5px;
@@ -196,13 +195,13 @@
   margin-right: 60px;
 }
 
-.dashboard-booking-type-workshop2 {
+.dashboard-booking-programStream-workshop2 {
   background-color: var(--positive-color);
   color: var(--white-color);
   border-radius: 5px;
   padding: 5px 10px;
   margin-right: 60px;
-}
+} */
 
 .dashboardSubTime {
   display: block;
@@ -221,6 +220,7 @@
   padding: 5px;
   border-radius: 5px;
   border: 1px solid var(--white-color);
+  max-width:200px;
 }
 
 .dashboardFilterAndSort button {

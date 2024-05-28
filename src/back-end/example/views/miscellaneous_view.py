@@ -46,8 +46,7 @@ class MiscellaneousView(APIView):
             if update_result.matched_count == 0:
                 return Response({'error': 'No record found'},status=status.HTTP_404_NOT_FOUND)
             return Response({'status': 'success', 'updated': update_result.modified_count}, status=status.HTTP_200_OK)
+        print(serializer.errors)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
-
 
 

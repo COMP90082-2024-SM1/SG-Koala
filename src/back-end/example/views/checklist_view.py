@@ -9,6 +9,8 @@ from db_connection import connect_mongodb
 import json 
 from rest_framework.permissions import IsAuthenticated
 
+
+#Checklist apis
 class ChecklistView(APIView):
     permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
