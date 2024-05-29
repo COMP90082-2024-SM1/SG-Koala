@@ -1558,7 +1558,6 @@ const NewBooking = ({ isNew = false }) => {
                 onChange={handleSelectChange("School", "studentYears")}
                 options={yearOptions}
                 placeholder="Please select a year"
-                isClearable
                 isSearchable
               />
             </div>
