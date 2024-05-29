@@ -17,7 +17,7 @@ class SearchAPIView(APIView):
         school_collection = db["school"]
 
         query_string = request.query_params.get("query", None)
-
+        booking_documents = []
         if query_string:
             try:
                 booking_documents = list(
@@ -27,11 +27,12 @@ class SearchAPIView(APIView):
                 booking_documents = []
 
             if not booking_documents:
+                print("check booking")
                 booking_query = {
                     "$or": [
-                        {"name": {"$regex": query_string, "$options": "i"}},
+                        {"programStream": {"$regex": query_string, "$options": "i"}},
                         {"facilitators": {"$regex": query_string, "$options": "i"}},
-                        {"event": {"$regex": query_string, "$options": "i"}},
+                        {"exibition": {"$regex": query_string, "$options": "i"}},
                     ]
                 }
                 booking_documents = list(booking_collection.find(booking_query))

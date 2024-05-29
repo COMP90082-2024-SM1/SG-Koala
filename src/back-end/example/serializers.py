@@ -60,12 +60,12 @@ class BookSerializer(serializers.Serializer):
     id = serializers.CharField(source="_id", read_only=True)
     name = serializers.CharField(max_length=200)
     programStream = serializers.CharField(required=False)
-    facilitators = serializers.CharField(required=False)
+    facilitators = serializers.CharField(required=False, allow_blank=True, allow_null=True)
 
     event = serializers.CharField()  # Assuming it's a CharField, you may need a related serializer if it's a nested object.
     status = serializers.ChoiceField(choices=['Pending', 'Processing', 'Delivered', 'Canceled'])
     term = serializers.IntegerField(required=False)
-    location = serializers.CharField(required = False)  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
+    location = serializers.CharField(required = False, allow_blank=True)  # Or serializers.PrimaryKeyRelatedField if it's a relation to another entity.
 
 #     event = (
 #         serializers.CharField()
@@ -134,10 +134,10 @@ class MiscellaneousSerializer(serializers.Serializer):
         child=serializers.CharField(max_length=255), allow_empty=True
     )
     facilitators = serializers.ListField(
-        child=serializers.CharField(max_length=255), allow_empty=True
+        child=serializers.CharField(max_length=255, allow_blank = True), allow_empty=True
     )
     delivery_location = serializers.ListField(
-        child=serializers.CharField(max_length=255), allow_empty=True
+        child=serializers.CharField(max_length=255, allow_blank = True), allow_empty=True, 
     )
     exhibition = serializers.ListField(
         child=serializers.CharField(max_length=255), allow_empty=True

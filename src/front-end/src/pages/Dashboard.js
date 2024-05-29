@@ -24,13 +24,21 @@ function formatTimeRange(startTimeStr, endTimeStr) {
   const endTime = new Date(endTimeStr);
 
   // Extracting hours and minutes from the Date objects in UTC
-  const formattedStartTime = `${startTime.getUTCHours().toString().padStart(2, '0')}:${startTime.getUTCMinutes().toString().padStart(2, '0')}`;
-  const formattedEndTime = `${endTime.getUTCHours().toString().padStart(2, '0')}:${endTime.getUTCMinutes().toString().padStart(2, '0')}`;
+  const formattedStartTime = `${startTime
+    .getUTCHours()
+    .toString()
+    .padStart(2, "0")}:${startTime
+    .getUTCMinutes()
+    .toString()
+    .padStart(2, "0")}`;
+  const formattedEndTime = `${endTime
+    .getUTCHours()
+    .toString()
+    .padStart(2, "0")}:${endTime.getUTCMinutes().toString().padStart(2, "0")}`;
 
   // Concatenating start and end times with a dash
   return `${formattedStartTime} - ${formattedEndTime}`;
 }
-
 
 const Dashboard = () => {
   const [bookingsData, setBookingsData] = useState({
@@ -72,11 +80,8 @@ const Dashboard = () => {
           completed: data.filter((booking) => booking.status === "Delivered"),
           canceled: data.filter((booking) => booking.status === "Canceled"),
           pending: data.filter((booking) => booking.status === "Pending"),
-          
         });
-        console.log("?1")
-        console.log(data)
-        console.log(data[0].startTime)
+
         const uniqueLocations = Array.from(
           new Set(data.map((booking) => booking.location))
         );
@@ -134,7 +139,6 @@ const Dashboard = () => {
         return bookingStart <= end;
       });
     }
-    
 
     filteredBookings.sort((a, b) => {
       const dateA = new Date(a.startTime).getTime();
@@ -163,19 +167,17 @@ const Dashboard = () => {
           : "Booking - All"}
       </Header>
       <div className="dashboardFilterSection">
-        {["all", "pending", "upcoming", "completed", "canceled"].map(
-          (type) => (
-            <button
-              key={type}
-              className={`dashboardFilterBtn ${
-                activeType === type ? "dashboard-active" : ""
-              }`}
-              onClick={() => setActiveType(type)}
-            >
-              {type.charAt(0).toUpperCase() + type.slice(1)}
-            </button>
-          )
-        )}
+        {["all", "pending", "upcoming", "completed", "canceled"].map((type) => (
+          <button
+            key={type}
+            className={`dashboardFilterBtn ${
+              activeType === type ? "dashboard-active" : ""
+            }`}
+            onClick={() => setActiveType(type)}
+          >
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </button>
+        ))}
         <button
           className="dashboardNewBookingBtn"
           onClick={() => handleNewBooking()}

@@ -32,7 +32,6 @@ const NewBooking = ({ isNew = false }) => {
 
   const categories = ["Delivery", "School", "Bus", "Others"];
 
-
   const { bookingId } = useParams();
   // const [oneBooking, setOneBooking] = useState();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -288,15 +287,15 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleNextStep = () => {
     setCurrentStep((prevStep) => Math.min(prevStep + 1, categories.length - 1));
-    setActiveCategory(categories[Math.min(currentStep + 1, categories.length - 1)]);
+    setActiveCategory(
+      categories[Math.min(currentStep + 1, categories.length - 1)]
+    );
   };
-  
+
   const handlePreviousStep = () => {
     setCurrentStep((prevStep) => Math.max(prevStep - 1, 0));
     setActiveCategory(categories[Math.max(currentStep - 1, 0)]);
   };
-  
-
 
   const openPopup = () => {
     setIsPopupOpen(true);
@@ -348,7 +347,7 @@ const NewBooking = ({ isNew = false }) => {
         .catch((error) => {
           console.error("Error fetching data:", error);
           alert("Error! Please try again later");
-          navigate("/dashboard",{replace:true});
+          navigate("/dashboard", { replace: true });
         });
       setLoading(false);
     } else {
@@ -456,13 +455,13 @@ const NewBooking = ({ isNew = false }) => {
           console.error("Error fetching data:", error);
           setLoading(false);
           alert("Error! Please try again later");
-          navigate("/dashboard",{replace:true});
+          navigate("/dashboard", { replace: true });
         });
     }
   }, []);
 
   const handleDiscard = () => {
-    navigate("/dashboard",{replace:true});
+    navigate("/dashboard", { replace: true });
   };
 
   const formatDateTime = (date, time) => {
@@ -495,8 +494,10 @@ const NewBooking = ({ isNew = false }) => {
       errors.push("Term is required.");
     }
     if (!data.School.registeredStudents || data.School.registeredStudents < 0) {
-      console.log(data.School.numStudentRegistered)
-      errors.push("Number of student registered is required and cannot be less than zero.");
+      console.log(data.School.numStudentRegistered);
+      errors.push(
+        "Number of student registered is required and cannot be less than zero."
+      );
     }
     if (!data.School.contactInfo.lastName) {
       errors.push("Contact last name is required.");
@@ -508,7 +509,9 @@ const NewBooking = ({ isNew = false }) => {
     }
     if (!data.School.contactInfo.phoneNumber) {
       errors.push("Phone number is required.");
-    } else if (!/^\+?(\d[\d- ]{7,}\d$)/.test(data.School.contactInfo.phoneNumber)) {
+    } else if (
+      !/^\+?(\d[\d- ]{7,}\d$)/.test(data.School.contactInfo.phoneNumber)
+    ) {
       errors.push("Phone number is invalid.");
     }
     if (!data.Bus.busReq) {
@@ -524,8 +527,10 @@ const NewBooking = ({ isNew = false }) => {
       errors.push("ExhibitionSelect Time is required.");
     }
     if (!data.School.attendedStudents || data.School.attendedStudents < 0) {
-      console.log(data.School.attendedStudents)
-      errors.push("Number of Student Attended is required and cannot be less than zero.");
+      console.log(data.School.attendedStudents);
+      errors.push(
+        "Number of Student Attended is required and cannot be less than zero."
+      );
     }
     if (!data.School.accessibilityNeeds) {
       errors.push("Accessibilityis required.");
@@ -533,7 +538,7 @@ const NewBooking = ({ isNew = false }) => {
     if (errors.length > 0) {
       alert(errors.join("\n"));
     }
-    console.log(errors)
+    console.log(errors);
     return errors;
   };
 
@@ -694,11 +699,11 @@ const NewBooking = ({ isNew = false }) => {
     setDeleting(true);
     try {
       const response = deleteBooking(oneBooking.id);
-      navigate("/dashboard",{replace:true});
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       console.error("delete booking failed:", error);
       alert("Error! Please try again later");
-      navigate("/dashboard",{replace:true});
+      navigate("/dashboard", { replace: true });
     } finally {
       setDeleting(false);
     }
@@ -706,8 +711,8 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleUpdate = async (event) => {
     const errors = checkForm(data);
-    console.log("??????")
-    console.log(errors)
+    console.log("??????");
+    console.log(errors);
     if (errors.length !== 0) {
     } else {
       setUpdating(true);
@@ -750,7 +755,8 @@ const NewBooking = ({ isNew = false }) => {
       const bus_test_status = 1;
       const busData = {
         busReq: data.Bus.busReq === "Y",
-        isBooked: data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
+        isBooked:
+          data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
         status: data.Bus.busReq === "Y" ? bus_test_status : "0",
         price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "0.0",
         date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
@@ -791,7 +797,9 @@ const NewBooking = ({ isNew = false }) => {
         program_stream: originalOptions.programStreams.slice(),
       };
 
-      if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
+      if (
+        !originalOptions.programStreams.includes(data.Delivery.streamSelect)
+      ) {
         newOptions.program_stream.push(data.Delivery.streamSelect);
       }
 
@@ -837,8 +845,6 @@ const NewBooking = ({ isNew = false }) => {
           newOptions.module.push(moduleSelect);
         }
       }
-      
-
 
       updateMiscellaneous(newOptions);
 
@@ -850,7 +856,7 @@ const NewBooking = ({ isNew = false }) => {
       } catch (error) {
         console.error("update booking failed:", error);
         alert("Error! Please try again later");
-        navigate("/dashboard",{replace:true});
+        navigate("/dashboard", { replace: true });
       } finally {
         setUpdating(false);
       }
@@ -998,6 +1004,7 @@ const NewBooking = ({ isNew = false }) => {
         const response = createNewBooking(bookingData);
         //setCreating(false);
         // navigate("/dashboard" ,{replace:true});
+        alert("Succesfully Created!!");
       } catch (error) {
         DeleteSchoolById(schoolIdValue);
         DeleteCheckListById(checklistvalue);
@@ -1199,48 +1206,48 @@ const NewBooking = ({ isNew = false }) => {
       {isNew && <Header>Create New Booking</Header>}
       {!isNew && <Header> Booking Details</Header>}
       <div className="newBookingFilterSection">
-      {!isNew && (
+        {!isNew && (
+          <button
+            className={`newBookingFilterBtn ${
+              activeCategory === "Checklist" ? "active" : ""
+            }`}
+            onClick={() => handleCategoryClick("Checklist")}
+          >
+            Checklist
+          </button>
+        )}
         <button
           className={`newBookingFilterBtn ${
-            activeCategory === "Checklist" ? "active" : ""
+            activeCategory === "Delivery" ? "active" : ""
           }`}
-          onClick={() => handleCategoryClick("Checklist")}
+          onClick={() => handleCategoryClick("Delivery", 0)}
         >
-          Checklist
+          Delivery
         </button>
-      )}
-      <button
-        className={`newBookingFilterBtn ${
-          activeCategory === "Delivery" ? "active" : ""
-        }`}
-        onClick={() => handleCategoryClick("Delivery", 0)}
-      >
-        Delivery
-      </button>
-      <button
-        className={`newBookingFilterBtn ${
-          activeCategory === "School" ? "active" : ""
-        }`}
-        onClick={() => handleCategoryClick("School", 1)}
-      >
-        School
-      </button>
-      <button
-        className={`newBookingFilterBtn ${
-          activeCategory === "Bus" ? "active" : ""
-        }`}
-        onClick={() => handleCategoryClick("Bus", 2)}
-      >
-        Bus
-      </button>
-      <button
-        className={`newBookingFilterBtn ${
-          activeCategory === "Others" ? "active" : ""
-        }`}
-        onClick={() => handleCategoryClick("Others", 3)}
-      >
-        Others
-      </button>
+        <button
+          className={`newBookingFilterBtn ${
+            activeCategory === "School" ? "active" : ""
+          }`}
+          onClick={() => handleCategoryClick("School", 1)}
+        >
+          School
+        </button>
+        <button
+          className={`newBookingFilterBtn ${
+            activeCategory === "Bus" ? "active" : ""
+          }`}
+          onClick={() => handleCategoryClick("Bus", 2)}
+        >
+          Bus
+        </button>
+        <button
+          className={`newBookingFilterBtn ${
+            activeCategory === "Others" ? "active" : ""
+          }`}
+          onClick={() => handleCategoryClick("Others", 3)}
+        >
+          Others
+        </button>
         <span className="autoFillText" onClick={openPopup}>
           Do you want to autofill the information? Click here!
         </span>
@@ -1442,7 +1449,7 @@ const NewBooking = ({ isNew = false }) => {
               <React.Fragment key={label}>
                 <label>
                   {label}
-                  {index === 0 ? " *" : ""}:
+                  {index === 0 ? <span style={{ color: "red" }}>*</span> : ""}:
                 </label>
                 <CreatableSelect
                   value={moduleOptions.find(
@@ -1822,33 +1829,33 @@ const NewBooking = ({ isNew = false }) => {
       </div>
       {activeCategory !== "Checklist" && (
         <div className="newBookingButtons">
-        <Button type="discard" onClick={handleDiscard}>
-          DISCARD
-        </Button>
-        {currentStep < categories.length - 1 && (
-          <Button type="next" onClick={handleNextStep}>
-            NEXT
+          <Button type="discard" onClick={handleDiscard}>
+            DISCARD
           </Button>
-        )}
-        {currentStep === categories.length - 1 && (
-          <>
-            {isNew ? (
-              <Button type="submit" onClick={handleSubmit}>
-                SAVE
-              </Button>
-            ) : (
-              <Button type="submit" onClick={handleUpdate}>
-                UPDATE
-              </Button>
-            )}
-            {!isNew && (
-              <Button type="delete" onClick={handleDelete}>
-                DELETE
-              </Button>
-            )}
-          </>
-        )}
-      </div>
+          {currentStep < categories.length - 1 && (
+            <Button type="next" onClick={handleNextStep}>
+              NEXT
+            </Button>
+          )}
+          {currentStep === categories.length - 1 && (
+            <>
+              {isNew ? (
+                <Button type="submit" onClick={handleSubmit}>
+                  SAVE
+                </Button>
+              ) : (
+                <Button type="submit" onClick={handleUpdate}>
+                  UPDATE
+                </Button>
+              )}
+              {!isNew && (
+                <Button type="delete" onClick={handleDelete}>
+                  DELETE
+                </Button>
+              )}
+            </>
+          )}
+        </div>
       )}
     </>
   );
