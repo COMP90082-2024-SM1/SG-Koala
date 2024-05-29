@@ -491,14 +491,25 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.School.contactInfo.firstName) {
       errors.push("Contact first name is required.");
     }
+    if (!data.Delivery.term) {
+      errors.push("Term is required.");
+    }
+    if (!data.School.registeredStudents || data.School.registeredStudents < 0) {
+      console.log(data.School.numStudentRegistered)
+      errors.push("Number of student registered is required and cannot be less than zero.");
+    }
     if (!data.School.contactInfo.lastName) {
       errors.push("Contact last name is required.");
     }
     if (!data.School.contactInfo.email) {
       errors.push("Email address is required.");
+    } else if (!/^[^@]+@[^@]+\.[^@]+/.test(data.School.contactInfo.email)) {
+      errors.push("Invalid email format.");
     }
     if (!data.School.contactInfo.phoneNumber) {
       errors.push("Phone number is required.");
+    } else if (!/^\+?(\d[\d- ]{7,}\d$)/.test(data.School.contactInfo.phoneNumber)) {
+      errors.push("Phone number is invalid.");
     }
     if (!data.Bus.busReq) {
       errors.push("Bus requirement is required.");
@@ -512,9 +523,17 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.Delivery.exhibitionSelect) {
       errors.push("ExhibitionSelect Time is required.");
     }
+    if (!data.School.attendedStudents || data.School.attendedStudents < 0) {
+      console.log(data.School.attendedStudents)
+      errors.push("Number of Student Attended is required and cannot be less than zero.");
+    }
+    if (!data.School.accessibilityNeeds) {
+      errors.push("Accessibilityis required.");
+    }
     if (errors.length > 0) {
       alert(errors.join("\n"));
     }
+    console.log(errors)
     return errors;
   };
 
@@ -686,145 +705,155 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const handleUpdate = async (event) => {
-    setUpdating(true);
-    event.preventDefault();
+    const errors = checkForm(data);
+    console.log("??????")
+    console.log(errors)
+    if (errors.length !== 0) {
+    } else {
+      setUpdating(true);
+      event.preventDefault();
 
-    const startDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.startTime
-    );
-    const endDate = formatDateTime(
-      data.Delivery.programDate,
-      data.Delivery.endTime
-    );
-    const schoolData = {
-      name: data.School.schoolSelect.name,
-      studentYear: data.School.studentYears,
-      numStudentRegistered: parseInt(data.School.registeredStudents),
-      numStudentAttended: parseInt(data.School.attendedStudents),
-      lowSES: data.School.lowSES === "Y",
-      allergy: data.School.allergenInfo || " ",
-      teachingArea: data.School.contactInfo.jobTitle,
-      contactFirstName: data.School.contactInfo.firstName,
-      contactLastName: data.School.contactInfo.lastName,
-      email: data.School.contactInfo.email,
-      phone: data.School.contactInfo.phoneNumber,
-      note: data.School.additionalComments || "",
-      isAccessibility: data.School.accessibilityNeeds === "Y",
-      isAllergy: true,
-      isPartner: data.School.isPartnerSchool === "Y",
-    };
+      const startDate = formatDateTime(
+        data.Delivery.programDate,
+        data.Delivery.startTime
+      );
+      const endDate = formatDateTime(
+        data.Delivery.programDate,
+        data.Delivery.endTime
+      );
+      const schoolData = {
+        name: data.School.schoolSelect.name,
+        studentYear: data.School.studentYears,
+        numStudentRegistered: parseInt(data.School.registeredStudents),
+        numStudentAttended: parseInt(data.School.attendedStudents),
+        lowSES: data.School.lowSES === "Y",
+        allergy: data.School.allergenInfo || " ",
+        teachingArea: data.School.contactInfo.jobTitle,
+        contactFirstName: data.School.contactInfo.firstName,
+        contactLastName: data.School.contactInfo.lastName,
+        email: data.School.contactInfo.email,
+        phone: data.School.contactInfo.phoneNumber,
+        note: data.School.additionalComments || "",
+        isAccessibility: data.School.accessibilityNeeds === "Y",
+        isAllergy: true,
+        isPartner: data.School.isPartnerSchool === "Y",
+      };
 
-    const schoolId = await updateSchoolById(oneBooking.school.id, schoolData);
+      const schoolId = await updateSchoolById(oneBooking.school.id, schoolData);
 
-    // const checklistId = await createNewChecklist(data.Delivery.templateSelect);
+      // const checklistId = await createNewChecklist(data.Delivery.templateSelect);
 
-    const schoolIdValue = schoolId.id;
+      const schoolIdValue = schoolId.id;
 
-    const checklistvalue = oneBooking.checklist_id;
+      const checklistvalue = oneBooking.checklist_id;
 
-    const bus_test_status = 1;
-    const busData = {
-      busReq: data.Bus.busReq === "Y",
-      isBooked: data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
-      status: data.Bus.busReq === "Y" ? bus_test_status : "0",
-      price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "0.0",
-      date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
-      invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
-    };
+      const bus_test_status = 1;
+      const busData = {
+        busReq: data.Bus.busReq === "Y",
+        isBooked: data.Bus.busReq === "Y" ? data.Bus.busBooked === "Y" : "false",
+        status: data.Bus.busReq === "Y" ? bus_test_status : "0",
+        price: data.Bus.busReq === "Y" ? parseFloat(data.Bus.price) : "0.0",
+        date_paid: data.Bus.busReq === "Y" ? data.Bus.datePaid : null,
+        invoice: data.Bus.busReq === "Y" ? data.Bus.invoiceNumber : "false",
+      };
 
-    const event_test = "test";
-    const bookingData = {
-      event: event_test, //
-      status: data.Delivery.status, //
-      name: data.School.schoolSelect.name, //
-      // school_id: data.School.schoolSelect, //
-      school_id: schoolIdValue,
-      programStream: data.Delivery.streamSelect, //
-      checklist_id: checklistvalue, //
-      facilitators: data.Delivery.facilitatorsSelect, //
-      location: data.Delivery.locationSelect || "", //
-      date: data.Delivery.programDate, //
-      term: parseInt(data.Delivery.term, 10), // +
-      startTime: startDate,
-      endTime: endDate,
-      module_id: data.Delivery.moduleSelects, //
-      exibition: data.Delivery.exhibitionSelect, //
-      note: data.Delivery.notes || "", //
-      bus: busData, //
-      per_student: parseInt(data.Others.perStudent) || 0.0, //
-      expense: parseFloat(data.Others.expenses) || 0.0, //
-      income: parseFloat(data.Others.income) || 0.0, //
-      // profit: parseFloat(data.Others.profit), //
-      profit: 0.0,
-    };
+      const event_test = "test";
+      const bookingData = {
+        event: event_test, //
+        status: data.Delivery.status, //
+        name: data.School.schoolSelect.name, //
+        // school_id: data.School.schoolSelect, //
+        school_id: schoolIdValue,
+        programStream: data.Delivery.streamSelect, //
+        checklist_id: checklistvalue, //
+        facilitators: data.Delivery.facilitatorsSelect, //
+        location: data.Delivery.locationSelect || "", //
+        date: data.Delivery.programDate, //
+        term: parseInt(data.Delivery.term, 10), // +
+        startTime: startDate,
+        endTime: endDate,
+        module_id: data.Delivery.moduleSelects, //
+        exibition: data.Delivery.exhibitionSelect, //
+        note: data.Delivery.notes || "", //
+        bus: busData, //
+        per_student: parseInt(data.Others.perStudent) || 0.0, //
+        expense: parseFloat(data.Others.expenses) || 0.0, //
+        income: parseFloat(data.Others.income) || 0.0, //
+        // profit: parseFloat(data.Others.profit), //
+        profit: 0.0,
+      };
 
-    const newOptions = {
-      module: originalOptions.module.slice(),
-      delivery_location: originalOptions.location.slice(),
-      facilitators: originalOptions.facilitators.slice(),
-      exhibition: originalOptions.exhibition.slice(),
-      program_stream: originalOptions.programStreams.slice(),
-    };
+      const newOptions = {
+        module: originalOptions.module.slice(),
+        delivery_location: originalOptions.location.slice(),
+        facilitators: originalOptions.facilitators.slice(),
+        exhibition: originalOptions.exhibition.slice(),
+        program_stream: originalOptions.programStreams.slice(),
+      };
 
-    if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
-      newOptions.program_stream.push(data.Delivery.streamSelect);
-    }
+      if (!originalOptions.programStreams.includes(data.Delivery.streamSelect)) {
+        newOptions.program_stream.push(data.Delivery.streamSelect);
+      }
 
-    if (
-      data.Delivery.moduleSelects.some(
-        (module) => !originalOptions.module.includes(module)
-      )
-    ) {
-      newOptions.module.push(
-        ...data.Delivery.moduleSelects.filter(
+      if (
+        data.Delivery.moduleSelects.some(
           (module) => !originalOptions.module.includes(module)
         )
-      );
-    }
+      ) {
+        newOptions.module.push(
+          ...data.Delivery.moduleSelects.filter(
+            (module) => !originalOptions.module.includes(module)
+          )
+        );
+      }
 
-    if (
-      !originalOptions.facilitators.includes(
-        data.Delivery.facilitatorsSelect
-      ) &&
-      data.Delivery.facilitatorsSelect !== ""
-    ) {
-      newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
-    }
+      if (
+        !originalOptions.facilitators.includes(
+          data.Delivery.facilitatorsSelect
+        ) &&
+        data.Delivery.facilitatorsSelect !== ""
+      ) {
+        newOptions.facilitators.push(data.Delivery.facilitatorsSelect);
+      }
 
-    if (
-      !originalOptions.location.includes(data.Delivery.locationSelect) &&
-      data.Delivery.locationSelect !== ""
-    ) {
-      newOptions.delivery_location.push(data.Delivery.locationSelect);
-    }
+      if (
+        !originalOptions.location.includes(data.Delivery.locationSelect) &&
+        data.Delivery.locationSelect !== ""
+      ) {
+        newOptions.delivery_location.push(data.Delivery.locationSelect);
+      }
 
-    if (
-      !originalOptions.exhibition.includes(data.Delivery.exhibitionSelect) &&
-      data.Delivery.exhibitionSelect !== ""
-    ) {
-      newOptions.exhibition.push(data.Delivery.exhibitionSelect);
-    }
-    if (
-      !originalOptions.module.includes(data.Delivery.moduleSelects) &&
-      data.Delivery.moduleSelects !== ""
-    ) {
-      newOptions.module.push(data.Delivery.moduleSelects);
-    }
+      if (
+        !originalOptions.exhibition.includes(data.Delivery.exhibitionSelect) &&
+        data.Delivery.exhibitionSelect !== ""
+      ) {
+        newOptions.exhibition.push(data.Delivery.exhibitionSelect);
+      }
+      for (let moduleSelect of data.Delivery.moduleSelects) {
+        if (
+          !originalOptions.module.includes(moduleSelect) &&
+          moduleSelect !== ""
+        ) {
+          newOptions.module.push(moduleSelect);
+        }
+      }
+      
 
-    updateMiscellaneous(newOptions);
 
-    try {
-      const response = await updateBooking(oneBooking.id, bookingData);
-      console.log("Booking created successfully!", response);
-      alert("Update Successfull!");
-      navigate("/dashboard",{replace:true});
-    } catch (error) {
-      console.error("update booking failed:", error);
-      alert("Error! Please try again later");
-      navigate("/dashboard",{replace:true});
-    } finally {
-      setUpdating(false);
+      updateMiscellaneous(newOptions);
+
+      try {
+        const response = await updateBooking(oneBooking.id, bookingData);
+        console.log("Booking created successfully!", response);
+        alert("Update Successfull!");
+        // navigate("/dashboard",{replace:true});
+      } catch (error) {
+        console.error("update booking failed:", error);
+        alert("Error! Please try again later");
+        navigate("/dashboard",{replace:true});
+      } finally {
+        setUpdating(false);
+      }
     }
   };
 
@@ -968,7 +997,7 @@ const NewBooking = ({ isNew = false }) => {
       try {
         const response = createNewBooking(bookingData);
         //setCreating(false);
-        navigate("/dashboard" ,{replace:true});
+        // navigate("/dashboard" ,{replace:true});
       } catch (error) {
         DeleteSchoolById(schoolIdValue);
         DeleteCheckListById(checklistvalue);
@@ -1361,7 +1390,6 @@ const NewBooking = ({ isNew = false }) => {
               onChange={(e) => handleChange("Delivery", "status", e.value)}
               options={statusOptions}
               placeholder="Please select a status"
-              isClearable
               isSearchable
             />
             <label>
@@ -1565,7 +1593,6 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable
               isSearchable={false}
             />
 
@@ -1672,7 +1699,6 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable
               isSearchable={false}
             />
             <label>Allergen and Anaphylaxis Communicated:</label>
@@ -1695,7 +1721,6 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable
               isSearchable={false}
             />
           </form>
@@ -1715,7 +1740,6 @@ const NewBooking = ({ isNew = false }) => {
               }
               options={YNoptions}
               placeholder="Yes or No"
-              isClearable
             />
 
             {data.Bus.busReq === "Y" && (
@@ -1731,7 +1755,6 @@ const NewBooking = ({ isNew = false }) => {
                   }
                   options={YNoptions}
                   placeholder="Yes or No"
-                  isClearable
                 />
 
                 <label htmlFor="price">Price:</label>
