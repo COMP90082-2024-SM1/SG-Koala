@@ -1,16 +1,20 @@
 const baseUrl = process.env.REACT_APP_BASEURL;
 
 export const getAllTemplates = async () => {
-  return fetch(baseUrl + "template/").then((response) => {
+  return fetch(baseUrl + "template/", {credentials: "include",}).then((response) => {
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if(response.status === 403) {
+        throw new Error("Please Login first");
+      } else {
+        throw new Error("Network response was not ok");
+      }
     }
     return response.json();
   });
 };
 
 export const getAllMiscellaneous = async () => {
-  return fetch(baseUrl + "miscellaneous/").then((response) => {
+  return fetch(baseUrl + "miscellaneous/", {credentials: "include",}).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -19,7 +23,7 @@ export const getAllMiscellaneous = async () => {
 };
 
 export const getAllSchool = async () => {
-  return fetch(baseUrl + "school/").then((response) => {
+  return fetch(baseUrl + "school/", {credentials: "include",}).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -30,6 +34,7 @@ export const getAllSchool = async () => {
 export const createNewBooking = async (bookingData) => {
   return fetch(baseUrl + "booking/", {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -45,6 +50,7 @@ export const createNewBooking = async (bookingData) => {
 export const createNewSchool = async (bookingData) => {
   return fetch(baseUrl + "school/", {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -60,6 +66,7 @@ export const createNewSchool = async (bookingData) => {
 export const createNewChecklist = async (id) => {
   return fetch(baseUrl + `checklist/${id}/`, {
     method: "POST",
+    credentials: "include",
   }).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -72,6 +79,7 @@ export const updateChecklistById = async (id, checklistData) => {
   try {
     const response = await fetch(baseUrl + `checklist/${id}/`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -89,7 +97,7 @@ export const updateChecklistById = async (id, checklistData) => {
 
 export const getBookingById = async (id) => {
   try {
-    const response = await fetch(baseUrl + `booking/${id}/`);
+    const response = await fetch(baseUrl + `booking/${id}/`, {credentials: "include",});
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -102,7 +110,7 @@ export const getBookingById = async (id) => {
 
 export const getSchoolById = async (id) => {
   try {
-    const response = await fetch(baseUrl + `school/${id}/`);
+    const response = await fetch(baseUrl + `school/${id}/`, {credentials: "include",});
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -113,7 +121,7 @@ export const getSchoolById = async (id) => {
   }
 };
 export const getChecklistById = async (id) => {
-  return fetch(baseUrl + `checklist/${id}/`).then((response) => {
+  return fetch(baseUrl + `checklist/${id}/`, {credentials: "include",}).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -124,12 +132,17 @@ export const getChecklistById = async (id) => {
 export const getAllBooking = async () => {
   return fetch(baseUrl + "booking/", {
     method: "GET",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
   }).then((response) => {
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if(response.status === 403) {
+        throw new Error("Please Login first");
+      } else {
+        throw new Error("Network response was not ok");
+      }
     }
     return response.json();
   });
@@ -140,6 +153,7 @@ export const updateMiscellaneous = async (newOptions) => {
   try {
     const response = await fetch(baseUrl + "miscellaneous/", {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -158,6 +172,7 @@ export const updateMiscellaneous = async (newOptions) => {
 export const updateBooking = async (id, bookingData) => {
   return fetch(baseUrl + `booking/${id}/`, {
     method: "PUT",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -173,6 +188,7 @@ export const updateBooking = async (id, bookingData) => {
 export const updateSchoolById = async (id, school) => {
   return fetch(baseUrl + `school/${id}/`, {
     method: "PUT",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -188,6 +204,7 @@ export const updateSchoolById = async (id, school) => {
 export const DeleteSchoolById = async (id) => {
   return fetch(baseUrl + `school/${id}/`, {
     method: "DELETE",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -202,6 +219,7 @@ export const DeleteSchoolById = async (id) => {
 export const DeleteCheckListById = async (id) => {
   return fetch(baseUrl + `checklist/${id}/`, {
     method: "DELETE",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -216,6 +234,7 @@ export const DeleteCheckListById = async (id) => {
 export const deleteBooking = async (id, bookingData) => {
   return fetch(baseUrl + `booking/${id}/`, {
     method: "DELETE",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },

@@ -58,7 +58,8 @@ function Database() {
         setLoading(false);
         console.log("Data fetch successfully!", response);
       } catch (error) {
-        console.error("Data fetch failed:", error);
+        alert(`[ERROR] ${error}`);
+        navigate("/login");
       }
     };
     fetchData();
@@ -86,9 +87,15 @@ function Database() {
   const filteredColumns = useMemo(() => {
     const baseColumns = [
       {
-        Header: "ID",
-        accessor: "id",
-        canSort: false,
+        Header: ' ',
+        disableSortBy: true,
+        columns: [
+            {
+               Header: 'ID',
+               accessor: data => data.id,
+               disableSortBy: true, 
+            }
+        ]  
       },
     ];
     if (selectGroup === "All") {
@@ -99,7 +106,7 @@ function Database() {
         (column) => column.Header === selectGroup
       )?.columns;
       console.log(cols);
-      return baseColumns.concat({ Header: selectGroup, columns: cols });
+      return baseColumns.concat({ Header: selectGroup, disableSortBy: true, columns: cols });
     }
   }, [selectGroup, columns]);
 

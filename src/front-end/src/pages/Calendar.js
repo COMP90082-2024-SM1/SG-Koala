@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Calendar as RsuiteCalendar, Badge, Whisper, Popover } from 'rsuite';
 import { getAllBooking } from "../api/DashbaordAPI";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header/Header";
 import "../styles/Calendar.css";
 import 'rsuite/Calendar/styles/index.css';
@@ -27,6 +28,7 @@ function Calendar() {
     const [isLoading, setIsLoading] = useState(false);
     const [events, setEvents] = useState({});
     const popoverRefs = useRef({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function fetchEvents() {
@@ -60,7 +62,8 @@ function Calendar() {
                 //console.log("Events object:", formattedEvents);
                 //console.log("Processed events size:", Object.keys(formattedEvents).length);
             } catch (error) {
-                console.error("Failed to fetch bookings:", error);
+                alert(`[ERROR] ${error}`);
+                navigate("/login");
             }
             setIsLoading(false);
         }

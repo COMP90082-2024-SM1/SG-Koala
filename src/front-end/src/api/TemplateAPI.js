@@ -2,9 +2,16 @@ const baseUrl = process.env.REACT_APP_BASEURL + "template/";
 
 export const getAllTemplates = async () => {
   try {
-    const response = await fetch(baseUrl);
+    const response = await fetch(baseUrl, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      if(response.status === 403) {
+        throw new Error("Please Login first");
+      } else {
+        throw new Error("Network response was not ok");
+      }
     }
     return await response.json();
   } catch (error) {
@@ -15,7 +22,10 @@ export const getAllTemplates = async () => {
 
 export const getTemplateById = async (id) => {
   try {
-    const response = await fetch(`${baseUrl}${id}/`);
+    const response = await fetch(`${baseUrl}${id}/`, {
+      method: "GET",
+      credentials: "include",
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -30,6 +40,7 @@ export const createTemplate = async (templateData) => {
   try {
     const response = await fetch(baseUrl, {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -49,6 +60,7 @@ export const updateTemplate = async (id, templateData) => {
   try {
     const response = await fetch(`${baseUrl}${id}/`, {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,6 +80,7 @@ export const deleteTemplate = async (id) => {
   try {
     const response = await fetch(`${baseUrl}${id}/`, {
       method: "DELETE",
+      credentials: 'include'
     });
     if (!response.ok) {
       throw new Error("Network response was not ok");

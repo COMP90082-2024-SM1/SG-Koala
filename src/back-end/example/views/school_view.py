@@ -7,16 +7,16 @@ from rest_framework.response import Response
 from rest_framework import status
 from db_connection import connect_mongodb
 import json 
-
+from rest_framework.permissions import IsAuthenticated
 
 class SchoolView(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
         collection = db['school']
         documents = list(collection.find())
         serializer = SchoolSerializer(documents, many=True)
-
         return Response(serializer.data)
 
     
@@ -38,6 +38,7 @@ class SchoolView(APIView):
 
 
 class SchoolViewID(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import navSgLogo from "../images/sg-logo.png";
 import koala_logo from "../images/koala-logo.png";
@@ -6,21 +7,29 @@ import {
   TypographyH2,
   TypographyParagraph,
 } from "../components/Typography/Typography";
+import { LoginDetail } from "../api/LoginAPI";
 
-const Login = (props) => {
-  const [Account, setAccount] = useState("");
-  const [Password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+const Login = () => {
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [message, setMessage] = useState("Welcome to Koala Booking System");
   const [isLogin, setIsLogin] = useState(true);
-  const onButtonClick = () => {
-    if (message === "Welcome to Koala Booking System") {
-      setMessage("Invalid Account or Password");
+
+  const onButtonClick = async () => {
+    try {
+      const response = await LoginDetail(username, password);
+      setMessage("Login Successful"); 
+      setIsLogin(true); 
+      navigate("/dashboard");
+    } catch (error){
+      setMessage(error.message);
       setIsLogin(false);
-    } else {
-      setMessage("Welcome to Koala Booking System");
-      setIsLogin(true);
     }
-  };
+  }
+
 
   const textStyle = {
     color: isLogin ? "white" : "red",
@@ -46,8 +55,9 @@ const Login = (props) => {
         <br />
         <div>
           <input
-            value={Account}
-            onChange={(ev) => setAccount(ev.target.value)}
+            type="text"
+            value={username}
+            onChange={(ev) => setUsername(ev.target.value)}
             className="loginInputBox"
           />
         </div>
@@ -60,7 +70,8 @@ const Login = (props) => {
         <br />
         <div>
           <input
-            value={Password}
+            type="password"
+            value={password}
             onChange={(ev) => setPassword(ev.target.value)}
             className="loginInputBox"
           />

@@ -7,9 +7,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from db_connection import connect_mongodb
 import json 
+from rest_framework.permissions import IsAuthenticated
+
 
 #Checklist apis
 class ChecklistView(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
@@ -23,6 +26,7 @@ class ChecklistView(APIView):
 
 
 class ChecklistViewID(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)

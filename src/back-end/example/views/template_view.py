@@ -7,19 +7,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from db_connection import connect_mongodb
 import json 
+from rest_framework.permissions import IsAuthenticated
+
 
 
 class TemplateView(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         db = connect_mongodb()
         # Perform some MongoDB operations, e.g., find one document
         collection = db['template']
         documents = list(collection.find())
         serializer = TemplateSerializer(documents, many=True)
-        print(serializer.data)
         return Response(serializer.data)
 
-    
     def post(self, request, *args, **kwargs):
         collection = connect_mongodb()['template']
         serializer = TemplateSerializer(data=request.data)
@@ -35,6 +36,7 @@ class TemplateView(APIView):
 
 
 class TemplateViewID(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
         if 'id' not in kwargs:
             return Response({'error': 'PUT method expects an id'},status=status.HTTP_405_METHOD_NOT_ALLOWED)
