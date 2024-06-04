@@ -62,6 +62,7 @@ const NewBooking = ({ isNew = false }) => {
       schoolSelect: "",
       studentYears: null,
       lowSES: "",
+      attendedStudents: 0,
       contactInfo: {
         firstName: "",
         lastName: "",
@@ -526,11 +527,12 @@ const NewBooking = ({ isNew = false }) => {
     if (!data.Delivery.exhibitionSelect) {
       errors.push("ExhibitionSelect Time is required.");
     }
-    if (!data.School.attendedStudents || data.School.attendedStudents < 0) {
+    if (!data.School.attendedStudents) {
+      data.School.attendedStudents = 0;
+    }
+    if (data.School.attendedStudents < 0) {
       console.log(data.School.attendedStudents);
-      errors.push(
-        "Number of Student Attended is required and cannot be less than zero."
-      );
+      errors.push("Number of Student Attended be less than zero.");
     }
     if (!data.School.accessibilityNeeds) {
       errors.push("Accessibilityis required.");

@@ -7,7 +7,7 @@ class SchoolSerializer(serializers.Serializer):
     id = serializers.CharField(source="_id", read_only=True)
     name = serializers.CharField(max_length=200)
     studentYear = serializers.IntegerField()
-    numStudentAttended = serializers.IntegerField(required=False)
+    numStudentAttended = serializers.IntegerField(required=False, default=0)
     numStudentRegistered = serializers.IntegerField()
     hourRegistered = serializers.IntegerField(required=False)
     hourAttended = serializers.IntegerField(required=False)
