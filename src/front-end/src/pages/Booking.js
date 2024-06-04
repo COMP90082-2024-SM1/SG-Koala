@@ -360,8 +360,6 @@ const NewBooking = ({ isNew = false }) => {
       ])
         .then(([miscellaneousData, schoolData, bookingData]) => {
           setOneBooking(bookingData);
-          console.log("raw");
-          console.log(data);
           setOriginalOptions({
             programStreams: miscellaneousData.program_stream,
             facilitators: miscellaneousData.facilitators,
@@ -382,7 +380,6 @@ const NewBooking = ({ isNew = false }) => {
               const formattedEndTime = bookingData.endTime
                 ? bookingData.endTime.split("T")[1].substring(0, 5)
                 : "";
-              console.log("newnewnewnewn");
               setData((prev) => ({
                 ...prev,
                 Delivery: {
@@ -470,7 +467,6 @@ const NewBooking = ({ isNew = false }) => {
   };
 
   const checkForm = (data) => {
-    console.log(data);
     const { moduleSelects } = data.Delivery;
     // check moduel
     const startDate = formatDateTime(
@@ -495,7 +491,6 @@ const NewBooking = ({ isNew = false }) => {
       errors.push("Term is required.");
     }
     if (!data.School.registeredStudents || data.School.registeredStudents < 0) {
-      console.log(data.School.numStudentRegistered);
       errors.push(
         "Number of student registered is required and cannot be less than zero."
       );
@@ -531,7 +526,6 @@ const NewBooking = ({ isNew = false }) => {
       data.School.attendedStudents = 0;
     }
     if (data.School.attendedStudents < 0) {
-      console.log(data.School.attendedStudents);
       errors.push("Number of Student Attended be less than zero.");
     }
     if (!data.School.accessibilityNeeds) {
@@ -540,7 +534,6 @@ const NewBooking = ({ isNew = false }) => {
     if (errors.length > 0) {
       alert(errors.join("\n"));
     }
-    console.log(errors);
     return errors;
   };
 
@@ -560,7 +553,6 @@ const NewBooking = ({ isNew = false }) => {
       December: "12",
     };
     if (typeof dateStr !== "undefined") {
-      console.log("noway");
       const parts = dateStr.split(" ");
       const day = parts[0].replace(/\D/g, "");
       const month = months[parts[1]];
@@ -629,7 +621,6 @@ const NewBooking = ({ isNew = false }) => {
         : [...prev.Delivery.programStreams, info.program];
 
       let newSchools = prev.School.schools;
-      console.log(newSchools);
 
       let schoolExists = newSchools.find(
         (school) => school.name === info.school
@@ -670,8 +661,6 @@ const NewBooking = ({ isNew = false }) => {
           expenses: info.cost,
         },
       };
-
-      console.log("New state:", newState);
       return newState;
     });
 
@@ -713,8 +702,6 @@ const NewBooking = ({ isNew = false }) => {
 
   const handleUpdate = async (event) => {
     const errors = checkForm(data);
-    console.log("??????");
-    console.log(errors);
     if (errors.length !== 0) {
     } else {
       setUpdating(true);
@@ -852,9 +839,7 @@ const NewBooking = ({ isNew = false }) => {
 
       try {
         const response = await updateBooking(oneBooking.id, bookingData);
-        console.log("Booking created successfully!", response);
         alert("Update Successfull!");
-        // navigate("/dashboard",{replace:true});
       } catch (error) {
         console.error("update booking failed:", error);
         alert("Error! Please try again later");
@@ -957,11 +942,6 @@ const NewBooking = ({ isNew = false }) => {
         exhibition: originalOptions.exhibition.slice(),
         program_stream: originalOptions.programStreams.slice(),
       };
-      console.log("modile id");
-      console.log(data.Delivery.moduleSelects);
-
-      console.log(originalOptions.programStreams);
-      console.log(data.Delivery.streamSelect);
 
       if (
         !originalOptions.programStreams.includes(data.Delivery.streamSelect)
@@ -997,8 +977,6 @@ const NewBooking = ({ isNew = false }) => {
       ) {
         newOptions.exhibition.push(data.Delivery.exhibitionSelect);
       }
-      console.log("????");
-      console.log(newOptions);
 
       updateMiscellaneous(newOptions);
 

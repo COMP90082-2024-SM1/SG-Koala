@@ -258,7 +258,6 @@ const TemplateDetail = ({ checklistId }) => {
       setLoading(true);
       const response = await createTemplate(details);
       const templateId = response._id;
-      console.log(templateId);
       setLoading(false);
       alert("[SUCCESS] Template created successfully!");
       navigate(`/templates/${templateId}`);

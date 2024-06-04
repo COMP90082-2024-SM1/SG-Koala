@@ -56,7 +56,6 @@ function Database() {
         const response = await getAllBooking();
         setData(response);
         setLoading(false);
-        console.log("Data fetch successfully!", response);
       } catch (error) {
         alert(`[ERROR] ${error}`);
         navigate("/login");
@@ -99,13 +98,11 @@ function Database() {
       },
     ];
     if (selectGroup === "All") {
-      console.log(columns);
       return columns;
     } else {
       const cols = columns.find(
         (column) => column.Header === selectGroup
       )?.columns;
-      console.log(cols);
       return baseColumns.concat({ Header: selectGroup, disableSortBy: true, columns: cols });
     }
   }, [selectGroup, columns]);

@@ -146,7 +146,6 @@ const Dashboard = () => {
       return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
     });
 
-    console.log(filteredBookings);
     return filteredBookings;
   };
 

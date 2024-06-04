@@ -36,7 +36,6 @@ function Calendar() {
             try {
                 const response = await getAllBooking();
                 const data = await response.json();
-                //console.log("Fetched data size:", data.length);
                 const formattedEvents = data.reduce((acc, item) => {
                     if (!item.date) {
                         console.error("Missing date for item:", item);
@@ -46,21 +45,15 @@ function Calendar() {
                     if (!acc[dateKey]) {
                         acc[dateKey] = [];
                     }
-                    //console.log("Start:", item.startTime)
-                    //console.log("End:", item.endTime)
                     acc[dateKey].push({
                         time: formatTimeRange(item.startTime), 
                         title: item.name || "No Name",
                         id: item.id
                         //title: item.name + ' - ' + item.location 
                     });
-                    //console.log(`Date ${dateKey} has ${acc[dateKey].length} events`);
                     return acc;
                 }, {});
                 setEvents(formattedEvents);
-                //console.log("Original data length:", data.length);
-                //console.log("Events object:", formattedEvents);
-                //console.log("Processed events size:", Object.keys(formattedEvents).length);
             } catch (error) {
                 alert(`[ERROR] ${error}`);
                 navigate("/login");

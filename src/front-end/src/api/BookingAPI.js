@@ -149,7 +149,6 @@ export const getAllBooking = async () => {
 };
 
 export const updateMiscellaneous = async (newOptions) => {
-  console.log("Sending data:", newOptions);
   try {
     const response = await fetch(baseUrl + "miscellaneous/", {
       method: "PUT",
@@ -163,7 +162,6 @@ export const updateMiscellaneous = async (newOptions) => {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    console.log("Successfully updated:", data);
   } catch (error) {
     console.error("Error updating miscellaneous data:", error);
   }
