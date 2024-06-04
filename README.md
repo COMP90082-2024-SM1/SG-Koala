@@ -96,8 +96,8 @@ The application offers a comprehensive set of features designed to enhance user 
     - End: 22/03/2024
     - Duration: 3 weeks
   - Log
-    - Initial setup.
-    - Upload docs.
+    - Initial setup
+    - Upload docs
   ### Sprint Two
   - Date
     - Start: 25/03/2024
@@ -106,7 +106,6 @@ The application offers a comprehensive set of features designed to enhance user 
   - Log
     - ADD `Dashboard Page`
     - ADD `Database Page`
-    - ADD `Login Page`
     - ADD `New Template Detail Page`
     - ADD `New Template Page`
     - ADD `Search Bar Function (backend)`
@@ -137,7 +136,8 @@ The application offers a comprehensive set of features designed to enhance user 
     - End: 07/06/2024
     - Duration: 3 weeks
   - Log
-    - N/A   
+    - ADD `Login Page`
+    - FIX bugs 
     
 > The changelog will be updated progressively throughout each sprint.
 
@@ -177,9 +177,11 @@ The application offers a comprehensive set of features designed to enhance user 
 - Use **Rebase and Merge** for minor fixes or updates.
 
 ## Demo
-**Sprint2 Video**: watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
+**Sprint2 Update**: watch on [Youtube](https://youtu.be/H5LxiF4b4GY)
 
 **Sprint3 Website**: watch on [Koala Management System](https://regal-profiterole-7e6b9f.netlify.app/)
+
+**Sprint4 Final Product**: watch on [Youtube](https://www.youtube.com/watch?v=ZSZaohDa8UY)
 
 ## Contact
 | Name                | Email                                  | GitHub                               |
