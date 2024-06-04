@@ -137,8 +137,9 @@ The application offers a comprehensive set of features designed to enhance user 
     - Duration: 3 weeks
   - Log
     - ADD `Login Page`
-    - FIX bugs 
-    
+    - FIX bugs
+    - UPDATE `docs` on GitHub repo
+      
 > The changelog will be updated progressively throughout each sprint.
 
 ## Workflow Guidelines
