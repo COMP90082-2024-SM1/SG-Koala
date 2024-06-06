@@ -12,13 +12,16 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import sys, os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
-
-load_dotenv()
-email_host_user = os.getenv("EMAIL_HOST_USER")
-email_host_password = os.getenv("EMAIL_HOST_PASSWORD")
-secret_key = os.getenv("SECRET_KEY")
+# import dj_database_url
+# load_dotenv()
+# email_host_user = os.getenv("EMAIL_HOST_USER")
+# email_host_password = os.getenv("EMAIL_HOST_PASSWORD")
+# secret_key = os.getenv("SECRET_KEY")
+email_host_user="leona7658@gmail.com"
+email_host_password="dtsg htdx wtyn zsxy"
+secret_key="django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^"
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,7 +43,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".vercel.app"]
+ALLOWED_HOSTS = ["*", ".vercel.app"]
 
 
 # Application definition
@@ -110,6 +113,13 @@ WSGI_APPLICATION = "api.wsgi.app"
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -120,6 +130,9 @@ DATABASES = {
         'PORT': '32387',
     }
 }
+
+# DATABASES['default'] = dj_database_url.config()
+
 
 DMONGODB_DATABASES = {
     "default": {
@@ -167,8 +180,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
-
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles_build" / "static"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
