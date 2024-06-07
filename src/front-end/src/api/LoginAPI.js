@@ -19,6 +19,7 @@ export const LoginDetail = async (username, password) => {
         throw new Error("Network response was not ok");
       }
     }
+
     return await response.json();
   } catch (error) {
     console.error("Error fetching login detail:", error);

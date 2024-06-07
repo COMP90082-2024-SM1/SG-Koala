@@ -12,8 +12,8 @@ import { LoginDetail } from "../api/LoginAPI";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const [message, setMessage] = useState("Welcome to Koala Booking System");
   const [isLogin, setIsLogin] = useState(true);
@@ -21,15 +21,16 @@ const Login = () => {
   const onButtonClick = async () => {
     try {
       const response = await LoginDetail(username, password);
-      setMessage("Login Successful"); 
-      setIsLogin(true); 
+      localStorage.setItem("authTokens", JSON.stringify(response));
+
+      setMessage("Login Successful");
+      setIsLogin(true);
       navigate("/dashboard");
-    } catch (error){
+    } catch (error) {
       setMessage(error.message);
       setIsLogin(false);
     }
-  }
-
+  };
 
   const textStyle = {
     color: isLogin ? "white" : "red",

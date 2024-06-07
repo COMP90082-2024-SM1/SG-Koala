@@ -7,6 +7,8 @@ from django.http import HttpResponse,JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken, TokenError
 
 
 def index(request):
@@ -35,17 +37,32 @@ def login_method(request):
 
         username = body.get('username')
         password = body.get('password')
-        
+        print(body)
         if not username or not password:
             return JsonResponse({'error': 'Missing username or password'}, status=400)
+        try:
+            user = User.objects.get(username = username)
+        except User.DoesNotExist:
+            return JsonResponse({'error': "User does not exist"}, status=400)
+        if user is None:
+            return JsonResponse({'error': "User does not exist"}, status=400)
+        if not user.check_password(password):
+            raise JsonResponse({'error': 'Incorrect username or password'}, status=400)
+        access_token = AccessToken.for_user(user)
+        refresh_token =RefreshToken.for_user(user)
+        return Response({
+            'message': 'Login successful',
+            "access_token" : access_token,
+            "refresh_token" : refresh_token,
+        }, status=200)
 
-        user = authenticate(request, username=username, password=password)
+        """ user = authenticate(request, username=username, password=password)
         print(user)
         if user is not None:
             login(request, user)
             return JsonResponse({'message': 'Login successful'}, status=200)
         else:
-            return JsonResponse({'error': 'Invalid credentials'}, status=401)
+            return JsonResponse({'error': 'Invalid credentials'}, status=401) """
     else:
         return JsonResponse({'error': 'Method not allowed'}, status=405)
 

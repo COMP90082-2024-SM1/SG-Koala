@@ -12,16 +12,15 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import sys, os
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
-# import dj_database_url
-# load_dotenv()
-# email_host_user = os.getenv("EMAIL_HOST_USER")
-# email_host_password = os.getenv("EMAIL_HOST_PASSWORD")
-# secret_key = os.getenv("SECRET_KEY")
-email_host_user="leona7658@gmail.com"
-email_host_password="dtsg htdx wtyn zsxy"
-secret_key="django-insecure-=cldztbc4jg&xl0!x673!*v2_=p$$eu)=7*f#d0#zs$44xx-h^"
+from datetime import timedelta
+
+
+load_dotenv()
+email_host_user = os.getenv("EMAIL_HOST_USER")
+email_host_password = os.getenv("EMAIL_HOST_PASSWORD")
+secret_key = os.getenv("SECRET_KEY")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,7 +42,7 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TESTING = len(sys.argv) > 1 and sys.argv[1] == "test"
-ALLOWED_HOSTS = ["*", ".vercel.app"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", ".vercel.app"]
 
 
 # Application definition
@@ -58,6 +57,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "example",
     "corsheaders",
+    "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 
@@ -68,12 +69,31 @@ INSTALLED_APPS = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_WHITELIST = ("http://localhost:3000",)
+SESSION_COOKIE_SAMESITE = None
+CSRF_COOKIE_SAMESITE = None
+
+#CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_HTTPONLY = False
+CSRF_COOKIE_HTTPONLY = False
+
+CSRF_TRUSTED_ORIGINS = [
+     "http://localhost:3000",
+     "http://127.0.0.1:3000"
+]
+#CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "example.views.authentication.CsrfExemptSessionAuthentication",
-        "rest_framework.authentication.BasicAuthentication",
+        
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+}
+SIMPLE_JWT = {
+     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+     'ROTATE_REFRESH_TOKENS': True,
+     'BLACKLIST_AFTER_ROTATION': True
 }
 
 MIDDLEWARE = [
@@ -113,13 +133,6 @@ WSGI_APPLICATION = "api.wsgi.app"
 # Note: Django modules for using databases are not support in serverless
 # environments like Vercel. You can use a database over HTTP, hosted elsewhere.
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.sqlite3",
-#         "NAME": BASE_DIR / "db.sqlite3",
-#     }
-# }
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -130,9 +143,6 @@ DATABASES = {
         'PORT': '32387',
     }
 }
-
-# DATABASES['default'] = dj_database_url.config()
-
 
 DMONGODB_DATABASES = {
     "default": {
@@ -180,8 +190,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles_build" / "static"
+STATIC_URL = "static/"
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

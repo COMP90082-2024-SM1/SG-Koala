@@ -1,7 +1,10 @@
 # example/urls.py
 from django.urls import path
 
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from example.views import (
     views,
     school_view,
@@ -15,6 +18,9 @@ from example.views import (
 
 urlpatterns = [
     path("", views.index),
+    path('token/', TokenObtainPairView.as_view(), name ="token_obtain_pair"),
+    path('token/refresh/', TokenRefreshView.as_view(), name="token_refresh"),
+
     path('login/', views.login_method,name='user_login'),
     # path('register/', views.register,name='user_register'),
     path("booking/search", search_view.SearchAPIView.as_view(), name="search"),
