@@ -36,7 +36,6 @@ function formatTimeRange(startTimeStr, endTimeStr) {
     .toString()
     .padStart(2, "0")}:${endTime.getUTCMinutes().toString().padStart(2, "0")}`;
 
-  // Concatenating start and end times with a dash
   return `${formattedStartTime} - ${formattedEndTime}`;
 }
 

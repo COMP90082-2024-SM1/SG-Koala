@@ -1,9 +1,19 @@
+import { getAuthToken } from "./Cookie";
 const baseUrl = process.env.REACT_APP_BASEURL;
 
 export const getAllTemplates = async () => {
-  return fetch(baseUrl + "template/", {credentials: "include",}).then((response) => {
+  const accessToken = getAuthToken();
+
+  return fetch(baseUrl + "template/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then((response) => {
     if (!response.ok) {
-      if(response.status === 403) {
+      if (response.status === 403) {
         throw new Error("Please Login first");
       } else {
         throw new Error("Network response was not ok");
@@ -14,7 +24,16 @@ export const getAllTemplates = async () => {
 };
 
 export const getAllMiscellaneous = async () => {
-  return fetch(baseUrl + "miscellaneous/", {credentials: "include",}).then((response) => {
+  const accessToken = getAuthToken();
+
+  return fetch(baseUrl + "miscellaneous/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -23,7 +42,16 @@ export const getAllMiscellaneous = async () => {
 };
 
 export const getAllSchool = async () => {
-  return fetch(baseUrl + "school/", {credentials: "include",}).then((response) => {
+  const accessToken = getAuthToken();
+
+  return fetch(baseUrl + "school/", {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -32,11 +60,14 @@ export const getAllSchool = async () => {
 };
 
 export const createNewBooking = async (bookingData) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + "booking/", {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(bookingData),
   }).then((response) => {
@@ -48,11 +79,14 @@ export const createNewBooking = async (bookingData) => {
 };
 
 export const createNewSchool = async (bookingData) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + "school/", {
     method: "POST",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(bookingData),
   }).then((response) => {
@@ -64,9 +98,15 @@ export const createNewSchool = async (bookingData) => {
 };
 
 export const createNewChecklist = async (id) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `checklist/${id}/`, {
     method: "POST",
     credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
   }).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -76,12 +116,15 @@ export const createNewChecklist = async (id) => {
 };
 
 export const updateChecklistById = async (id, checklistData) => {
+  const accessToken = getAuthToken();
+
   try {
     const response = await fetch(baseUrl + `checklist/${id}/`, {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(checklistData),
     });
@@ -96,8 +139,16 @@ export const updateChecklistById = async (id, checklistData) => {
 };
 
 export const getBookingById = async (id) => {
+  const accessToken = getAuthToken();
+
   try {
-    const response = await fetch(baseUrl + `booking/${id}/`, {credentials: "include",});
+    const response = await fetch(baseUrl + `booking/${id}/`, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -109,8 +160,16 @@ export const getBookingById = async (id) => {
 };
 
 export const getSchoolById = async (id) => {
+  const accessToken = getAuthToken();
+
   try {
-    const response = await fetch(baseUrl + `school/${id}/`, {credentials: "include",});
+    const response = await fetch(baseUrl + `school/${id}/`, {
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -121,7 +180,15 @@ export const getSchoolById = async (id) => {
   }
 };
 export const getChecklistById = async (id) => {
-  return fetch(baseUrl + `checklist/${id}/`, {credentials: "include",}).then((response) => {
+  const accessToken = getAuthToken();
+
+  return fetch(baseUrl + `checklist/${id}/`, {
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
+    },
+  }).then((response) => {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -130,15 +197,18 @@ export const getChecklistById = async (id) => {
 };
 
 export const getAllBooking = async () => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + "booking/", {
     method: "GET",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   }).then((response) => {
     if (!response.ok) {
-      if(response.status === 403) {
+      if (response.status === 403) {
         throw new Error("Please Login first");
       } else {
         throw new Error("Network response was not ok");
@@ -149,12 +219,15 @@ export const getAllBooking = async () => {
 };
 
 export const updateMiscellaneous = async (newOptions) => {
+  const accessToken = getAuthToken();
+
   try {
     const response = await fetch(baseUrl + "miscellaneous/", {
       method: "PUT",
       credentials: "include",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(newOptions),
     });
@@ -168,11 +241,14 @@ export const updateMiscellaneous = async (newOptions) => {
 };
 
 export const updateBooking = async (id, bookingData) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `booking/${id}/`, {
     method: "PUT",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(bookingData),
   }).then((response) => {
@@ -184,11 +260,14 @@ export const updateBooking = async (id, bookingData) => {
 };
 
 export const updateSchoolById = async (id, school) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `school/${id}/`, {
     method: "PUT",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(school),
   }).then((response) => {
@@ -200,11 +279,14 @@ export const updateSchoolById = async (id, school) => {
 };
 
 export const DeleteSchoolById = async (id) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `school/${id}/`, {
     method: "DELETE",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   }).then((response) => {
     if (!response.ok) {
@@ -215,11 +297,14 @@ export const DeleteSchoolById = async (id) => {
 };
 
 export const DeleteCheckListById = async (id) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `checklist/${id}/`, {
     method: "DELETE",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
   }).then((response) => {
     if (!response.ok) {
@@ -230,11 +315,14 @@ export const DeleteCheckListById = async (id) => {
 };
 
 export const deleteBooking = async (id, bookingData) => {
+  const accessToken = getAuthToken();
+
   return fetch(baseUrl + `booking/${id}/`, {
     method: "DELETE",
     credentials: "include",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${accessToken}`,
     },
     body: JSON.stringify(bookingData),
   }).then((response) => {

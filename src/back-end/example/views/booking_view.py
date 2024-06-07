@@ -10,7 +10,6 @@ import json
 from rest_framework.permissions import IsAuthenticated
 from api.utils import send_booking_ref_to_client
 
-# booking rest api
 class BookingView(APIView):
     permission_classes = [IsAuthenticated] 
     def get(self, request, *args, **kwargs):
