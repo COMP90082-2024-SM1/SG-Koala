@@ -1,83 +1,49 @@
-# example/views.py
-from datetime import datetime
-import json
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login,authenticate,logout
-from django.http import HttpResponse,JsonResponse
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.views.decorators.csrf import csrf_exempt
-
-
-def index(request):
-    now = datetime.now()
-    html = f'''
-    <html>
-        <body>
-            <h1>Hello from Vercel!</h1>
-            <p>The current time is { now }.</p>
-        </body>
-    </html>
-    '''
-    return HttpResponse(html)
-
-
-@csrf_exempt
-def login_method(request):
-    if request.method == "POST":
-        body_unicode = request.body.decode('utf-8')
-        print("Received body:", body_unicode)  # Log the body to debug
-
-        try:
-            body = json.loads(body_unicode)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
-
-        username = body.get('username')
-        password = body.get('password')
-        
-        if not username or not password:
-            return JsonResponse({'error': 'Missing username or password'}, status=400)
-
-        user = authenticate(request, username=username, password=password)
-        print(user)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({'message': 'Login successful'}, status=200)
-        else:
-            return JsonResponse({'error': 'Invalid credentials'}, status=401)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
-
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+import json
 
-@csrf_exempt
-def register(request):
-    if request.method == "POST":
-        body_unicode = request.body.decode('utf-8')
-        print("Received body:", body_unicode)  # Log the body to debug
+@api_view(["POST"])
+@permission_classes([AllowAny])
+def login_method(request):
+    
+    body_unicode = request.body.decode("utf-8")
+    print("Received body:", body_unicode)  # Log the body to debug
 
-        try:
-            body = json.loads(body_unicode)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    try:
+        body = json.loads(body_unicode)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-        username = body.get('username')
-        password = body.get('password')
- 
+    username = body.get("username")
+    password = body.get("password")
 
-        if not username or not password:
-            return JsonResponse({'error': 'Missing username, password l'}, status=400)
+    if not username or not password:
+        return JsonResponse({"error": "Missing username or password"}, status=400)
 
-        if User.objects.filter(username=username).exists():
-            return JsonResponse({'error': 'Username already taken'}, status=400)
+    try:
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return JsonResponse({"error": "User does not exist"}, status=400)
 
-       
-        try:
-            user = User.objects.create_user(username=username, password=password)
-            user.save()
-            return JsonResponse({'message': 'User registered successfully'}, status=201)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-    else:
-        return JsonResponse({'error': 'Method not allowed'}, status=405)
+    if not user.check_password(password):
+        return JsonResponse({"error": "Incorrect username or password"}, status=400)
+
+    # Issue tokens
+    try:
+        access_token = AccessToken.for_user(user)
+        refresh_token = RefreshToken.for_user(user)
+        return Response(
+            {
+                "message": "Login successful",
+                "access_token": str(access_token),
+                "refresh_token": str(refresh_token),
+            },
+            status=200,
+        )
+    except Exception as e:
+        return JsonResponse({"error": "Error issuing tokens"}, status=500)
+

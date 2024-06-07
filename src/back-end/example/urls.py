@@ -1,7 +1,10 @@
 # example/urls.py
 from django.urls import path
 
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 from example.views import (
     views,
     school_view,
@@ -14,9 +17,9 @@ from example.views import (
 )
 
 urlpatterns = [
-    path("", views.index),
-    path('login/', views.login_method,name='user_login'),
-    # path('register/', views.register,name='user_register'),
+    path("token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("login/", views.login_method, name="user_login"),
     path("booking/search", search_view.SearchAPIView.as_view(), name="search"),
     path("booking/", booking_view.BookingView.as_view(), name="booking"),
     path("booking/<str:id>/", booking_view.BookingViewID.as_view(), name="booking_id"),
@@ -32,7 +35,11 @@ urlpatterns = [
         checklist_view.ChecklistViewID.as_view(),
         name="checklist_id",
     ),
-    path("miscellaneous/", miscellaneous_view.MiscellaneousView.as_view(), name="miscellaneous"),
+    path(
+        "miscellaneous/",
+        miscellaneous_view.MiscellaneousView.as_view(),
+        name="miscellaneous",
+    ),
     path(
         "chart/1/",
         chart_view.ChartOneView.as_view(),
